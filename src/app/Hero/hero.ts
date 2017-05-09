@@ -6,4 +6,5 @@ export class Hero {
     state: boolean;
     xp: number;
     level: number;
+    life: number;
 }
