@@ -4,7 +4,7 @@ import { Hero } from './hero';
 
 @Component({
   selector: 'hero',
-  templateUrl: './hero.component.ts',
+  templateUrl: './hero.component.html',
 })
 export class HeroComponent  { 
     myHeroes: Hero[];

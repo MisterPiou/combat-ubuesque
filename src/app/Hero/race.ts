@@ -1,4 +1,4 @@
-import { Spell, SPELLS } from './spell';
+import { Spell } from './spell';
 
 export class Race {
     id: number;
