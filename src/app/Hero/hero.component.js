@@ -6,9 +6,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = require("@angular/core");
+var hero_1 = require("./hero");
+var race_1 = require("./race");
 var HeroComponent = (function () {
     function HeroComponent() {
+        this.heroes = [];
+        this.races = race_1.RACES;
+        this.model = new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
     }
+    HeroComponent.prototype.onSubmit = function () {
+        this.heroes.push(this.model);
+        this.model = new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+    };
     return HeroComponent;
 }());
 HeroComponent = __decorate([

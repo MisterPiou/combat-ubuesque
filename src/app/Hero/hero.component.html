@@ -20,7 +20,7 @@
     <tr *ngFor="let hero of heroes">
         <td>{{hero.name}}</td>
         <td>{{hero.race}}</td>
-        <td>{{hero.lvl}}</td>
+        <td>{{hero.level}}</td>
         <td>{{hero.xp}}</td>
         <td>{{hero.life}}</td>
         <td>{{hero.state}}</td>
@@ -36,11 +36,33 @@
         <h4 class="modal-title" id="myModalLabel">Création de personnage</h4>
       </div>
       <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-        <button type="button" class="btn btn-primary">C'est parti !</button>
+        <form (ngSubmit)="onSubmit()" #hero="ngForm">
+            <div class="form-group">
+                <label for="name">Nom du personnage</label>
+                <input type="text" class="form-control" id="name"
+                       required
+                       [(ngModel)]="model.name" name="name"
+                       #name="ngModel">
+                <div [hidden]="name.valid || name.pristine"
+                    class="alert alert-danger">
+                Il nous faut un nom pour ton héro
+               </div>
+            </div>
+            <div class="form-group">
+                <label for="race">Race du personnage</label>
+                <select type="text" class="form-control" id="race"
+                       required
+                       [(ngModel)]="model.race" name="race"
+                       #race="ngModel">
+                       <option *ngFor="let r of races" [value]="r.id">{{r.name}}</option>
+                </select>
+                <p>
+                    {{ races[model.race-1].info }}
+                </p>
+            </div>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hero.reset()">Annuler</button>
+            <button type="submit" class="btn btn-primary">C'est parti !</button>
+        </form>
       </div>
     </div>
   </div>

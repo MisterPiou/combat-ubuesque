@@ -5,7 +5,7 @@ var Race = (function () {
     return Race;
 }());
 exports.Race = Race;
-var RACES = [
+exports.RACES = [
     /* BARBARE */
     {
         id: 1,

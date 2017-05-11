@@ -7,7 +7,7 @@ export class Race {
     spells: Spell[];
 }
 
-const RACES: Race[] = [
+export const RACES: Race[] = [
     /* BARBARE */
     { 
         id: 1, 

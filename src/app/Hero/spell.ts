@@ -8,7 +8,7 @@ export class Spell {
     ratio: number;
 }
 
-const SPELLS: Spell[] = [
+export const SPELLS: Spell[] = [
     { 
         id: 0, name: 'Frappe', 
         info:'Une giffle des plus banales', 

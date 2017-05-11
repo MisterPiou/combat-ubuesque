@@ -5,7 +5,7 @@ var Spell = (function () {
     return Spell;
 }());
 exports.Spell = Spell;
-var SPELLS = [
+exports.SPELLS = [
     {
         id: 0, name: 'Frappe',
         info: 'Une giffle des plus banales',
