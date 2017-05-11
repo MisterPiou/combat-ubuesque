@@ -8,14 +8,24 @@ import { Race, RACES } from './race';
   templateUrl: './hero.component.html',
 })
 export class HeroComponent  { 
-    heroes: Hero[] = [];
+    heroes: Hero[] = [new Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100)];
+    defaultName = "Mon Héros";
     races = RACES;
-    model = new Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+    model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
     isSubmitted = false;
+    selectedHero: Hero;
     
     onSubmit() {
         this.heroes.push(this.model);
-        this.model = new Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
-        $('#myModal').modal('hide')
+        this.model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+        $('#myModal').modal('hide');
+    }
+    
+    newHero() {
+        this.model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+    }
+    
+    selectHero(hero: Hero) {
+        this.selectedHero = hero;
     }
 }

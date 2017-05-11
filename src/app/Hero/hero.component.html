@@ -2,30 +2,34 @@
 
 <h2>Ici, tu pourras gérer tout tes héros</h2>
 
-<div>
-    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-        Créer un personnage
-    </button>
+<div class="col-sm-6 col-xs-12">
+    <div>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            Créer un personnage
+        </button>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Race</th>
+                <th>Lvl</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let hero of heroes" [class.info]="hero === selectedHero" (click)="selectHero(hero)">
+                <td>{{hero.name}}</td>
+                <td>{{hero.race}}</td>
+                <td>{{hero.level}}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
-<table class="table">
-    <tr>
-        <th>Nom</th>
-        <th>Race</th>
-        <th>Lvl</th>
-        <th>Xp</th>
-        <th>Vie</th>
-        <th>Etat</th>
-    </tr>
-    <tr *ngFor="let hero of heroes">
-        <td>{{hero.name}}</td>
-        <td>{{hero.race}}</td>
-        <td>{{hero.level}}</td>
-        <td>{{hero.xp}}</td>
-        <td>{{hero.life}}</td>
-        <td>{{hero.state}}</td>
-    </tr>
-</table>
+<div class="col-sm-6 col-xs-12">
+    <h3>Details du personnage</h3>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -60,15 +64,10 @@
                     {{ races[model.race-1].info }}
                 </p>
             </div>
-            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="hero.reset()">Annuler</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="newHero()">Annuler</button>
             <button type="submit" class="btn btn-primary">C'est parti !</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-
-<script>
-    alert('pouet');
-</script>

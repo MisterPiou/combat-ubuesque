@@ -10,15 +10,22 @@ var hero_1 = require("./hero");
 var race_1 = require("./race");
 var HeroComponent = (function () {
     function HeroComponent() {
-        this.heroes = [];
+        this.heroes = [new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100)];
+        this.defaultName = "Mon Héros";
         this.races = race_1.RACES;
-        this.model = new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+        this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
         this.isSubmitted = false;
     }
     HeroComponent.prototype.onSubmit = function () {
         this.heroes.push(this.model);
-        this.model = new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+        this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
         $('#myModal').modal('hide');
+    };
+    HeroComponent.prototype.newHero = function () {
+        this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+    };
+    HeroComponent.prototype.selectHero = function (hero) {
+        this.selectedHero = hero;
     };
     return HeroComponent;
 }());
