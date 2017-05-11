@@ -13,10 +13,12 @@ var HeroComponent = (function () {
         this.heroes = [];
         this.races = race_1.RACES;
         this.model = new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+        this.isSubmitted = false;
     }
     HeroComponent.prototype.onSubmit = function () {
         this.heroes.push(this.model);
         this.model = new hero_1.Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+        $('#myModal').modal('hide');
     };
     return HeroComponent;
 }());

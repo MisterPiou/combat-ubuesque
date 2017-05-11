@@ -11,9 +11,11 @@ export class HeroComponent  {
     heroes: Hero[] = [];
     races = RACES;
     model = new Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+    isSubmitted = false;
     
     onSubmit() {
         this.heroes.push(this.model);
         this.model = new Hero(1, 1, "Jean-Louis", 1, 0, 0, 1, 100);
+        $('#myModal').modal('hide')
     }
 }
