@@ -1,0 +1,4 @@
+services:
+#    comubu.example:
+#        class: ComubuBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
