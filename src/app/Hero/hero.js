@@ -1,8 +1,8 @@
 "use strict";
 var Hero = (function () {
-    function Hero(user_id, id, name, race, state, xp, level, life) {
-        this.user_id = user_id;
+    function Hero(id, user_id, name, race, state, xp, level, life) {
         this.id = id;
+        this.user_id = user_id;
         this.name = name;
         this.race = race;
         this.state = state;

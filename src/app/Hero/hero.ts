@@ -1,7 +1,7 @@
 export class Hero {
     constructor(
-        public user_id: number,
         public id: number,
+        public user_id: number,
         public name: string,
         public race: number,
         public state: number,
