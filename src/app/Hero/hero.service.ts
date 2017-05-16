@@ -8,7 +8,7 @@ import { Hero } from './hero';
 @Injectable()
 export class HeroService {
     private headers = new Headers({'Content-Type': 'application/json'});
-    private heroesUrl = 'api/heroes';
+    private heroesUrl = 'backend/web/app_dev.php/comubu-data/';
     
     constructor(private http: Http) { }
     
