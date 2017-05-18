@@ -10,51 +10,65 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-require("rxjs/add/operator/toPromise");
+var http_2 = require("@angular/http");
+var Observable_1 = require("rxjs/Observable");
+require("rxjs/add/operator/catch");
+require("rxjs/add/operator/map");
 var HeroService = (function () {
     function HeroService(http) {
         this.http = http;
-        this.headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        this.heroesUrl = 'backend/web/app_dev.php/comubu-data/';
+        this.headers = new http_2.Headers({ 'Content-Type': 'application/json' });
+        this.heroesUrl = 'app/test.json'; //'backend/web/app_dev.php/comubu-data/';
     }
     HeroService.prototype.getHeroes = function () {
         return this.http.get(this.heroesUrl)
-            .toPromise()
-            .then(function (response) { return response.json().data; })
+            .map(this.extractData)
             .catch(this.handleError);
     };
-    HeroService.prototype.getHero = function (id) {
-        var url = this.heroesUrl + "/" + id;
+    /*getHero(id: number): Observable<Hero> {
+        const url = `${this.heroesUrl}/${id}`;
         return this.http.get(url)
-            .toPromise()
-            .then(function (response) { return response.json().data; })
-            .catch(this.handleError);
-    };
-    HeroService.prototype.delete = function (id) {
-        var url = this.heroesUrl + "/" + id;
-        return this.http.delete(url, { headers: this.headers })
-            .toPromise()
-            .then(function () { return null; })
-            .catch(this.handleError);
-    };
-    HeroService.prototype.create = function (name, race) {
+          .map()
+          .catch(this.handleError);
+    }
+    
+    delete(id: number): Observable<void> {
+        const url = `${this.heroesUrl}/${id}`;
+        return this.http.delete(url, {headers: this.headers})
+          .map()
+          .catch(this.handleError);
+    }
+    
+    create(name: string, race: number): Observable<Hero> {
         return this.http
-            .post(this.heroesUrl, JSON.stringify({ name: name, race: race, state: 0, xp: 0, level: 1, life: 100 }), { headers: this.headers })
-            .toPromise()
-            .then(function (res) { return res.json().data; })
-            .catch(this.handleError);
-    };
-    HeroService.prototype.update = function (hero) {
-        var url = this.heroesUrl + "/" + hero.id;
+          .post(this.heroesUrl, JSON.stringify({name: name, race: race, state: 0, xp: 0, level: 1, life: 100}), {headers: this.headers})
+          .map()
+          .catch(this.handleError);
+    }
+    
+    update(hero: Hero): Observable<Hero> {
+        const url = `${this.heroesUrl}/${hero.id}`;
         return this.http
-            .put(url, JSON.stringify(hero), { headers: this.headers })
-            .toPromise()
-            .then(function () { return hero; })
-            .catch(this.handleError);
+          .put(url, JSON.stringify(hero), {headers: this.headers})
+          .map()
+          .catch(this.handleError);
+     }*/
+    HeroService.prototype.extractData = function (res) {
+        var body = res.json();
+        return body || {};
     };
     HeroService.prototype.handleError = function (error) {
-        console.error('Une erreur à été rencontrée', error); // for demo purposes only
-        return Promise.reject(error.message || error);
+        var errMsg;
+        if (error instanceof http_1.Response) {
+            var body = error.json() || '';
+            var err = body.error || JSON.stringify(body);
+            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
+        }
+        else {
+            errMsg = error.message ? error.message : error.toString();
+        }
+        console.error(errMsg);
+        return Observable_1.Observable.throw(errMsg);
     };
     return HeroService;
 }());

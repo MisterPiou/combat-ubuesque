@@ -16,16 +16,16 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $heroTest = array(
+        $heroTest = array(array(
             "id" => 1,
             "user_id" => 1,
-            "name" => "Bernard",
+            "name" => "Symfony Json",
             "race" => 1,
             "state" => 0,
             "xp" => 0,
             "level" => 1,
             "life" => 100
-        );
+        ));
 
         $serializer = $this->get('serializer');
         $json = $serializer->serialize(

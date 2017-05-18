@@ -22,9 +22,8 @@ var HeroComponent = (function () {
     }
     HeroComponent.prototype.getHeroes = function () {
         var _this = this;
-        this.heroService
-            .getHeroes()
-            .then(function (heroes) { return _this.heroes = heroes; });
+        this.heroService.getHeroes()
+            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
     };
     HeroComponent.prototype.onSubmit = function () {
         this.heroes.push(this.model);

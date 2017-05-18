@@ -10,6 +10,7 @@ import { Race, RACES }  from './race';
 })
 export class HeroComponent implements OnInit  { 
     defaultName = "Mon Héros";
+    errorMessage: string;
     heroes: Hero[];
     isSubmitted = false;
     model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
@@ -21,9 +22,10 @@ export class HeroComponent implements OnInit  {
     ) { }
     
     getHeroes(): void {
-        this.heroService
-            .getHeroes()
-            .then(heroes => this.heroes = heroes);
+        this.heroService.getHeroes()
+            .subscribe(
+                heroes => this.heroes = heroes,
+                error =>  this.errorMessage = <any>error);
     }
     
     onSubmit() {
