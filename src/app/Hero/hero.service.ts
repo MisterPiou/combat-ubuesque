@@ -10,13 +10,19 @@ import { Hero } from './hero';
 
 @Injectable()
 export class HeroService {
-    private headers = new Headers({'Content-Type': 'application/json'});
-    private heroesUrl = 'app/test.json';    //'backend/web/app_dev.php/comubu-data/';
+    private headers = new Headers({
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
+    });
+    private heroesUrl = 'http://localhost/combat-ubuesque/backend/web/app_dev.php/comubu-data/';    //'app/test.json';
+    private options = new RequestOptions({ headers: this.headers });
     
     constructor(private http: Http) { }
     
     getHeroes(): Observable<Hero[]> {
-        return this.http.get(this.heroesUrl)
+        return this.http.get(this.heroesUrl, this.options)
             .map(this.extractData)
             .catch(this.handleError);
     }
