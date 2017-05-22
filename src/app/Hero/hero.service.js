@@ -14,6 +14,7 @@ var http_2 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
+var data_1 = require("../data");
 var HeroService = (function () {
     function HeroService(http) {
         this.http = http;
@@ -23,7 +24,7 @@ var HeroService = (function () {
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
         });
-        this.heroesUrl = 'http://localhost/combat-ubuesque/backend/web/app_dev.php/comubu-data/'; //'app/test.json';
+        this.heroesUrl = data_1.url_base + 'hero/allHeroes'; //'app/test.json';
         this.options = new http_2.RequestOptions({ headers: this.headers });
     }
     HeroService.prototype.getHeroes = function () {

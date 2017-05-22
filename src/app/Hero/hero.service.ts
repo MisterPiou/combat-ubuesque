@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
 import { Hero } from './hero';
+import { url_base } from '../data';
 
 @Injectable()
 export class HeroService {
@@ -16,7 +17,7 @@ export class HeroService {
         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
     });
-    private heroesUrl = 'http://localhost/combat-ubuesque/backend/web/app_dev.php/comubu-data/';    //'app/test.json';
+    private heroesUrl = url_base + 'hero/allHeroes';    //'app/test.json';
     private options = new RequestOptions({ headers: this.headers });
     
     constructor(private http: Http) { }

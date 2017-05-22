@@ -35,9 +35,9 @@ class Hero
     /**
      * @var string
      *
-     * @ORM\Column(name="pseudo", type="string", length=33, unique=true)
+     * @ORM\Column(name="name", type="string", length=33, unique=true)
      */
-    private $pseudo;
+    private $name;
 
     /**
      * @var int
@@ -251,5 +251,29 @@ class Hero
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Hero
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 }
