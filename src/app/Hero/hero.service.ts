@@ -17,15 +17,21 @@ export class HeroService {
         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
     });
-    private heroesUrl = url_base + 'hero/allHeroes';    //'app/test.json';
+    private heroesUrl = url_base + 'hero/';    //'app/test.json';
     private options = new RequestOptions({ headers: this.headers });
     
     constructor(private http: Http) { }
     
     getHeroes(): Observable<Hero[]> {
-        return this.http.get(this.heroesUrl, this.options)
+        return this.http.get(this.heroesUrl + 'allHeroes', this.options)
             .map(this.extractData)
             .catch(this.handleError);
+    }
+    
+    addHero(name: string, race: number): Observable<Hero> {
+        return this.http.post(this.heroesUrl + 'addHero', {name, race}, {headers: this.headers})
+          .map(this.extractData)
+          .catch(this.handleError);
     }
     
     /*getHero(id: number): Observable<Hero> {
@@ -38,13 +44,6 @@ export class HeroService {
     delete(id: number): Observable<void> {
         const url = `${this.heroesUrl}/${id}`;
         return this.http.delete(url, {headers: this.headers})
-          .map()
-          .catch(this.handleError);
-    }
-    
-    create(name: string, race: number): Observable<Hero> {
-        return this.http
-          .post(this.heroesUrl, JSON.stringify({name: name, race: race, state: 0, xp: 0, level: 1, life: 100}), {headers: this.headers})
           .map()
           .catch(this.handleError);
     }

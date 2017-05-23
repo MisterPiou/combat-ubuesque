@@ -26,9 +26,14 @@ var HeroComponent = (function () {
             .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
     };
     HeroComponent.prototype.onSubmit = function () {
-        this.heroes.push(this.model);
-        this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+        this.addHero(this.model.name, this.model.race);
+        this.newHero();
         $('#myModal').modal('hide');
+    };
+    HeroComponent.prototype.addHero = function (name, race) {
+        var _this = this;
+        this.heroService.addHero(name, race)
+            .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorMessage = error; });
     };
     HeroComponent.prototype.newHero = function () {
         this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);

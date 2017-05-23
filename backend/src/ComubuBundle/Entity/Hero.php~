@@ -16,13 +16,6 @@ use ComubuBundle\Entity\User;
 class Hero
 {
     /**
-     * State
-     */
-    const STATUS_OK = 0;
-    const STATUS_DELETED = 1;
-    const STATUS_SUSPENDED = 2;
-
-    /**
      * @var int
      *
      * @ORM\Column(name="id", type="integer")
@@ -90,6 +83,30 @@ class Hero
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set pseudo
+     *
+     * @param string $pseudo
+     *
+     * @return Hero
+     */
+    public function setPseudo($pseudo)
+    {
+        $this->pseudo = $pseudo;
+
+        return $this;
+    }
+
+    /**
+     * Get pseudo
+     *
+     * @return string
+     */
+    public function getPseudo()
+    {
+        return $this->pseudo;
     }
 
     /**
@@ -234,29 +251,5 @@ class Hero
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string $name
-     *
-     * @return Hero
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 }

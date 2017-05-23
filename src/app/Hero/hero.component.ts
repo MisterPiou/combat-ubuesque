@@ -29,9 +29,17 @@ export class HeroComponent implements OnInit  {
     }
     
     onSubmit() {
-        this.heroes.push(this.model);
-        this.model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+        this.addHero(this.model.name, this.model.race);
+        this.newHero();
         $('#myModal').modal('hide');
+    }
+    
+    
+    addHero(name: string, race: number) {
+        this.heroService.addHero(name, race)
+            .subscribe(
+                hero => this.heroes.push(hero),
+                error =>  this.errorMessage = <any>error);
     }
     
     newHero() {
