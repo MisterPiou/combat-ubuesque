@@ -17,32 +17,48 @@ var HeroComponent = (function () {
         this.heroService = heroService;
         this.defaultName = "Mon Héros";
         this.isSubmitted = false;
+        this.lifePercentage = 0;
         this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
         this.races = race_1.RACES;
+        this.xpPercentage = 0;
     }
+    /** Display all heroes **/
     HeroComponent.prototype.getHeroes = function () {
         var _this = this;
         this.heroService.getHeroes()
             .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
     };
+    /** Submit form to add new hero **/
     HeroComponent.prototype.onSubmit = function () {
         this.addHero(this.model.name, this.model.race);
         this.newHero();
         $('#myModal').modal('hide');
     };
+    /** Function to add hero in symfony **/
     HeroComponent.prototype.addHero = function (name, race) {
         var _this = this;
         this.heroService.addHero(name, race)
             .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorMessage = error; });
     };
+    /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {
         this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
     };
-    HeroComponent.prototype.ngOnInit = function () {
-        this.getHeroes();
-    };
+    /** When user select a hero on list **/
     HeroComponent.prototype.selectHero = function (hero) {
         this.selectedHero = hero;
+        this.xpPercentage = (hero.xp / (hero.level * 10)) * 100;
+        this.lifePercentage = (hero.life / ((hero.level * 5) + 95)) * 100;
+    };
+    /** Voir le hero **/
+    HeroComponent.prototype.viewHero = function () {
+    };
+    /** Supprime le hero **/
+    HeroComponent.prototype.deleteHero = function () {
+    };
+    /** ng Init **/
+    HeroComponent.prototype.ngOnInit = function () {
+        this.getHeroes();
     };
     return HeroComponent;
 }());
