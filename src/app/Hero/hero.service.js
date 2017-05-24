@@ -37,16 +37,15 @@ var HeroService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
+    HeroService.prototype.delete = function (id) {
+        var url = this.heroesUrl + "/" + id;
+        return this.http.get(this.heroesUrl + 'deleteHero/' + id, { headers: this.headers })
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
     /*getHero(id: number): Observable<Hero> {
         const url = `${this.heroesUrl}/${id}`;
         return this.http.get(url)
-          .map()
-          .catch(this.handleError);
-    }
-    
-    delete(id: number): Observable<void> {
-        const url = `${this.heroesUrl}/${id}`;
-        return this.http.delete(url, {headers: this.headers})
           .map()
           .catch(this.handleError);
     }

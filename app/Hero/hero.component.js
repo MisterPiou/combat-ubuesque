@@ -55,6 +55,19 @@ var HeroComponent = (function () {
     };
     /** Supprime le hero **/
     HeroComponent.prototype.deleteHero = function () {
+        var _this = this;
+        /*bootbox.confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]", function(result) {
+            if(result) {
+                this.heroService.delete(this.selectedHero.id)
+                    .subscribe(
+                        heroes => this.heroes = heroes,
+                        error =>  this.errorMessage = <any>error);
+            }
+        });*/
+        if (confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]")) {
+            this.heroService.delete(this.selectedHero.id)
+                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
+        }
     };
     /** ng Init **/
     HeroComponent.prototype.ngOnInit = function () {

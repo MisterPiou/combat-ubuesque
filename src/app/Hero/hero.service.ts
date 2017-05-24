@@ -34,16 +34,16 @@ export class HeroService {
           .catch(this.handleError);
     }
     
-    /*getHero(id: number): Observable<Hero> {
+    delete(id: number): Observable<Hero[]> {
         const url = `${this.heroesUrl}/${id}`;
-        return this.http.get(url)
-          .map()
+        return this.http.get(this.heroesUrl + 'deleteHero/' + id, {headers: this.headers})
+          .map(this.extractData)
           .catch(this.handleError);
     }
     
-    delete(id: number): Observable<void> {
+    /*getHero(id: number): Observable<Hero> {
         const url = `${this.heroesUrl}/${id}`;
-        return this.http.delete(url, {headers: this.headers})
+        return this.http.get(url)
           .map()
           .catch(this.handleError);
     }

@@ -4,6 +4,8 @@ import { Hero }         from './hero';
 import { HeroService }   from './hero.service';
 import { Race, RACES }  from './race';
 
+declare var bootbox: any;
+
 @Component({
   selector: 'hero',
   templateUrl: './hero.component.html',
@@ -65,7 +67,21 @@ export class HeroComponent implements OnInit  {
     
     /** Supprime le hero **/
     deleteHero() {
-        
+        /*bootbox.confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]", function(result) {
+            if(result) {
+                this.heroService.delete(this.selectedHero.id)
+                    .subscribe(
+                        heroes => this.heroes = heroes,
+                        error =>  this.errorMessage = <any>error);
+            }
+        });*/
+        if(confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]"))
+        {
+            this.heroService.delete(this.selectedHero.id)
+                .subscribe(
+                    heroes => this.heroes = heroes,
+                    error =>  this.errorMessage = <any>error);
+        }
     }
     
     /** ng Init **/

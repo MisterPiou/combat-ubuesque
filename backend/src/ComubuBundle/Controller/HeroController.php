@@ -21,11 +21,11 @@ class HeroController extends Controller
     public function allHeroesAction()
     {        
         $em = $this->getDoctrine()->getManager();
-        $heroTest = $em->getRepository("ComubuBundle:Hero")->findAll();
+        $heroes = $em->getRepository("ComubuBundle:Hero")->findAll();
 
         $serializer = $this->get('serializer');
         $json = $serializer->serialize(
-            $heroTest, 'json'
+            $heroes, 'json'
         );
 
         return new Response($json);
@@ -65,7 +65,33 @@ class HeroController extends Controller
             return new Response($json);
         }
 
-        return new Response("name: ".$name." - race".$race);
-        //throw new HttpException(400, "name: ".$name." - race".$race);
+        throw new HttpException(400);
+    }
+
+    /**
+     * @Route("/deleteHero/{id}")
+     */
+    public function deleteHero(Request $request, $id)
+    {
+        if($id)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $hero = $em->getRepository("ComubuBundle:Hero")->find($id);
+
+            $em->remove($hero);
+            $em->flush();
+
+            $em = $this->getDoctrine()->getManager();
+            $heroes = $em->getRepository("ComubuBundle:Hero")->findAll();
+
+            $serializer = $this->get('serializer');
+            $json = $serializer->serialize(
+                $heroes, 'json'
+            );
+
+            return new Response($json);
+        }
+
+        throw new HttpException(400);
     }
 }
