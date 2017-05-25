@@ -4,9 +4,9 @@
         <h1>Combat Ubuesque</h1>
         <nav class="navbar">
             <ul class="nav nav-pills nav-justified">
-                <li><a href="#">Forum</a></li>
+                <li><a routerLink="/home" routerLinkActive="active">Forum</a></li>
                 <li><a href="#">Arene</a></li>
-                <li><a href="#">Vestiaire</a></li>
+                <li><a routerLink="/hero" routerLinkActive="active">Vestiaire</a></li>
                 <li><a href="#">Compte</a></li>
             </ul>
         </nav>
@@ -17,6 +17,6 @@
         <strong>Oups!</strong> {{ errorMessage }}
     </div>
 
-    <hero (onErrMess)="onErrMess($event)"></hero>
+    <router-outlet (onErrMess)="onErrMess($event)"></router-outlet>
 
 </div>
