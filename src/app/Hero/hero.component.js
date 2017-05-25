@@ -18,7 +18,6 @@ var HeroComponent = (function () {
         this.heroService = heroService;
         this.errorService = errorService;
         this.defaultName = "Mon Héros";
-        this.onErrMess = new core_1.EventEmitter();
         this.isSubmitted = false;
         this.lifePercentage = 0;
         this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
@@ -41,7 +40,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.addHero = function (name, race) {
         var _this = this;
         this.heroService.addHero(name, race)
-            .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.onErrMess.emit(error.message); });
+            .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {
@@ -69,7 +68,7 @@ var HeroComponent = (function () {
         });*/
         if (confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]")) {
             this.heroService.delete(this.selectedHero.id)
-                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.onErrMess.emit(error.message); });
+                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
         }
     };
     /** ng Init **/
@@ -78,10 +77,6 @@ var HeroComponent = (function () {
     };
     return HeroComponent;
 }());
-__decorate([
-    core_1.Output(),
-    __metadata("design:type", Object)
-], HeroComponent.prototype, "onErrMess", void 0);
 HeroComponent = __decorate([
     core_1.Component({
         selector: 'hero',

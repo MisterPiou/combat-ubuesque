@@ -1,0 +1,138 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'D:\\UTILITAIRES\\Node\\node.exe',
+1 verbose cli   'D:\\UTILITAIRES\\Node\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'i',
+1 verbose cli   '--save',
+1 verbose cli   'angular/web-animations-js' ]
+2 info using npm@3.10.10
+3 info using node@v6.9.4
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData angular/web-animations-js
+8 silly fetchOtherPackageData angular/web-animations-js
+9 silly cache add args [ 'angular/web-animations-js', null ]
+10 verbose cache add spec angular/web-animations-js
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'angular/web-animations-js',
+11 silly cache add   scope: null,
+11 silly cache add   escapedName: null,
+11 silly cache add   name: null,
+11 silly cache add   rawSpec: 'angular/web-animations-js',
+11 silly cache add   spec: 'github:angular/web-animations-js',
+11 silly cache add   type: 'hosted',
+11 silly cache add   hosted:
+11 silly cache add    { type: 'github',
+11 silly cache add      ssh: 'git@github.com:angular/web-animations-js.git',
+11 silly cache add      sshUrl: 'git+ssh://git@github.com/angular/web-animations-js.git',
+11 silly cache add      httpsUrl: 'git+https://github.com/angular/web-animations-js.git',
+11 silly cache add      gitUrl: 'git://github.com/angular/web-animations-js.git',
+11 silly cache add      shortcut: 'github:angular/web-animations-js',
+11 silly cache add      directUrl: 'https://raw.githubusercontent.com/angular/web-animations-js/master/package.json' } }
+12 verbose addRemoteGit caching angular/web-animations-js
+13 verbose addRemoteGit angular/web-animations-js is a repository hosted by github
+14 silly tryGitProto attempting to clone git://github.com/angular/web-animations-js.git
+15 silly tryClone cloning angular/web-animations-js via git://github.com/angular/web-animations-js.git
+16 verbose tryClone git-github-com-angular-web-animations-js-git-576cef11 not in flight; caching
+17 verbose correctMkdir C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes correctMkdir not in flight; initializing
+18 verbose makeDirectory C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes creation not in flight; initializing
+19 verbose makeCacheDir UID & GID are irrelevant on win32
+20 info git [ 'clone',
+20 info git   '--template=C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\_templates',
+20 info git   '--mirror',
+20 info git   'git://github.com/angular/web-animations-js.git',
+20 info git   'C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\git-github-com-angular-web-animations-js-git-576cef11' ]
+21 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-576cef11: Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-576cef11'...
+21 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-576cef11: fatal: remote error:
+21 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-576cef11:   Repository not found.
+22 silly tryHTTPS attempting to clone git+https://github.com/angular/web-animations-js.git
+23 silly tryClone cloning angular/web-animations-js via git+https://github.com/angular/web-animations-js.git
+24 verbose tryClone git-https-github-com-angular-web-animations-js-git-c3015eba not in flight; caching
+25 verbose correctMkdir C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes correctMkdir not in flight; initializing
+26 info git [ 'clone',
+26 info git   '--template=C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\_templates',
+26 info git   '--mirror',
+26 info git   'https://github.com/angular/web-animations-js.git',
+26 info git   'C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\git-https-github-com-angular-web-animations-js-git-c3015eba' ]
+27 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror https://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-angular-web-animations-js-git-c3015eba: Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-angular-web-animations-js-git-c3015eba'...
+27 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror https://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-angular-web-animations-js-git-c3015eba: Logon failed, use ctrl+c to cancel basic credential prompt.
+27 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror https://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-angular-web-animations-js-git-c3015eba: remote: Invalid username or password.
+27 verbose git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror https://github.com/angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-https-github-com-angular-web-animations-js-git-c3015eba: fatal: Authentication failed for 'https://github.com/angular/web-animations-js.git/'
+28 silly trySSH attempting to clone git@github.com:angular/web-animations-js.git
+29 silly tryClone cloning angular/web-animations-js via git@github.com:angular/web-animations-js.git
+30 verbose tryClone git-github-com-angular-web-animations-js-git-038755aa not in flight; caching
+31 verbose correctMkdir C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes correctMkdir not in flight; initializing
+32 info git [ 'clone',
+32 info git   '--template=C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\_templates',
+32 info git   '--mirror',
+32 info git   'git@github.com:angular/web-animations-js.git',
+32 info git   'C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\git-github-com-angular-web-animations-js-git-038755aa' ]
+33 error git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa: Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa'...
+33 error git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa: Host key verification failed.
+33 error git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa: fatal: Could not read from remote repository.
+33 error git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa:
+33 error git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa: Please make sure you have the correct access rights
+33 error git clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa: and the repository exists.
+34 silly fetchPackageMetaData Error: Command failed: git -c core.longpaths=true clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa
+34 silly fetchPackageMetaData Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa'...
+34 silly fetchPackageMetaData Host key verification failed.
+34 silly fetchPackageMetaData fatal: Could not read from remote repository.
+34 silly fetchPackageMetaData
+34 silly fetchPackageMetaData Please make sure you have the correct access rights
+34 silly fetchPackageMetaData and the repository exists.
+34 silly fetchPackageMetaData
+34 silly fetchPackageMetaData     at ChildProcess.exithandler (child_process.js:206:12)
+34 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
+34 silly fetchPackageMetaData     at ChildProcess.emit (events.js:191:7)
+34 silly fetchPackageMetaData     at maybeClose (internal/child_process.js:877:16)
+34 silly fetchPackageMetaData     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+34 silly fetchPackageMetaData  error for angular/web-animations-js { Error: Command failed: git -c core.longpaths=true clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa
+34 silly fetchPackageMetaData Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa'...
+34 silly fetchPackageMetaData Host key verification failed.
+34 silly fetchPackageMetaData fatal: Could not read from remote repository.
+34 silly fetchPackageMetaData
+34 silly fetchPackageMetaData Please make sure you have the correct access rights
+34 silly fetchPackageMetaData and the repository exists.
+34 silly fetchPackageMetaData
+34 silly fetchPackageMetaData     at ChildProcess.exithandler (child_process.js:206:12)
+34 silly fetchPackageMetaData     at emitTwo (events.js:106:13)
+34 silly fetchPackageMetaData     at ChildProcess.emit (events.js:191:7)
+34 silly fetchPackageMetaData     at maybeClose (internal/child_process.js:877:16)
+34 silly fetchPackageMetaData     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+34 silly fetchPackageMetaData   killed: false,
+34 silly fetchPackageMetaData   code: 128,
+34 silly fetchPackageMetaData   signal: null,
+34 silly fetchPackageMetaData   cmd: 'git -c core.longpaths=true clone --template=C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\_templates --mirror git@github.com:angular/web-animations-js.git C:\\Users\\Piou\\AppData\\Roaming\\npm-cache\\_git-remotes\\git-github-com-angular-web-animations-js-git-038755aa' }
+35 silly rollbackFailedOptional Starting
+36 silly rollbackFailedOptional Finishing
+37 silly runTopLevelLifecycles Finishing
+38 silly install printInstalled
+39 verbose stack Error: Command failed: git -c core.longpaths=true clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa
+39 verbose stack Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa'...
+39 verbose stack Host key verification failed.
+39 verbose stack fatal: Could not read from remote repository.
+39 verbose stack
+39 verbose stack Please make sure you have the correct access rights
+39 verbose stack and the repository exists.
+39 verbose stack
+39 verbose stack     at ChildProcess.exithandler (child_process.js:206:12)
+39 verbose stack     at emitTwo (events.js:106:13)
+39 verbose stack     at ChildProcess.emit (events.js:191:7)
+39 verbose stack     at maybeClose (internal/child_process.js:877:16)
+39 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
+40 verbose cwd E:\Programmes\wamp64\www\combat-ubuesque
+41 error Windows_NT 6.1.7601
+42 error argv "D:\\UTILITAIRES\\Node\\node.exe" "D:\\UTILITAIRES\\Node\\node_modules\\npm\\bin\\npm-cli.js" "i" "--save" "angular/web-animations-js"
+43 error node v6.9.4
+44 error npm  v3.10.10
+45 error code 128
+46 error Command failed: git -c core.longpaths=true clone --template=C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\_templates --mirror git@github.com:angular/web-animations-js.git C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa
+46 error Cloning into bare repository 'C:\Users\Piou\AppData\Roaming\npm-cache\_git-remotes\git-github-com-angular-web-animations-js-git-038755aa'...
+46 error Host key verification failed.
+46 error fatal: Could not read from remote repository.
+46 error
+46 error Please make sure you have the correct access rights
+46 error and the repository exists.
+47 error If you need help, you may report this error at:
+47 error     <https://github.com/npm/npm/issues>
+48 verbose exit [ 1, true ]

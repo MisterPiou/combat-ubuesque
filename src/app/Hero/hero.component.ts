@@ -14,8 +14,6 @@ declare var bootbox: any;
 })
 export class HeroComponent implements OnInit  { 
     defaultName = "Mon Héros";
-    @Output() onErrMess = new EventEmitter<string>();
-    errMess: string;
     heroes: Hero[];
     isSubmitted = false;
     lifePercentage = 0;
@@ -49,7 +47,7 @@ export class HeroComponent implements OnInit  {
         this.heroService.addHero(name, race)
             .subscribe(
                 hero => this.heroes.push(hero),
-                error => this.onErrMess.emit(error.message));
+                error => this.errorService.newErrorMessage(error.message));
     }
     
     /** Reset add hero forms **/
@@ -84,7 +82,7 @@ export class HeroComponent implements OnInit  {
             this.heroService.delete(this.selectedHero.id)
                 .subscribe(
                     heroes => this.heroes = heroes,
-                    error => this.onErrMess.emit(error.message));
+                    error => this.errorService.newErrorMessage(error.message));
         }
     }
     

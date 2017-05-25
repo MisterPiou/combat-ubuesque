@@ -14,19 +14,32 @@ var AppComponent = (function () {
     function AppComponent(errorService) {
         var _this = this;
         this.errorService = errorService;
+        this.etatMsgBox = 'errMsg';
         this.subscription = errorService.errorMessage$.subscribe(function (errorMessage) {
             _this.errorMessage = errorMessage;
+            _this.activeErrorMessage();
         });
     }
-    AppComponent.prototype.onErrMess = function (mess) {
-        this.errorMessage = mess;
+    AppComponent.prototype.activeErrorMessage = function () {
+        var _this = this;
+        this.etatMsgBox = 'errMsgActive';
+        this.interval = setInterval(function () { _this.inactiveErrorMessage(); }, 3500);
+    };
+    AppComponent.prototype.inactiveErrorMessage = function () {
+        this.etatMsgBox = 'errMsgInactive';
+        clearInterval(this.interval);
+        //this.interval = setInterval(() => {this.endErrorMessage(); }, 500);
+    };
+    AppComponent.prototype.endErrorMessage = function () {
+        this.etatMsgBox = 'errMsg';
+        clearInterval(this.interval);
     };
     return AppComponent;
 }());
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
-        templateUrl: './app.component.html'
+        templateUrl: './app.component.html',
     }),
     __metadata("design:paramtypes", [error_service_1.ErrorService])
 ], AppComponent);
