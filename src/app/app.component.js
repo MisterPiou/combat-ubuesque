@@ -9,6 +9,9 @@ var core_1 = require("@angular/core");
 var AppComponent = (function () {
     function AppComponent() {
     }
+    AppComponent.prototype.onErrMess = function (mess) {
+        this.errorMessage = mess;
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([

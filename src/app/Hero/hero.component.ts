@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { Hero }         from './hero';
 import { HeroService }   from './hero.service';
@@ -12,7 +12,8 @@ declare var bootbox: any;
 })
 export class HeroComponent implements OnInit  { 
     defaultName = "Mon Héros";
-    errorMessage: string;
+    @Output() onErrMess = new EventEmitter<string>();
+    errMess: string;
     heroes: Hero[];
     isSubmitted = false;
     lifePercentage = 0;
@@ -30,7 +31,7 @@ export class HeroComponent implements OnInit  {
         this.heroService.getHeroes()
             .subscribe(
                 heroes => this.heroes = heroes,
-                error =>  this.errorMessage = <any>error);
+                error => this.onErrMess.emit(error.message));
     }
     
     /** Submit form to add new hero **/
@@ -45,7 +46,7 @@ export class HeroComponent implements OnInit  {
         this.heroService.addHero(name, race)
             .subscribe(
                 hero => this.heroes.push(hero),
-                error =>  this.errorMessage = <any>error);
+                error => this.onErrMess.emit(error.message));
     }
     
     /** Reset add hero forms **/
@@ -80,7 +81,7 @@ export class HeroComponent implements OnInit  {
             this.heroService.delete(this.selectedHero.id)
                 .subscribe(
                     heroes => this.heroes = heroes,
-                    error =>  this.errorMessage = <any>error);
+                    error => this.onErrMess.emit(error.message));
         }
     }
     
