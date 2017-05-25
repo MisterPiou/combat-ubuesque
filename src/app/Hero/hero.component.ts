@@ -4,6 +4,8 @@ import { Hero }         from './hero';
 import { HeroService }   from './hero.service';
 import { Race, RACES }  from './race';
 
+import {ErrorService} from '../Global/error.service';
+
 declare var bootbox: any;
 
 @Component({
@@ -23,7 +25,8 @@ export class HeroComponent implements OnInit  {
     xpPercentage = 0;
     
     constructor(
-        private heroService: HeroService
+        private heroService: HeroService,
+        private errorService: ErrorService
     ) { }
     
     /** Display all heroes **/
@@ -31,7 +34,7 @@ export class HeroComponent implements OnInit  {
         this.heroService.getHeroes()
             .subscribe(
                 heroes => this.heroes = heroes,
-                error => this.onErrMess.emit(error.message));
+                error => this.errorService.newErrorMessage(error.message));
     }
     
     /** Submit form to add new hero **/

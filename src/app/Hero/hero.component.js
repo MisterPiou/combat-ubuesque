@@ -12,9 +12,11 @@ var core_1 = require("@angular/core");
 var hero_1 = require("./hero");
 var hero_service_1 = require("./hero.service");
 var race_1 = require("./race");
+var error_service_1 = require("../Global/error.service");
 var HeroComponent = (function () {
-    function HeroComponent(heroService) {
+    function HeroComponent(heroService, errorService) {
         this.heroService = heroService;
+        this.errorService = errorService;
         this.defaultName = "Mon Héros";
         this.onErrMess = new core_1.EventEmitter();
         this.isSubmitted = false;
@@ -27,7 +29,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.getHeroes = function () {
         var _this = this;
         this.heroService.getHeroes()
-            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.onErrMess.emit(error.message); });
+            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /** Submit form to add new hero **/
     HeroComponent.prototype.onSubmit = function () {
@@ -85,7 +87,8 @@ HeroComponent = __decorate([
         selector: 'hero',
         templateUrl: './hero.component.html',
     }),
-    __metadata("design:paramtypes", [hero_service_1.HeroService])
+    __metadata("design:paramtypes", [hero_service_1.HeroService,
+        error_service_1.ErrorService])
 ], HeroComponent);
 exports.HeroComponent = HeroComponent;
 //# sourceMappingURL=hero.component.js.map

@@ -10,6 +10,7 @@ import { HeroComponent }    from './Hero/hero.component';
 import { HomeComponent }    from './Global/home.component';
 
 import { HeroService }  from './Hero/hero.service';
+import { ErrorService }  from './Global/error.service';
 
 @NgModule({
   imports: [ 
@@ -25,7 +26,8 @@ import { HeroService }  from './Hero/hero.service';
     HomeComponent,
   ],
   providers: [
-      HeroService
+      HeroService,
+      ErrorService,
   ],
   bootstrap: [ 
     AppComponent 
