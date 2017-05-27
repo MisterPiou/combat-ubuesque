@@ -19,9 +19,11 @@ h1 {
     -webkit-animation-name: apparition_box; /* Safari 4.0 - 8.0 */
     -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
     -webkit-animation-direction: reverse;
+    -webkit-animation-iteration-count: infinite;
     animation-name: apparition_box;
     animation-duration: 0.5s;
     animation-direction: reverse;
+    animation-iteration-count: infinite;
 }
 
 /**

@@ -29,7 +29,7 @@ export class AppComponent
     inactiveErrorMessage() {
         this.etatMsgBox = 'errMsgInactive';
         clearInterval(this.interval);
-        //this.interval = setInterval(() => {this.endErrorMessage(); }, 500);
+        this.interval = setInterval(() => {this.endErrorMessage(); }, 450);
     }
     endErrorMessage() {
         this.etatMsgBox = 'errMsg';

@@ -10,8 +10,11 @@ var platform_browser_1 = require("@angular/platform-browser");
 var forms_1 = require("@angular/forms");
 var http_1 = require("@angular/http");
 var app_component_1 = require("./app.component");
+var app_routing_module_1 = require("./app-routing.module");
 var hero_component_1 = require("./Hero/hero.component");
+var home_component_1 = require("./Global/home.component");
 var hero_service_1 = require("./Hero/hero.service");
+var error_service_1 = require("./Global/error.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -24,13 +27,16 @@ AppModule = __decorate([
             forms_1.FormsModule,
             http_1.HttpModule,
             http_1.JsonpModule,
+            app_routing_module_1.AppRoutingModule,
         ],
         declarations: [
             app_component_1.AppComponent,
-            hero_component_1.HeroComponent
+            hero_component_1.HeroComponent,
+            home_component_1.HomeComponent,
         ],
         providers: [
-            hero_service_1.HeroService
+            hero_service_1.HeroService,
+            error_service_1.ErrorService,
         ],
         bootstrap: [
             app_component_1.AppComponent

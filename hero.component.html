@@ -1,6 +1,6 @@
-<h1>Bienvenue dans le vestiaire de tes heros</h1>
+<h2>Bienvenue dans le vestiaire de tes heros</h2>
 
-<h2>Ici, tu pourras gérer tout tes héros</h2>
+<h3>Ici, tu pourras gérer tout tes héros</h3>
 
 <div class="col-sm-6 col-xs-12">
     <div>
@@ -20,7 +20,7 @@
         <tbody>
             <tr *ngFor="let hero of heroes" [class.info]="hero === selectedHero" (click)="selectHero(hero)">
                 <td>{{hero.name}}</td>
-                <td>{{hero.race}}</td>
+                <td>{{races[hero.race-1].name}}</td>
                 <td>{{hero.level}}</td>
             </tr>
         </tbody>
@@ -35,7 +35,7 @@
                 Fiche de <strong>{{selectedHero.name}}</strong>
             </h3>
             <p>
-                <label>Race :</label> {{selectedHero.race}}
+                <label>Race :</label> {{races[selectedHero.race-1].name}}
             </p>
             <div>
                 <label>Level :</label> {{selectedHero.level}}

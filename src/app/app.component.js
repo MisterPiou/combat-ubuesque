@@ -26,9 +26,10 @@ var AppComponent = (function () {
         this.interval = setInterval(function () { _this.inactiveErrorMessage(); }, 3500);
     };
     AppComponent.prototype.inactiveErrorMessage = function () {
+        var _this = this;
         this.etatMsgBox = 'errMsgInactive';
         clearInterval(this.interval);
-        //this.interval = setInterval(() => {this.endErrorMessage(); }, 500);
+        this.interval = setInterval(function () { _this.endErrorMessage(); }, 450);
     };
     AppComponent.prototype.endErrorMessage = function () {
         this.etatMsgBox = 'errMsg';

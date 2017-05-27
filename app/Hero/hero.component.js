@@ -12,9 +12,11 @@ var core_1 = require("@angular/core");
 var hero_1 = require("./hero");
 var hero_service_1 = require("./hero.service");
 var race_1 = require("./race");
+var error_service_1 = require("../Global/error.service");
 var HeroComponent = (function () {
-    function HeroComponent(heroService) {
+    function HeroComponent(heroService, errorService) {
         this.heroService = heroService;
+        this.errorService = errorService;
         this.defaultName = "Mon Héros";
         this.isSubmitted = false;
         this.lifePercentage = 0;
@@ -26,7 +28,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.getHeroes = function () {
         var _this = this;
         this.heroService.getHeroes()
-            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
+            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /** Submit form to add new hero **/
     HeroComponent.prototype.onSubmit = function () {
@@ -38,7 +40,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.addHero = function (name, race) {
         var _this = this;
         this.heroService.addHero(name, race)
-            .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorMessage = error; });
+            .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {
@@ -66,7 +68,7 @@ var HeroComponent = (function () {
         });*/
         if (confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]")) {
             this.heroService.delete(this.selectedHero.id)
-                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorMessage = error; });
+                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
         }
     };
     /** ng Init **/
@@ -80,7 +82,8 @@ HeroComponent = __decorate([
         selector: 'hero',
         templateUrl: './hero.component.html',
     }),
-    __metadata("design:paramtypes", [hero_service_1.HeroService])
+    __metadata("design:paramtypes", [hero_service_1.HeroService,
+        error_service_1.ErrorService])
 ], HeroComponent);
 exports.HeroComponent = HeroComponent;
 //# sourceMappingURL=hero.component.js.map
