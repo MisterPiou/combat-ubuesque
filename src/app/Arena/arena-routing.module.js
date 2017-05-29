@@ -7,28 +7,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var hero_component_1 = require("./Hero/hero.component");
-var home_component_1 = require("./Global/home.component");
-var routes = [
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
-    { path: 'home', component: home_component_1.HomeComponent },
-    { path: 'hero', component: hero_component_1.HeroComponent },
+var arena_component_1 = require("./arena.component");
+var arenaRoutes = [
     {
-        path: 'arena',
-        loadChildren: 'app/Arena/arena.module#ArenaModule',
-        data: { preload: true }
+        path: '',
+        component: arena_component_1.ArenaComponent
     }
 ];
-var AppRoutingModule = (function () {
-    function AppRoutingModule() {
+var ArenaRoutingModule = (function () {
+    function ArenaRoutingModule() {
     }
-    return AppRoutingModule;
+    return ArenaRoutingModule;
 }());
-AppRoutingModule = __decorate([
+ArenaRoutingModule = __decorate([
     core_1.NgModule({
-        imports: [router_1.RouterModule.forRoot(routes)],
+        imports: [router_1.RouterModule.forChild(arenaRoutes)],
         exports: [router_1.RouterModule]
     })
-], AppRoutingModule);
-exports.AppRoutingModule = AppRoutingModule;
-//# sourceMappingURL=app-routing.module.js.map
+], ArenaRoutingModule);
+exports.ArenaRoutingModule = ArenaRoutingModule;
+//# sourceMappingURL=arena-routing.module.js.map
