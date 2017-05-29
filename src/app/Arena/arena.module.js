@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var arena_component_1 = require("./arena.component");
+var arena_home_component_1 = require("./arena-home.component");
 var arena_routing_module_1 = require("./arena-routing.module");
 var ArenaModule = (function () {
     function ArenaModule() {
@@ -22,6 +23,7 @@ ArenaModule = __decorate([
         ],
         declarations: [
             arena_component_1.ArenaComponent,
+            arena_home_component_1.ArenaHomeComponent
         ]
     })
 ], ArenaModule);

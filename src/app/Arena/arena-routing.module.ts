@@ -1,12 +1,17 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ArenaComponent } from './arena.component';
+import { ArenaComponent }       from './arena.component';
+import { ArenaHomeComponent }   from './arena-home.component';
 
 const arenaRoutes: Routes = [
     { 
         path: '',
-        component: ArenaComponent
+        component: ArenaComponent,
+        children: [
+            { path: '', redirectTo: 'arena-door' },
+            { path: 'arena-door', component: ArenaHomeComponent },
+        ]
     }
 ];
 
