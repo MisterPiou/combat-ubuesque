@@ -10,21 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var ArenaHomeComponent = (function () {
-    function ArenaHomeComponent(router) {
-        this.router = router;
+var hero_1 = require("../Hero/hero");
+var hero_service_1 = require("../Hero/hero.service");
+var BattleComponent = (function () {
+    function BattleComponent(route, heroService) {
+        this.route = route;
+        this.heroService = heroService;
     }
-    ArenaHomeComponent.prototype.onStartTraining = function (level) {
-        this.router.navigate(['arena/battle', 0]);
+    BattleComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.route.params.subscribe(function (params) {
+            if (+params['id'] == 0) {
+                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", 0, 0, 0, 1, 100);
+            }
+        });
     };
-    return ArenaHomeComponent;
+    return BattleComponent;
 }());
-ArenaHomeComponent = __decorate([
+BattleComponent = __decorate([
     core_1.Component({
-        selector: 'arena-home',
-        templateUrl: './arena-home.component.html',
+        selector: 'battle',
+        templateUrl: './battle.component.html',
     }),
-    __metadata("design:paramtypes", [router_1.Router])
-], ArenaHomeComponent);
-exports.ArenaHomeComponent = ArenaHomeComponent;
-//# sourceMappingURL=arena-home.component.js.map
+    __metadata("design:paramtypes", [router_1.ActivatedRoute,
+        hero_service_1.HeroService])
+], BattleComponent);
+exports.BattleComponent = BattleComponent;
+//# sourceMappingURL=battle.component.js.map

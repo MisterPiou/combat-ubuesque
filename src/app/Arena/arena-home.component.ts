@@ -1,4 +1,5 @@
 import { Component }    from '@angular/core';
+import { Router }       from '@angular/router';
 
 @Component({
   selector: 'arena-home',
@@ -6,5 +7,12 @@ import { Component }    from '@angular/core';
 })
 export class ArenaHomeComponent 
 {
+    constructor(
+        private router: Router
+    ) {}
     
+    onStartTraining(level: number) {
+        this.router.navigate(['arena/battle', 0]);
+    }
+        
 }
