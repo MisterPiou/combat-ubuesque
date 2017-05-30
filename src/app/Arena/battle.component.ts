@@ -3,6 +3,7 @@ import {ActivatedRoute, Params} from '@angular/router';
 
 import {Hero}           from '../Hero/hero';
 import {HeroService}    from '../Hero/hero.service';
+import {ErrorService}   from '../Global/error.service';
 
 @Component({
   selector: 'battle',
@@ -26,7 +27,8 @@ export class BattleComponent implements OnInit
     /** INIT **/
     constructor(
         private route: ActivatedRoute,
-        private heroService: HeroService
+        private heroService: HeroService,
+        private errorService: ErrorService
     ) {}
     
     ngOnInit() {
@@ -37,6 +39,10 @@ export class BattleComponent implements OnInit
                 this.opponentAttack();
             }
         });
+        this.heroService.getHero(2).subscribe(
+            hero => this.hero = hero,
+            error => this.errorService.newErrorMessage(error.message)
+        )
         this.hero = new Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     }

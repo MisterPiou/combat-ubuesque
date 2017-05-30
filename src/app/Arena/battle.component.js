@@ -12,11 +12,13 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var hero_1 = require("../Hero/hero");
 var hero_service_1 = require("../Hero/hero.service");
+var error_service_1 = require("../Global/error.service");
 var BattleComponent = (function () {
     /** INIT **/
-    function BattleComponent(route, heroService) {
+    function BattleComponent(route, heroService, errorService) {
         this.route = route;
         this.heroService = heroService;
+        this.errorService = errorService;
         /* Attaque */
         this.attacksPercentages = [0, 0, 0];
         this.heroLifePercentage = 100;
@@ -34,6 +36,7 @@ var BattleComponent = (function () {
                 _this.opponentAttack();
             }
         });
+        this.heroService.getHero(2).subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
         this.hero = new hero_1.Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     };
@@ -96,7 +99,8 @@ BattleComponent = __decorate([
         templateUrl: './battle.component.html',
     }),
     __metadata("design:paramtypes", [router_1.ActivatedRoute,
-        hero_service_1.HeroService])
+        hero_service_1.HeroService,
+        error_service_1.ErrorService])
 ], BattleComponent);
 exports.BattleComponent = BattleComponent;
 //# sourceMappingURL=battle.component.js.map

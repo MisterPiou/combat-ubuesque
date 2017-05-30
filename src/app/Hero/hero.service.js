@@ -32,6 +32,11 @@ var HeroService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
+    HeroService.prototype.getHero = function (id) {
+        return this.http.get(this.heroesUrl + 'getHero/' + id, this.options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
     HeroService.prototype.addHero = function (name, race) {
         return this.http.post(this.heroesUrl + 'addHero', { name: name, race: race }, { headers: this.headers })
             .map(this.extractData)
@@ -43,14 +48,7 @@ var HeroService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /*getHero(id: number): Observable<Hero> {
-        const url = `${this.heroesUrl}/${id}`;
-        return this.http.get(url)
-          .map()
-          .catch(this.handleError);
-    }
-    
-    update(hero: Hero): Observable<Hero> {
+    /*update(hero: Hero): Observable<Hero> {
         const url = `${this.heroesUrl}/${hero.id}`;
         return this.http
           .put(url, JSON.stringify(hero), {headers: this.headers})

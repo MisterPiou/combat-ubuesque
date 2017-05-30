@@ -32,6 +32,22 @@ class HeroController extends Controller
     }
 
     /**
+     * @Route("/getHero/{id}")
+     */
+    public function getHeroAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $hero = $em->getRepository("ComubuBundle:Hero")->find($id);
+
+        $serializer = $this->get('serializer');
+        $json = $serializer->serialize(
+            $hero, 'json'
+        );
+
+        return new Response($json);
+    }
+
+    /**
      * @Route("/addHero")
      */
     public function addHero(Request $request)
