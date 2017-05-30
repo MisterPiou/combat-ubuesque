@@ -13,6 +13,7 @@ var router_1 = require("@angular/router");
 var hero_1 = require("../Hero/hero");
 var hero_service_1 = require("../Hero/hero.service");
 var BattleComponent = (function () {
+    /** INIT **/
     function BattleComponent(route, heroService) {
         this.route = route;
         this.heroService = heroService;
@@ -21,7 +22,8 @@ var BattleComponent = (function () {
         this.heroLifePercentage = 100;
         this.opponentLifePercentage = 100;
         /* Global */
-        this.intervalId = 0;
+        this.intervals = [0, 0];
+        this.stateGame = 0;
     }
     BattleComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -29,32 +31,60 @@ var BattleComponent = (function () {
             if (+params['id'] == 0) {
                 _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", 0, 0, 0, 1, 100);
                 _this.opponentLifeActual = _this.opponent.life;
+                _this.opponentAttack();
             }
         });
         this.hero = new hero_1.Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     };
+    /** ATTAQUE **/
     BattleComponent.prototype.onAttack = function (spell) {
-        if (spell == 0 & this.attacksPercentages[spell] == 0) {
-            this.opponentLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
-            this.coolDown(spell, 3000);
+        if (this.stateGame == 0) {
+            if (spell == 0 && this.attacksPercentages[spell] == 0) {
+                this.opponentLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
+                this.coolDown(spell, 2000);
+            }
         }
     };
+    BattleComponent.prototype.opponentAttack = function () {
+        var _this = this;
+        this.clearTimer(1);
+        var interval = Math.floor((Math.random() * 1000) + 2000 + 1);
+        this.intervals[1] = window.setInterval(function () {
+            _this.heroLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
+        }, interval);
+    };
+    /** VIE **/
     BattleComponent.prototype.opponentLoseLife = function (lifeLose) {
         this.opponentLifeActual -= lifeLose;
+        if (this.opponentLifeActual <= 0) {
+            this.opponentLifeActual = 0;
+            this.stateGame = 1;
+            this.clearTimer(1);
+        }
         this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
     };
-    BattleComponent.prototype.clearTimer = function () { clearInterval(this.intervalId); };
+    BattleComponent.prototype.heroLoseLife = function (lifeLose) {
+        this.heroLifeActual -= lifeLose;
+        if (this.heroLifeActual <= 0) {
+            this.heroLifeActual = 0;
+            this.stateGame = 2;
+        }
+        this.heroLifePercentage = (this.heroLifeActual / this.hero.life) * 100;
+        this.opponentAttack();
+    };
+    /** TIMER **/
+    BattleComponent.prototype.clearTimer = function (interval) { clearInterval(this.intervals[interval]); };
     BattleComponent.prototype.coolDown = function (attack, time) {
         var _this = this;
-        this.clearTimer();
+        this.clearTimer(0);
         this.attacksPercentages[attack] = 100;
         var interval = 100 / (time / 200);
-        this.intervalId = window.setInterval(function () {
+        this.intervals[0] = window.setInterval(function () {
             _this.attacksPercentages[attack] -= interval;
             if (_this.attacksPercentages[attack] < 0) {
                 _this.attacksPercentages[attack] = 0;
-                _this.clearTimer();
+                _this.clearTimer(0);
             }
         }, 200);
     };
