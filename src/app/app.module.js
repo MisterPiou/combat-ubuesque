@@ -13,6 +13,7 @@ var app_component_1 = require("./app.component");
 var app_routing_module_1 = require("./app-routing.module");
 var hero_component_1 = require("./Hero/hero.component");
 var home_component_1 = require("./Global/home.component");
+var registration_component_1 = require("./User/registration.component");
 var hero_service_1 = require("./Hero/hero.service");
 var error_service_1 = require("./Global/error.service");
 var AppModule = (function () {
@@ -25,6 +26,7 @@ AppModule = __decorate([
         imports: [
             platform_browser_1.BrowserModule,
             forms_1.FormsModule,
+            forms_1.ReactiveFormsModule,
             http_1.HttpModule,
             http_1.JsonpModule,
             app_routing_module_1.AppRoutingModule,
@@ -33,6 +35,7 @@ AppModule = __decorate([
             app_component_1.AppComponent,
             hero_component_1.HeroComponent,
             home_component_1.HomeComponent,
+            registration_component_1.RegistrationComponent
         ],
         providers: [
             hero_service_1.HeroService,

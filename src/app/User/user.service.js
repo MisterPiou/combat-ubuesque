@@ -14,60 +14,34 @@ var http_2 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
-var data_1 = require("../data");
-var HeroService = (function () {
-    /* Constructor */
-    function HeroService(http) {
+var Data_1 = require("../Data");
+var UserService = (function () {
+    /* Constructeur */
+    function UserService(http) {
         this.http = http;
-        /* Variable */
+        /* Variables */
         this.headers = new http_2.Headers({
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
         });
-        this.heroesUrl = data_1.url_base + 'hero/'; //'app/test.json';
+        this.userUrl = Data_1.url_base + 'user/'; //'app/test.json';
         this.options = new http_2.RequestOptions({ headers: this.headers });
     }
-    /* Recupere les heros */
-    HeroService.prototype.getHeroes = function () {
-        return this.http.get(this.heroesUrl + 'allHeroes', this.options)
+    /* Enregistre un nouvelle utilisateur */
+    UserService.prototype.registerUser = function (data) {
+        return this.http.post(this.userUrl + 'register', data, { headers: this.headers })
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Recupere un heros */
-    HeroService.prototype.getHero = function (id) {
-        return this.http.get(this.heroesUrl + 'getHero/' + id, this.options)
-            .map(this.extractData)
-            .catch(this.handleError);
-    };
-    /* Ajoute un heros */
-    HeroService.prototype.addHero = function (name, race) {
-        return this.http.post(this.heroesUrl + 'addHero', { name: name, race: race }, { headers: this.headers })
-            .map(this.extractData)
-            .catch(this.handleError);
-    };
-    /* Supprime un heros */
-    HeroService.prototype.delete = function (id) {
-        var url = this.heroesUrl + "/" + id;
-        return this.http.get(this.heroesUrl + 'deleteHero/' + id, { headers: this.headers })
-            .map(this.extractData)
-            .catch(this.handleError);
-    };
-    /*update(hero: Hero): Observable<Hero> {
-        const url = `${this.heroesUrl}/${hero.id}`;
-        return this.http
-          .put(url, JSON.stringify(hero), {headers: this.headers})
-          .map()
-          .catch(this.handleError);
-     }*/
     /* Extracte les donnees json */
-    HeroService.prototype.extractData = function (res) {
+    UserService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
     /* Gere les erreurs de reponse */
-    HeroService.prototype.handleError = function (error) {
+    UserService.prototype.handleError = function (error) {
         var errMsg;
         if (error instanceof http_1.Response) {
             var body = error.json() || '';
@@ -80,11 +54,11 @@ var HeroService = (function () {
         console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
     };
-    return HeroService;
+    return UserService;
 }());
-HeroService = __decorate([
+UserService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [http_1.Http])
-], HeroService);
-exports.HeroService = HeroService;
-//# sourceMappingURL=hero.service.js.map
+], UserService);
+exports.UserService = UserService;
+//# sourceMappingURL=user.service.js.map
