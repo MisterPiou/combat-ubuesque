@@ -12,6 +12,7 @@ import { HomeComponent }    from './Global/home.component';
 import { RegistrationComponent }    from './User/registration.component';
 
 import { HeroService }  from './Hero/hero.service';
+import { UserService }  from './User/user.service';
 import { ErrorService }  from './Global/error.service';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ErrorService }  from './Global/error.service';
   ],
   providers: [
       HeroService,
+      UserService,
       ErrorService,
   ],
   bootstrap: [ 

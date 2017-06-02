@@ -10,13 +10,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
-var hero_service_1 = require("../Hero/hero.service");
+var error_service_1 = require("../Global/error.service");
+var user_service_1 = require("./user.service");
 var RegistrationComponent = (function () {
-    function RegistrationComponent(fb, heroService) {
+    function RegistrationComponent(fb, errorService, userService) {
         this.fb = fb;
-        this.heroService = heroService;
+        this.errorService = errorService;
+        this.userService = userService;
+        this.etatMsgBox = 'errMsg';
         this.createForm();
     }
+    /* Cree le formualaire */
     RegistrationComponent.prototype.createForm = function () {
         this.userForm = this.fb.group({
             username: ['', forms_1.Validators.required],
@@ -24,6 +28,33 @@ var RegistrationComponent = (function () {
             first: ['', forms_1.Validators.required],
             second: ['', forms_1.Validators.required],
         });
+    };
+    /* Efface le formaulaire */
+    RegistrationComponent.prototype.resetForm = function () {
+        this.userForm.reset();
+    };
+    /* Envoie du formualaire d'inscription */
+    RegistrationComponent.prototype.onSubmit = function () {
+        var _this = this;
+        var formModel = this.userForm.value;
+        var data = {
+            username: formModel.username,
+            email: formModel.email,
+            plainPassword: {
+                first: formModel.first,
+                second: formModel.second
+            }
+        };
+        this.userService.registerUser(data)
+            .subscribe(function (response) { return _this.response = response; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+        if (this.response) {
+            this.resetForm();
+            this.activeSuccesMessage();
+        }
+    };
+    /* Animation message succes */
+    RegistrationComponent.prototype.activeSuccesMessage = function () {
+        this.etatMsgBox = 'errMsgActive';
     };
     return RegistrationComponent;
 }());
@@ -33,7 +64,8 @@ RegistrationComponent = __decorate([
         templateUrl: './registration.component.html',
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder,
-        hero_service_1.HeroService])
+        error_service_1.ErrorService,
+        user_service_1.UserService])
 ], RegistrationComponent);
 exports.RegistrationComponent = RegistrationComponent;
 //# sourceMappingURL=registration.component.js.map
