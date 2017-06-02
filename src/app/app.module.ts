@@ -10,6 +10,7 @@ import { HeroComponent }    from './Hero/hero.component';
 import { HomeComponent }    from './Global/home.component';
 
 import { RegistrationComponent }    from './User/registration.component';
+import { LoginComponent }           from './User/login.component';
 
 import { HeroService }  from './Hero/hero.service';
 import { UserService }  from './User/user.service';
@@ -28,7 +29,8 @@ import { ErrorService }  from './Global/error.service';
     AppComponent,
     HeroComponent,
     HomeComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LoginComponent
   ],
   providers: [
       HeroService,

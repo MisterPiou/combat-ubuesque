@@ -10,11 +10,13 @@ var router_1 = require("@angular/router");
 var hero_component_1 = require("./Hero/hero.component");
 var home_component_1 = require("./Global/home.component");
 var registration_component_1 = require("./User/registration.component");
+var login_component_1 = require("./User/login.component");
 var routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: home_component_1.HomeComponent },
     { path: 'hero', component: hero_component_1.HeroComponent },
     { path: 'register', component: registration_component_1.RegistrationComponent },
+    { path: 'login', component: login_component_1.LoginComponent },
     {
         path: 'arena',
         loadChildren: 'app/Arena/arena.module#ArenaModule',

@@ -7,13 +7,12 @@ import { UserService }      from './user.service';
 
 @Component({
   selector: 'registration',
-  templateUrl: './registration.component.html',
+  templateUrl: './login.component.html',
 })
-export class RegistrationComponent  
+export class LoginComponent  
 {
-    userForm: FormGroup;
+    logForm: FormGroup;
     response: string;
-    etatMsgBox = 'errMsg';
     
     constructor(
         private fb: FormBuilder,
@@ -24,46 +23,28 @@ export class RegistrationComponent
     
     /* Cree le formualaire */
     createForm() {
-        this.userForm = this.fb.group({
+        this.logForm = this.fb.group({
             username: ['', Validators.required],
-            email: ['', Validators.email],
-            first: ['', Validators.required],
-            second: ['', Validators.required],
+            password: ['', Validators.required],
         })
-    }
-    
-    /* Efface le formaulaire */
-    resetForm() {
-        this.userForm.reset();
     }
     
     /* Envoie du formualaire d'inscription */
     onSubmit() {
-        const formModel = this.userForm.value;
+        const formModel = this.logForm.value;
         
         const data = {
-            username: formModel.username as string,
-            email: formModel.email as string,
-            plainPassword: {
-                first: formModel.first as string,
-                second: formModel.second as string
-            }
+            userName: formModel.username,
+            password: formModel.password,
         };
         
-        this.userService.registerUser(data)
+        this.userService.loginUser(data)
             .subscribe(
                 response => this.response = response,
                 error => this.errorService.newErrorMessage(error.message));
                 
         if (this.response) {
-            this.resetForm();
-            this.activeSuccesMessage();
+            this.logForm.reset();
         }
     }
-    
-    /* Animation message succes */
-    activeSuccesMessage() {
-        this.etatMsgBox = 'errMsgActive';
-    }
 }
-

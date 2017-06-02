@@ -35,6 +35,12 @@ var UserService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
+    /* Enregistre un nouvelle utilisateur */
+    UserService.prototype.loginUser = function (data) {
+        return this.http.post(this.userUrl + 'login', data, { headers: this.headers })
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
     /* Extracte les donnees json */
     UserService.prototype.extractData = function (res) {
         var body = res.json();

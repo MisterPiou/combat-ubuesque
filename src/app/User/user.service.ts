@@ -30,6 +30,13 @@ export class UserService {
           .catch(this.handleError);
     }
     
+    /* Enregistre un nouvelle utilisateur */
+    loginUser(data: any): Observable<string> {
+        return this.http.post(this.userUrl + 'login', data, {headers: this.headers})
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    
     /* Extracte les donnees json */
     private extractData(res: Response) {
         let body = res.json();
