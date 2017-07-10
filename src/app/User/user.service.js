@@ -14,7 +14,7 @@ var http_2 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
-var Data_1 = require("../Data");
+var data_1 = require("../data");
 var UserService = (function () {
     /* Constructeur */
     function UserService(http) {
@@ -26,7 +26,7 @@ var UserService = (function () {
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
         });
-        this.userUrl = Data_1.url_base + 'user/'; //'app/test.json';
+        this.userUrl = data_1.url_base + 'user/'; //'app/test.json';
         this.options = new http_2.RequestOptions({ headers: this.headers });
     }
     /* Enregistre un nouvelle utilisateur */

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { url_base } from '../Data';
+import { url_base } from '../data';
 
 @Injectable()
 export class UserService {
