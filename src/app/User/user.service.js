@@ -14,7 +14,8 @@ var http_2 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
-var Data_1 = require("../Data");
+var angular2_jwt_1 = require("angular2-jwt");
+var data_1 = require("../data");
 var UserService = (function () {
     /* Constructeur */
     function UserService(http) {
@@ -26,7 +27,7 @@ var UserService = (function () {
             'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
         });
-        this.userUrl = Data_1.url_base + 'user/'; //'app/test.json';
+        this.userUrl = data_1.url_base + 'user/'; //'app/test.json';
         this.options = new http_2.RequestOptions({ headers: this.headers });
     }
     /* Enregistre un nouvelle utilisateur */
@@ -37,7 +38,12 @@ var UserService = (function () {
     };
     /* Enregistre un nouvelle utilisateur */
     UserService.prototype.loginUser = function (data) {
-        return this.http.post(this.userUrl + 'login', data, { headers: this.headers })
+        var body = new http_1.URLSearchParams();
+        body.append('username', data.username);
+        body.append('password', data.password);
+        var headers = new http_2.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        var options = new http_2.RequestOptions({ headers: headers });
+        return this.http.post(this.userUrl + 'login_check', body, options)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -59,6 +65,14 @@ var UserService = (function () {
         }
         console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
+    };
+    /* deconnecte l'utilisateur */
+    UserService.prototype.logout = function () {
+        localStorage.removeItem('id_token');
+    };
+    /* regarde si l'utilisateur est connecte */
+    UserService.prototype.loggedIn = function () {
+        return angular2_jwt_1.tokenNotExpired();
     };
     return UserService;
 }());

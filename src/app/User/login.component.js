@@ -31,14 +31,11 @@ var LoginComponent = (function () {
         var _this = this;
         var formModel = this.logForm.value;
         var data = {
-            userName: formModel.username,
+            username: formModel.username,
             password: formModel.password,
         };
         this.userService.loginUser(data)
-            .subscribe(function (response) { return _this.response = response; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
-        if (this.response) {
-            this.logForm.reset();
-        }
+            .subscribe(function (response) { return localStorage.setItem('id_token', response.token); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     return LoginComponent;
 }());

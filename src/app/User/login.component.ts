@@ -12,7 +12,6 @@ import { UserService }      from './user.service';
 export class LoginComponent  
 {
     logForm: FormGroup;
-    response: string;
     
     constructor(
         private fb: FormBuilder,
@@ -34,17 +33,13 @@ export class LoginComponent
         const formModel = this.logForm.value;
         
         const data = {
-            userName: formModel.username,
+            username: formModel.username,
             password: formModel.password,
         };
         
         this.userService.loginUser(data)
             .subscribe(
-                response => this.response = response,
+                response => localStorage.setItem('id_token', response.token),
                 error => this.errorService.newErrorMessage(error.message));
-                
-        if (this.response) {
-            this.logForm.reset();
-        }
     }
 }
