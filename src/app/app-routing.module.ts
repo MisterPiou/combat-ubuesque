@@ -9,10 +9,12 @@ import {LoginComponent}         from './User/login.component';
 
 import {ArenaRoutingModule} from './Arena/arena-routing.module';
 
+import {AuthGuard} from './Global/auth.guard';
+
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home',       component: HomeComponent },
-  { path: 'hero',       component: HeroComponent },
+  { path: 'home',       component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'hero',       component: HeroComponent, canActivate: [AuthGuard] },
   { path: 'register',   component: RegistrationComponent },
   { path: 'login',      component: LoginComponent },
   { 

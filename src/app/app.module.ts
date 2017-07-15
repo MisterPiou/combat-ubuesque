@@ -14,7 +14,8 @@ import { LoginComponent }           from './User/login.component';
 
 import { HeroService }  from './Hero/hero.service';
 import { UserService }  from './User/user.service';
-import { ErrorService }  from './Global/error.service';
+import { ErrorService } from './Global/error.service';
+import {AuthGuard}      from './Global/auth.guard';
 
 @NgModule({
   imports: [ 
@@ -36,6 +37,7 @@ import { ErrorService }  from './Global/error.service';
       HeroService,
       UserService,
       ErrorService,
+      AuthGuard,
   ],
   bootstrap: [ 
     AppComponent 
