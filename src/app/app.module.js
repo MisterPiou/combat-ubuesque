@@ -19,6 +19,11 @@ var hero_service_1 = require("./Hero/hero.service");
 var user_service_1 = require("./User/user.service");
 var error_service_1 = require("./Global/error.service");
 var auth_guard_1 = require("./Global/auth.guard");
+var angular2_jwt_1 = require("angular2-jwt");
+function authHttpServiceFactory(http, options) {
+    return new angular2_jwt_1.AuthHttp(new angular2_jwt_1.AuthConfig({}), http, options);
+}
+exports.authHttpServiceFactory = authHttpServiceFactory;
 var AppModule = (function () {
     function AppModule() {
     }
@@ -42,6 +47,11 @@ AppModule = __decorate([
             login_component_1.LoginComponent
         ],
         providers: [
+            {
+                provide: angular2_jwt_1.AuthHttp,
+                useFactory: authHttpServiceFactory,
+                deps: [http_1.Http, http_1.RequestOptions]
+            },
             hero_service_1.HeroService,
             user_service_1.UserService,
             error_service_1.ErrorService,

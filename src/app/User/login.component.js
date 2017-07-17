@@ -35,7 +35,7 @@ var LoginComponent = (function () {
             password: formModel.password,
         };
         this.userService.loginUser(data)
-            .subscribe(function (response) { return localStorage.setItem('id_token', response.token); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+            .subscribe(function (response) { return localStorage.setItem('token', response.token); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     return LoginComponent;
 }());

@@ -39,7 +39,7 @@ export class LoginComponent
         
         this.userService.loginUser(data)
             .subscribe(
-                response => localStorage.setItem('id_token', response.token),
+                response => localStorage.setItem('token', response.token),
                 error => this.errorService.newErrorMessage(error.message));
     }
 }

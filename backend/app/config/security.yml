@@ -28,7 +28,7 @@ security:
             anonymous:    true
             stateless:    true
         
-        user:
+        api:
             pattern:   ^/user
             stateless: true
             guard:

@@ -1,46 +1,39 @@
-import { Injectable }               from '@angular/core';
-import { Http, Response }           from '@angular/http';
-import { Headers, RequestOptions }  from '@angular/http';
+import { Injectable }   from '@angular/core';
+import { Response }     from '@angular/http';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable }   from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import { AuthHttp }     from 'angular2-jwt';
 
-import { Hero } from './hero';
+import { Hero }     from './hero';
 import { url_base } from '../data';
 
 @Injectable()
 export class HeroService {
     /* Variable */
-    private headers = new Headers({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
-    });
     private heroesUrl = url_base + 'hero/';    //'app/test.json';
-    private options = new RequestOptions({ headers: this.headers });
     
     /* Constructor */
-    constructor(private http: Http) { }
+    constructor(private authHttp: AuthHttp) { }
     
     /* Recupere les heros */
     getHeroes(): Observable<Hero[]> {
-        return this.http.get(this.heroesUrl + 'allHeroes', this.options)
+        return this.authHttp.get(this.heroesUrl + 'getHeroes')
             .map(this.extractData)
             .catch(this.handleError);
     }
     
     /* Recupere un heros */
     getHero(id: number): Observable<Hero> {
-        return this.http.get(this.heroesUrl + 'getHero/' + id, this.options)
+        return this.authHttp.get(this.heroesUrl + 'getHero/' + id)
             .map(this.extractData)
             .catch(this.handleError);
     }
     
     /* Ajoute un heros */
     addHero(name: string, race: number): Observable<Hero> {
-        return this.http.post(this.heroesUrl + 'addHero', {name, race}, {headers: this.headers})
+        return this.authHttp.post(this.heroesUrl + 'addHero', {name, race})
           .map(this.extractData)
           .catch(this.handleError);
     }
@@ -48,7 +41,7 @@ export class HeroService {
     /* Supprime un heros */
     delete(id: number): Observable<Hero[]> {
         const url = `${this.heroesUrl}/${id}`;
-        return this.http.get(this.heroesUrl + 'deleteHero/' + id, {headers: this.headers})
+        return this.authHttp.get(this.heroesUrl + 'deleteHero/' + id)
           .map(this.extractData)
           .catch(this.handleError);
     }

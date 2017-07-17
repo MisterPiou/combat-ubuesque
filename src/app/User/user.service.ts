@@ -66,7 +66,7 @@ export class UserService {
     
     /* deconnecte l'utilisateur */
     logout() {
-      localStorage.removeItem('id_token');
+      localStorage.removeItem('token');
     }
 
     /* regarde si l'utilisateur est connecte */

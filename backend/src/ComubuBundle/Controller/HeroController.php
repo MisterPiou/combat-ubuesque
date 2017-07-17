@@ -3,10 +3,10 @@
 namespace ComubuBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use ComubuBundle\Entity\Hero;
 
@@ -22,6 +22,25 @@ class HeroController extends Controller
     {        
         $em = $this->getDoctrine()->getManager();
         $heroes = $em->getRepository("ComubuBundle:Hero")->findAll();
+
+        $serializer = $this->get('serializer');
+        $json = $serializer->serialize(
+            $heroes, 'json'
+        );
+
+        return new Response($json);
+    }
+
+    /**
+     * @Route("/getHeroes")
+     */
+    public function getHeroesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $heroes = $em->getRepository("ComubuBundle:Hero")->findBy(array(
+            'state' => Hero::STATUS_OK,
+            'user' => $this->getUser()
+        ));
 
         $serializer = $this->get('serializer');
         $json = $serializer->serialize(

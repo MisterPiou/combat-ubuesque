@@ -86,8 +86,8 @@ lexik_jwt_authentication:
     
 nelmio_cors:
     paths:
-        '^/user/':
+        '^/':
             allow_origin: ['*']
             allow_headers: ['*']
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
-            max_age: 3600
+            max_age: 36000

@@ -10,47 +10,40 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var http_1 = require("@angular/http");
-var http_2 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
+var angular2_jwt_1 = require("angular2-jwt");
 var data_1 = require("../data");
 var HeroService = (function () {
     /* Constructor */
-    function HeroService(http) {
-        this.http = http;
+    function HeroService(authHttp) {
+        this.authHttp = authHttp;
         /* Variable */
-        this.headers = new http_2.Headers({
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
-        });
         this.heroesUrl = data_1.url_base + 'hero/'; //'app/test.json';
-        this.options = new http_2.RequestOptions({ headers: this.headers });
     }
     /* Recupere les heros */
     HeroService.prototype.getHeroes = function () {
-        return this.http.get(this.heroesUrl + 'allHeroes', this.options)
+        return this.authHttp.get(this.heroesUrl + 'getHeroes')
             .map(this.extractData)
             .catch(this.handleError);
     };
     /* Recupere un heros */
     HeroService.prototype.getHero = function (id) {
-        return this.http.get(this.heroesUrl + 'getHero/' + id, this.options)
+        return this.authHttp.get(this.heroesUrl + 'getHero/' + id)
             .map(this.extractData)
             .catch(this.handleError);
     };
     /* Ajoute un heros */
     HeroService.prototype.addHero = function (name, race) {
-        return this.http.post(this.heroesUrl + 'addHero', { name: name, race: race }, { headers: this.headers })
+        return this.authHttp.post(this.heroesUrl + 'addHero', { name: name, race: race })
             .map(this.extractData)
             .catch(this.handleError);
     };
     /* Supprime un heros */
     HeroService.prototype.delete = function (id) {
         var url = this.heroesUrl + "/" + id;
-        return this.http.get(this.heroesUrl + 'deleteHero/' + id, { headers: this.headers })
+        return this.authHttp.get(this.heroesUrl + 'deleteHero/' + id)
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -84,7 +77,7 @@ var HeroService = (function () {
 }());
 HeroService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
+    __metadata("design:paramtypes", [angular2_jwt_1.AuthHttp])
 ], HeroService);
 exports.HeroService = HeroService;
 //# sourceMappingURL=hero.service.js.map

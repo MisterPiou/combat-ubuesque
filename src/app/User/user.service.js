@@ -68,7 +68,7 @@ var UserService = (function () {
     };
     /* deconnecte l'utilisateur */
     UserService.prototype.logout = function () {
-        localStorage.removeItem('id_token');
+        localStorage.removeItem('token');
     };
     /* regarde si l'utilisateur est connecte */
     UserService.prototype.loggedIn = function () {
