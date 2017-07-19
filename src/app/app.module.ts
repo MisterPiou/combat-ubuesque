@@ -11,6 +11,7 @@ import { HomeComponent }    from './Global/home.component';
 
 import { RegistrationComponent }    from './User/registration.component';
 import { LoginComponent }           from './User/login.component';
+import { AccountComponent }         from './User/account.component';
 
 import { HeroService }          from './Hero/hero.service';
 import { UserService }          from './User/user.service';
@@ -36,7 +37,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HeroComponent,
     HomeComponent,
     RegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    AccountComponent,
   ],
   providers: [
     {

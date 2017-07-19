@@ -9,11 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
+var user_service_1 = require("./User/user.service");
 var error_service_1 = require("./Global/error.service");
 var AppComponent = (function () {
-    function AppComponent(errorService) {
+    function AppComponent(errorService, userService, router) {
         var _this = this;
         this.errorService = errorService;
+        this.userService = userService;
+        this.router = router;
         this.etatMsgBox = 'errMsg';
         this.subscription = errorService.errorMessage$.subscribe(function (errorMessage) {
             _this.errorMessage = errorMessage;
@@ -35,6 +39,13 @@ var AppComponent = (function () {
         this.etatMsgBox = 'errMsg';
         clearInterval(this.interval);
     };
+    AppComponent.prototype.hasAuthToken = function () {
+        return localStorage.getItem('token') !== null;
+    };
+    AppComponent.prototype.logout = function () {
+        this.userService.logout();
+        this.router.navigate(['login']);
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([
@@ -42,7 +53,9 @@ AppComponent = __decorate([
         selector: 'my-app',
         templateUrl: './app.component.html',
     }),
-    __metadata("design:paramtypes", [error_service_1.ErrorService])
+    __metadata("design:paramtypes", [error_service_1.ErrorService,
+        user_service_1.UserService,
+        router_1.Router])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

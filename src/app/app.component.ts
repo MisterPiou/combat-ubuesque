@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component }    from '@angular/core';
+import { Router }       from '@angular/router';
+
+import {UserService} from './User/user.service';
 
 import { ErrorService }     from './Global/error.service';
 import { Subscription }     from 'rxjs/Subscription';
@@ -14,7 +17,11 @@ export class AppComponent
     etatMsgBox = 'errMsg';
     interval: any;
     
-    constructor(private errorService: ErrorService) {
+    constructor(
+        private errorService: ErrorService, 
+        private userService: UserService,
+        private router: Router
+    ) {
         this.subscription = errorService.errorMessage$.subscribe(
             errorMessage => {
                 this.errorMessage = errorMessage;
@@ -34,5 +41,13 @@ export class AppComponent
     endErrorMessage() {
         this.etatMsgBox = 'errMsg';
         clearInterval(this.interval);
+    }
+    
+    hasAuthToken() {
+        return localStorage.getItem('token') !== null;
+    }
+    logout() {
+        this.userService.logout();
+        this.router.navigate(['login']);
     }
 }

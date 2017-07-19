@@ -9,14 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
+var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
 var error_service_1 = require("../Global/error.service");
 var user_service_1 = require("./user.service");
 var LoginComponent = (function () {
-    function LoginComponent(fb, errorService, userService) {
+    function LoginComponent(fb, errorService, userService, router) {
         this.fb = fb;
         this.errorService = errorService;
         this.userService = userService;
+        this.router = router;
         this.createForm();
     }
     /* Cree le formualaire */
@@ -35,7 +37,13 @@ var LoginComponent = (function () {
             password: formModel.password,
         };
         this.userService.loginUser(data)
-            .subscribe(function (response) { return localStorage.setItem('token', response.token); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+            .subscribe(function (response) {
+            localStorage.setItem('token', response.token);
+            _this.redirectAfterLog();
+        }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+    };
+    LoginComponent.prototype.redirectAfterLog = function () {
+        this.router.navigate(['home']);
     };
     return LoginComponent;
 }());
@@ -46,7 +54,8 @@ LoginComponent = __decorate([
     }),
     __metadata("design:paramtypes", [forms_1.FormBuilder,
         error_service_1.ErrorService,
-        user_service_1.UserService])
+        user_service_1.UserService,
+        router_1.Router])
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;
 //# sourceMappingURL=login.component.js.map

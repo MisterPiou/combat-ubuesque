@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component}  from '@angular/core';
+import {Router}     from '@angular/router';
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
@@ -16,7 +17,8 @@ export class LoginComponent
     constructor(
         private fb: FormBuilder,
         private errorService: ErrorService,
-        private userService: UserService ) {
+        private userService: UserService,
+        private router: Router ) {
             this.createForm();
         }
     
@@ -39,7 +41,14 @@ export class LoginComponent
         
         this.userService.loginUser(data)
             .subscribe(
-                response => localStorage.setItem('token', response.token),
+                response => {
+                    localStorage.setItem('token', response.token);
+                    this.redirectAfterLog();
+                },
                 error => this.errorService.newErrorMessage(error.message));
+    }
+    
+    redirectAfterLog() {
+        this.router.navigate(['home']);
     }
 }
