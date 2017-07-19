@@ -6,26 +6,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations as FOSRest;
-use FOS\RestBundle\Routing\ClassResourceInterface;
 
 use ComubuBundle\Entity\Hero;
 
 /**
  * @Route("/hero")
  */
-class HeroController extends FOSRestController implements ClassResourceInterface
+class HeroController extends FOSRestController
 {
     /**
      * @Route("/allHeroes")
      */
     public function allHeroesAction()
     {        
-        $em = $this->getDoctrine()->getManager();
-        $heroes = $em->getRepository("ComubuBundle:Hero")->findAll();
+        $heroes = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->findAll();
 
         $view = $this->view($heroes, 200);
         return $this->handleView($view);
@@ -36,8 +32,7 @@ class HeroController extends FOSRestController implements ClassResourceInterface
      */
     public function getHeroesAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $heroes = $em->getRepository("ComubuBundle:Hero")->findBy(array(
+        $heroes = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->findBy(array(
             'state' => Hero::STATUS_OK,
             'user' => $this->getUser()
         ));
@@ -51,15 +46,10 @@ class HeroController extends FOSRestController implements ClassResourceInterface
      */
     public function getHeroAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-        $hero = $em->getRepository("ComubuBundle:Hero")->find($id);
+        $hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->find($id);
 
-        $serializer = $this->get('serializer');
-        $json = $serializer->serialize(
-            $hero, 'json'
-        );
-
-        return new Response($json);
+        $view = $this->view($heroes, 200);
+        return $this->handleView($view);
     }
 
     /**
@@ -83,14 +73,14 @@ class HeroController extends FOSRestController implements ClassResourceInterface
             $hero->setState(Hero::STATUS_OK);
             $hero->setXp(0);
             $hero->setLife(100);
-            $hero->setUser(null);
+            $hero->setUser($this->getUser());
 
             $em->persist($hero);
             $em->flush();
 
             $serializer = $this->get('serializer');
             $json = $serializer->serialize(
-                $hero, 'json'
+                array("Message" => "Ton héro à bien été embauché !"), 'json'
             );
 
             return new Response($json);

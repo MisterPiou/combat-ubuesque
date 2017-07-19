@@ -17,13 +17,14 @@ var routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: home_component_1.HomeComponent, canActivate: [auth_guard_1.AuthGuard] },
     { path: 'hero', component: hero_component_1.HeroComponent, canActivate: [auth_guard_1.AuthGuard] },
-    { path: 'account', component: account_component_1.AccountComponent },
+    { path: 'account', component: account_component_1.AccountComponent, canActivate: [auth_guard_1.AuthGuard] },
     { path: 'register', component: registration_component_1.RegistrationComponent },
     { path: 'login', component: login_component_1.LoginComponent },
     {
         path: 'arena',
         loadChildren: 'app/Arena/arena.module#ArenaModule',
-        data: { preload: true }
+        data: { preload: true },
+        canActivate: [auth_guard_1.AuthGuard]
     }
 ];
 var AppRoutingModule = (function () {

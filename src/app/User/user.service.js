@@ -15,11 +15,13 @@ var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
 var angular2_jwt_1 = require("angular2-jwt");
+var angular2_jwt_2 = require("angular2-jwt");
 var data_1 = require("../data");
 var UserService = (function () {
     /* Constructeur */
-    function UserService(http) {
+    function UserService(http, authHttp) {
         this.http = http;
+        this.authHttp = authHttp;
         /* Variables */
         this.headers = new http_2.Headers({
             'Content-Type': 'application/json',
@@ -44,6 +46,12 @@ var UserService = (function () {
         var headers = new http_2.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         var options = new http_2.RequestOptions({ headers: headers });
         return this.http.post(this.userUrl + 'login_check', body, options)
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
+    /* Recupere les donnees de l'utilisateur */
+    UserService.prototype.infosUser = function () {
+        return this.authHttp.get(this.userUrl + 'infosUser')
             .map(this.extractData)
             .catch(this.handleError);
     };
@@ -78,7 +86,7 @@ var UserService = (function () {
 }());
 UserService = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
+    __metadata("design:paramtypes", [http_1.Http, angular2_jwt_2.AuthHttp])
 ], UserService);
 exports.UserService = UserService;
 //# sourceMappingURL=user.service.js.map

@@ -15,7 +15,17 @@ var AccountComponent = (function () {
     function AccountComponent(errorService, userService) {
         this.errorService = errorService;
         this.userService = userService;
+        this.user = [];
     }
+    AccountComponent.prototype.getUser = function () {
+        var _this = this;
+        this.userService.infosUser()
+            .subscribe(function (user) { return _this.user = user; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+    };
+    /** ng Init **/
+    AccountComponent.prototype.ngOnInit = function () {
+        this.getUser();
+    };
     return AccountComponent;
 }());
 AccountComponent = __decorate([

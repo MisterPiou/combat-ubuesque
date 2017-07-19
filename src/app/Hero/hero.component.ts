@@ -46,7 +46,7 @@ export class HeroComponent implements OnInit  {
     addHero(name: string, race: number) {
         this.heroService.addHero(name, race)
             .subscribe(
-                hero => this.heroes.push(hero),
+                hero => this.getHeroes(),
                 error => this.errorService.newErrorMessage(error.message));
     }
     

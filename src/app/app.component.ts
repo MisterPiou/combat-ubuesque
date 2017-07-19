@@ -44,7 +44,7 @@ export class AppComponent
     }
     
     hasAuthToken() {
-        return localStorage.getItem('token') !== null;
+        return this.userService.loggedIn();
     }
     logout() {
         this.userService.logout();

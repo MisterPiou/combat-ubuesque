@@ -40,7 +40,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.addHero = function (name, race) {
         var _this = this;
         this.heroService.addHero(name, race)
-            .subscribe(function (hero) { return _this.heroes.push(hero); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+            .subscribe(function (hero) { return _this.getHeroes(); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {

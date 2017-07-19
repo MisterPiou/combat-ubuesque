@@ -40,7 +40,7 @@ var AppComponent = (function () {
         clearInterval(this.interval);
     };
     AppComponent.prototype.hasAuthToken = function () {
-        return localStorage.getItem('token') !== null;
+        return this.userService.loggedIn();
     };
     AppComponent.prototype.logout = function () {
         this.userService.logout();

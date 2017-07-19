@@ -16,13 +16,14 @@ const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',       component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'hero',       component: HeroComponent, canActivate: [AuthGuard] },
-  { path: 'account',    component: AccountComponent },
+  { path: 'account',    component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'register',   component: RegistrationComponent },
   { path: 'login',      component: LoginComponent },
   { 
     path: 'arena', 
     loadChildren: 'app/Arena/arena.module#ArenaModule',
-    data: { preload: true }
+    data: { preload: true },
+    canActivate: [AuthGuard]
   }
 ];
 

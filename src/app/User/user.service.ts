@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 
-import { tokenNotExpired } from 'angular2-jwt';
+import { tokenNotExpired }  from 'angular2-jwt';
+import { AuthHttp }         from 'angular2-jwt';
 
 import { url_base } from '../data';
 
@@ -23,7 +24,7 @@ export class UserService {
     private options = new RequestOptions({ headers: this.headers });
     
     /* Constructeur */
-    constructor(private http: Http) { }
+    constructor(private http: Http, private authHttp: AuthHttp) { }
     
     /* Enregistre un nouvelle utilisateur */
     registerUser(data: any): Observable<string> {
@@ -42,6 +43,13 @@ export class UserService {
         return this.http.post(this.userUrl + 'login_check', body, options)
           .map(this.extractData)
           .catch(this.handleError);
+    }
+    
+    /* Recupere les donnees de l'utilisateur */
+    infosUser() {
+        return this.authHttp.get(this.userUrl + 'infosUser')
+            .map(this.extractData)
+            .catch(this.handleError);
     }
     
     /* Extracte les donnees json */
