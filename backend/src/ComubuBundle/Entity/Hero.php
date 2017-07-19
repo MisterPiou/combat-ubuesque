@@ -4,6 +4,7 @@ namespace ComubuBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 use ComubuBundle\Entity\User;
 
@@ -12,6 +13,8 @@ use ComubuBundle\Entity\User;
  *
  * @ORM\Table(name="hero")
  * @ORM\Entity(repositoryClass="ComubuBundle\Repository\HeroRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Hero
 {
@@ -43,6 +46,8 @@ class Hero
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=33, unique=true)
+     *
+     * @Serializer\Expose
      */
     private $name;
 
@@ -50,6 +55,8 @@ class Hero
      * @var int
      *
      * @ORM\Column(name="race", type="integer")
+     *
+     * @Serializer\Expose
      */
     private $race;
 
@@ -64,6 +71,8 @@ class Hero
      * @var int
      *
      * @ORM\Column(name="xp", type="integer")
+     *
+     * @Serializer\Expose
      */
     private $xp;
 
@@ -71,6 +80,8 @@ class Hero
      * @var int
      *
      * @ORM\Column(name="level", type="integer")
+     *
+     * @Serializer\Expose
      */
     private $level;
 
@@ -78,6 +89,8 @@ class Hero
      * @var int
      *
      * @ORM\Column(name="life", type="integer")
+     *
+     * @Serializer\Expose
      */
     private $life;
 

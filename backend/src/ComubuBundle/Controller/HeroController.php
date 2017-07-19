@@ -8,12 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as FOSRest;
+use FOS\RestBundle\Routing\ClassResourceInterface;
+
 use ComubuBundle\Entity\Hero;
 
 /**
  * @Route("/hero")
  */
-class HeroController extends Controller
+class HeroController extends FOSRestController implements ClassResourceInterface
 {
     /**
      * @Route("/allHeroes")
@@ -23,12 +27,8 @@ class HeroController extends Controller
         $em = $this->getDoctrine()->getManager();
         $heroes = $em->getRepository("ComubuBundle:Hero")->findAll();
 
-        $serializer = $this->get('serializer');
-        $json = $serializer->serialize(
-            $heroes, 'json'
-        );
-
-        return new Response($json);
+        $view = $this->view($heroes, 200);
+        return $this->handleView($view);
     }
 
     /**
@@ -42,12 +42,8 @@ class HeroController extends Controller
             'user' => $this->getUser()
         ));
 
-        $serializer = $this->get('serializer');
-        $json = $serializer->serialize(
-            $heroes, 'json'
-        );
-
-        return new Response($json);
+        $view = $this->view($heroes, 200);
+        return $this->handleView($view);
     }
 
     /**

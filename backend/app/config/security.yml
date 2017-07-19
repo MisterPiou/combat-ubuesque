@@ -29,7 +29,7 @@ security:
             stateless:    true
         
         api:
-            pattern:   ^/user
+            pattern:   ^/
             stateless: true
             guard:
                 authenticators:
