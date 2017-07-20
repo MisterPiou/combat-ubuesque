@@ -30,6 +30,14 @@ var HeroCardComponent = (function () {
         this.xpPercentage = (this.hero.xp / (this.hero.level * 10)) * 100;
         this.lifePercentage = (this.hero.life / ((this.hero.level * 5) + 95)) * 100;
     };
+    /** Selectione le hero principal **/
+    HeroCardComponent.prototype.mainHero = function () {
+        var _this = this;
+        this.hero.state = 3;
+        var state = this.hero.state;
+        this.heroService.updateHero(this.hero.id, { state: state })
+            .subscribe(function (retour) { return null; }, function (error) { return _this.errorService.newErrorMessage(error); });
+    };
     /** ng Init **/
     HeroCardComponent.prototype.ngOnInit = function () {
         var _this = this;

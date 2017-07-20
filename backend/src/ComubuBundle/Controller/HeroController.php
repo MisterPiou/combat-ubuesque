@@ -32,10 +32,7 @@ class HeroController extends FOSRestController
      */
     public function getHeroesAction()
     {
-        $heroes = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->findBy(array(
-            'state' => Hero::STATUS_OK,
-            'user' => $this->getUser()
-        ));
+        $heroes = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->getHeroesByUser($this->getUser());
 
         $view = $this->view($heroes, 200);
         return $this->handleView($view);
@@ -57,7 +54,7 @@ class HeroController extends FOSRestController
     /**
      * @Route("/addHero")
      */
-    public function addHero(Request $request)
+    public function addHeroAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         $request->request->replace($data);
@@ -84,14 +81,14 @@ class HeroController extends FOSRestController
             return $this->handleView($view);
         }
 
-        $view = $this->view(array("Erreur" => "Ton héros n'a pas voulu se joindre à ton équipe..."), 400);
+        $view = $this->view(array("Erreur" => "Ce héros n'a pas voulu se joindre à ton équipe..."), 400);
         return $this->handleView($view);
     }
 
     /**
      * @Route("/deleteHero/{id}")
      */
-    public function deleteHero(Request $request, $id)
+    public function deleteHeroAction(Request $request, $id)
     {
         if($id)
         {
@@ -112,18 +109,24 @@ class HeroController extends FOSRestController
     }
 
     /**
-     * @Route("/numberHeroes")
+     * @Route("/updateHero/{id}")
      */
-    public function numberHeroes()
+    public function updateHeroAction(Request $request, $id)
     {
-        if($this->getUser()) {
-            if($nbHeroes = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->findByUser($this->getUser()))
-                $view = $this->view(array("numberHeroes" => count($nbHeroes)), 200);
-            else
-                $view = $this->view(array("Erreur" => "Nous n'arrivons pas à compter ton équipe..."), 400);
-        } else {
-            $view = $this->view(array("Erreur" => "Nous n'arrivons pas à compter ton équipe..."), 400);
-        }
+        if($request->isMethod("POST") && $hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->find($id))
+        {
+            if($request->request->get('state')) {
+                $this->get('comubu.hero.service')->initHeroSelectedForUser($this->getUser());
+                $hero->setState($request->request->get('state'));
+            }
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($hero);
+            $em->flush();
+
+            $view = $this->view(array("Message" => "La fiche de ton heros est à jour"), 200);
+        }else
+            $view = $this->view(array("Erreur" => "La fiche de ce héros ne peut être mis à jour..."), 400);
 
         return $this->handleView($view);
     }

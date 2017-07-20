@@ -2,6 +2,9 @@
 
 namespace ComubuBundle\Repository;
 
+use ComubuBundle\Entity\User;
+use ComubuBundle\Entity\Hero;
+
 /**
  * HeroRepository
  *
@@ -10,4 +13,18 @@ namespace ComubuBundle\Repository;
  */
 class HeroRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getHeroesByUser(User $user){
+        return $this->getEntityManager()->createQueryBuilder()
+            ->select('h')
+            ->from('ComubuBundle:Hero', 'h')
+            ->join('h.user', 'u')
+            ->addSelect('u')
+            ->where('u.id = :id')
+            ->setParameter('id', $user->getId())
+            ->andWhere('h.state = :ok OR h.state = :selected')
+            ->setParameter('ok', Hero::STATUS_OK)
+            ->setParameter('selected', Hero::STATUS_SELECTED)
+            ->getQuery()
+            ->getResult();
+    }
 }

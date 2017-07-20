@@ -35,6 +35,16 @@ export class HeroCardComponent implements OnInit  {
         this.lifePercentage = ( this.hero.life / ((this.hero.level * 5)+95) ) * 100;
     }
     
+    /** Selectione le hero principal **/
+    mainHero() {
+        this.hero.state = 3;
+        let state = this.hero.state;
+        this.heroService.updateHero(this.hero.id, {state})
+            .subscribe(
+                retour => null,
+                error => this.errorService.newErrorMessage(error));
+    }
+    
     /** ng Init **/
     ngOnInit(): void {
         this.route.paramMap

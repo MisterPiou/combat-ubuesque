@@ -88,6 +88,16 @@ export class HeroComponent implements OnInit  {
         }
     }
     
+    /** Selectione le hero principal **/
+    mainHero() {
+        this.selectedHero.state = 3;
+        let state = this.selectedHero.state;
+        this.heroService.updateHero(this.selectedHero.id, {state})
+            .subscribe(
+                retour => null,
+                error => this.errorService.newErrorMessage(error));
+    }
+    
     /** ng Init **/
     ngOnInit(): void {
         this.getHeroes();

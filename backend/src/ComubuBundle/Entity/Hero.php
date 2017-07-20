@@ -24,6 +24,7 @@ class Hero
     const STATUS_OK = 0;
     const STATUS_DELETED = 1;
     const STATUS_SUSPENDED = 2;
+    const STATUS_SELECTED = 3;
 
     /**
      * @var int
@@ -66,6 +67,8 @@ class Hero
      * @var int
      *
      * @ORM\Column(name="state", type="smallint")
+     *
+     * @Serializer\Expose
      */
     private $state;
 

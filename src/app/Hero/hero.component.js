@@ -74,6 +74,14 @@ var HeroComponent = (function () {
                 .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
         }
     };
+    /** Selectione le hero principal **/
+    HeroComponent.prototype.mainHero = function () {
+        var _this = this;
+        this.selectedHero.state = 3;
+        var state = this.selectedHero.state;
+        this.heroService.updateHero(this.selectedHero.id, { state: state })
+            .subscribe(function (retour) { return null; }, function (error) { return _this.errorService.newErrorMessage(error); });
+    };
     /** ng Init **/
     HeroComponent.prototype.ngOnInit = function () {
         this.getHeroes();

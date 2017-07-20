@@ -43,18 +43,15 @@ var HeroService = (function () {
     };
     /* Supprime un heros */
     HeroService.prototype.delete = function (id) {
-        var url = this.heroesUrl + "/" + id;
         return this.authHttp.get(this.heroesUrl + 'deleteHero/' + id)
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /*update(hero: Hero): Observable<Hero> {
-        const url = `${this.heroesUrl}/${hero.id}`;
-        return this.http
-          .put(url, JSON.stringify(hero), {headers: this.headers})
-          .map()
-          .catch(this.handleError);
-     }*/
+    HeroService.prototype.updateHero = function (id, data) {
+        return this.authHttp.post(this.heroesUrl + 'updateHero/' + id, data)
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
     /* Extracte les donnees json */
     HeroService.prototype.extractData = function (res) {
         var body = res.json();

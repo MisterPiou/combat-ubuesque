@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { AuthHttp }     from 'angular2-jwt';
 
-import { Hero }     from './hero';
+import { Hero }     from './class/hero';
 import { url_base } from '../data';
 
 @Injectable()
@@ -41,19 +41,16 @@ export class HeroService {
     
     /* Supprime un heros */
     delete(id: number): Observable<Hero[]> {
-        const url = `${this.heroesUrl}/${id}`;
         return this.authHttp.get(this.heroesUrl + 'deleteHero/' + id)
           .map(this.extractData)
           .catch(this.handleError);
     }
     
-    /*update(hero: Hero): Observable<Hero> {
-        const url = `${this.heroesUrl}/${hero.id}`;
-        return this.http
-          .put(url, JSON.stringify(hero), {headers: this.headers})
-          .map()
+    updateHero(id: number, data: any): Observable<Hero> {
+        return this.authHttp.post(this.heroesUrl + 'updateHero/' + id, data)
+          .map(this.extractData)
           .catch(this.handleError);
-     }*/
+     }
      
     /* Extracte les donnees json */
     private extractData(res: Response) {
