@@ -34,9 +34,7 @@
             <h3>
                 Fiche de <strong>{{selectedHero.name}}</strong>
             </h3>
-            <p>
-                <label>Race :</label> {{races[selectedHero.race-1].name}}
-            </p>
+            <label>Race :</label> {{races[selectedHero.race-1].name}}<br/>
             <div>
                 <label>Level :</label> {{selectedHero.level}}
                 <div class="progress">
@@ -55,11 +53,11 @@
                     </div>
                 </div>
             </div>
-            <p>
-                <input type="button" class="btn btn-default" value="Voir" (click)="viewHero()" />
-                <input type="button" class="btn btn-success" value="Héros principal" (click)="mainHero()" />
-                <input type="button" class="btn btn-danger" value="Virer" (click)="deleteHero()" />
-            </p>
+            <input type="button" class="btn btn-default" value="Voir" (click)="viewHero()" />
+            <button class="btn btn-success" (click)="mainHero()">
+                <div *ngIf="isLoading" class="loader"><div class="loader-in"></div></div>
+                    Héros principal</button>
+            <input type="button" class="btn btn-danger" value="Virer" (click)="deleteHero()" />
         </div>
     </ng-template>
     <ng-template #infoBlock>

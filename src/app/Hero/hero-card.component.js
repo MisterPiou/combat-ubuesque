@@ -25,6 +25,7 @@ var HeroCardComponent = (function () {
         this.lifePercentage = 0;
         this.races = race_1.RACES;
         this.xpPercentage = 0;
+        this.isLoading = false;
     }
     HeroCardComponent.prototype.initCard = function () {
         this.xpPercentage = (this.hero.xp / (this.hero.level * 10)) * 100;
@@ -33,10 +34,11 @@ var HeroCardComponent = (function () {
     /** Selectione le hero principal **/
     HeroCardComponent.prototype.mainHero = function () {
         var _this = this;
+        this.isLoading = true;
         this.hero.state = 3;
         var state = this.hero.state;
         this.heroService.updateHero(this.hero.id, { state: state })
-            .subscribe(function (retour) { return null; }, function (error) { return _this.errorService.newErrorMessage(error); });
+            .subscribe(function (retour) { return _this.isLoading = false; }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/
     HeroCardComponent.prototype.ngOnInit = function () {

@@ -19,6 +19,7 @@ var LoginComponent = (function () {
         this.errorService = errorService;
         this.userService = userService;
         this.router = router;
+        this.isLoading = false;
         this.createForm();
     }
     /* Cree le formualaire */
@@ -31,6 +32,7 @@ var LoginComponent = (function () {
     /* Envoie du formualaire d'inscription */
     LoginComponent.prototype.onSubmit = function () {
         var _this = this;
+        this.isLoading = true;
         var formModel = this.logForm.value;
         var data = {
             username: formModel.username,
@@ -40,6 +42,7 @@ var LoginComponent = (function () {
             .subscribe(function (response) {
             localStorage.setItem('token', response.token);
             _this.redirectAfterLog();
+            _this.isLoading = false;
         }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     LoginComponent.prototype.redirectAfterLog = function () {

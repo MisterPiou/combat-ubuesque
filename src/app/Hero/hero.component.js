@@ -25,6 +25,7 @@ var HeroComponent = (function () {
         this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
         this.races = race_1.RACES;
         this.xpPercentage = 0;
+        this.isLoading = false;
     }
     /** Display all heroes **/
     HeroComponent.prototype.getHeroes = function () {
@@ -77,10 +78,14 @@ var HeroComponent = (function () {
     /** Selectione le hero principal **/
     HeroComponent.prototype.mainHero = function () {
         var _this = this;
+        this.isLoading = true;
         this.selectedHero.state = 3;
         var state = this.selectedHero.state;
         this.heroService.updateHero(this.selectedHero.id, { state: state })
-            .subscribe(function (retour) { return null; }, function (error) { return _this.errorService.newErrorMessage(error); });
+            .subscribe(function (retour) {
+            _this.isLoading = false;
+            _this.getHeroes();
+        }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/
     HeroComponent.prototype.ngOnInit = function () {

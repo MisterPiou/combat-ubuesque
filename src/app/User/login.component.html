@@ -7,6 +7,7 @@
         <label for="password">Mot de passe</label>
         <input type="password" class="form-control" formControlName="password" name="password">
     </div>
-    <button type="submit"
-            [disabled]="logForm.pristine" class="btn btn-primary">Entrer</button> &nbsp;
+    <button type="submit" [disabled]="logForm.pristine" class="btn btn-primary">
+        <div *ngIf="isLoading" class="loader"><div class="loader-in"></div></div>
+        Entrer</button> &nbsp;
 </form>

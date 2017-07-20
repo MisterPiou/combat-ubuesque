@@ -22,6 +22,7 @@ export class HeroComponent implements OnInit  {
     races = RACES;
     selectedHero: Hero;
     xpPercentage = 0;
+    isLoading = false;
     
     constructor(
         private heroService: HeroService,
@@ -90,11 +91,15 @@ export class HeroComponent implements OnInit  {
     
     /** Selectione le hero principal **/
     mainHero() {
+        this.isLoading = true;
         this.selectedHero.state = 3;
         let state = this.selectedHero.state;
         this.heroService.updateHero(this.selectedHero.id, {state})
             .subscribe(
-                retour => null,
+                retour => {
+                    this.isLoading = false;
+                    this.getHeroes();
+                },
                 error => this.errorService.newErrorMessage(error));
     }
     

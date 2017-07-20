@@ -28,7 +28,9 @@
             </div>
         </div>
         <p>
-            <input type="button" class="btn btn-success" value="Héros principal" (click)="mainHero()" />
+            <button class="btn btn-success" (click)="mainHero()">
+                <div *ngIf="isLoading" class="loader"><div class="loader-in"></div></div>
+                    Héros principal</button>
             <input type="button" class="btn btn-danger" value="Virer" (click)="deleteHero()" />
         </p>
     </div>

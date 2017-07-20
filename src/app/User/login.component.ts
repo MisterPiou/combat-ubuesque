@@ -13,6 +13,7 @@ import { UserService }      from './user.service';
 export class LoginComponent  
 {
     logForm: FormGroup;
+    isLoading = false;
     
     constructor(
         private fb: FormBuilder,
@@ -32,6 +33,7 @@ export class LoginComponent
     
     /* Envoie du formualaire d'inscription */
     onSubmit() {
+        this.isLoading = true;
         const formModel = this.logForm.value;
         
         const data = {
@@ -44,6 +46,7 @@ export class LoginComponent
                 response => {
                     localStorage.setItem('token', response.token);
                     this.redirectAfterLog();
+                    this.isLoading = false;
                 },
                 error => this.errorService.newErrorMessage(error));
     }
