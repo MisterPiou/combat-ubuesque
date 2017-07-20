@@ -15,10 +15,14 @@ import {AuthGuard} from './Global/auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home',       component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'hero',       component: HeroComponent, canActivate: [AuthGuard] },
   { path: 'account',    component: AccountComponent, canActivate: [AuthGuard] },
   { path: 'register',   component: RegistrationComponent },
   { path: 'login',      component: LoginComponent },
+  { 
+    path: 'hero',
+    loadChildren: 'app/Hero/hero.module#HeroModule',
+    data: { preload: true }, 
+    canActivate: [AuthGuard] },
   { 
     path: 'arena', 
     loadChildren: 'app/Arena/arena.module#ArenaModule',

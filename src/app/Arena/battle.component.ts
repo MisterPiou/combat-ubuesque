@@ -1,7 +1,7 @@
 import {Component, OnInit}      from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 
-import {Hero}           from '../Hero/hero';
+import {Hero}           from '../Hero/class/hero';
 import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}   from '../Global/error.service';
 

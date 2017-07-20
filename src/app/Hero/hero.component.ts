@@ -1,8 +1,9 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit }    from '@angular/core';
+import { Router }               from '@angular/router';
 
-import { Hero }         from './hero';
+import { Hero }         from './class/hero';
 import { HeroService }   from './hero.service';
-import { Race, RACES }  from './race';
+import { Race, RACES }  from './class/race';
 
 import {ErrorService} from '../Global/error.service';
 
@@ -24,7 +25,8 @@ export class HeroComponent implements OnInit  {
     
     constructor(
         private heroService: HeroService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private router: Router,
     ) { }
     
     /** Display all heroes **/
@@ -64,7 +66,7 @@ export class HeroComponent implements OnInit  {
     
     /** Voir le hero **/
     viewHero() {
-        
+        this.router.navigate(['/hero/card', this.selectedHero.id])
     }
     
     /** Supprime le hero **/

@@ -7,7 +7,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
-var hero_component_1 = require("./Hero/hero.component");
 var home_component_1 = require("./Global/home.component");
 var registration_component_1 = require("./User/registration.component");
 var login_component_1 = require("./User/login.component");
@@ -16,10 +15,15 @@ var auth_guard_1 = require("./Global/auth.guard");
 var routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'home', component: home_component_1.HomeComponent, canActivate: [auth_guard_1.AuthGuard] },
-    { path: 'hero', component: hero_component_1.HeroComponent, canActivate: [auth_guard_1.AuthGuard] },
     { path: 'account', component: account_component_1.AccountComponent, canActivate: [auth_guard_1.AuthGuard] },
     { path: 'register', component: registration_component_1.RegistrationComponent },
     { path: 'login', component: login_component_1.LoginComponent },
+    {
+        path: 'hero',
+        loadChildren: 'app/Hero/hero.module#HeroModule',
+        data: { preload: true },
+        canActivate: [auth_guard_1.AuthGuard]
+    },
     {
         path: 'arena',
         loadChildren: 'app/Arena/arena.module#ArenaModule',

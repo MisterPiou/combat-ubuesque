@@ -9,14 +9,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var hero_1 = require("./hero");
+var router_1 = require("@angular/router");
+var hero_1 = require("./class/hero");
 var hero_service_1 = require("./hero.service");
-var race_1 = require("./race");
+var race_1 = require("./class/race");
 var error_service_1 = require("../Global/error.service");
 var HeroComponent = (function () {
-    function HeroComponent(heroService, errorService) {
+    function HeroComponent(heroService, errorService, router) {
         this.heroService = heroService;
         this.errorService = errorService;
+        this.router = router;
         this.defaultName = "Mon Héros";
         this.isSubmitted = false;
         this.lifePercentage = 0;
@@ -54,6 +56,7 @@ var HeroComponent = (function () {
     };
     /** Voir le hero **/
     HeroComponent.prototype.viewHero = function () {
+        this.router.navigate(['/hero/card', this.selectedHero.id]);
     };
     /** Supprime le hero **/
     HeroComponent.prototype.deleteHero = function () {
@@ -83,7 +86,8 @@ HeroComponent = __decorate([
         templateUrl: './hero.component.html',
     }),
     __metadata("design:paramtypes", [hero_service_1.HeroService,
-        error_service_1.ErrorService])
+        error_service_1.ErrorService,
+        router_1.Router])
 ], HeroComponent);
 exports.HeroComponent = HeroComponent;
 //# sourceMappingURL=hero.component.js.map

@@ -46,9 +46,11 @@ class HeroController extends FOSRestController
      */
     public function getHeroAction($id)
     {
-        $hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->find($id);
-
-        $view = $this->view($heroes, 200);
+        if($hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->find($id))
+            $view = $this->view($hero, 200);
+        else
+            $view = $this->view(array("Erreur" => "Ce héros n'existe pas..."), 404);
+        
         return $this->handleView($view);
     }
 
@@ -62,7 +64,7 @@ class HeroController extends FOSRestController
 
         $name = $request->request->get('name');
         $race = $request->request->get('race');
-        /*if($name && $race)
+        if($name && $race)
         {
             $em = $this->getDoctrine()->getManager();
             $hero = new Hero();
@@ -80,9 +82,9 @@ class HeroController extends FOSRestController
 
             $view = $this->view($heroes, 200);
             return $this->handleView($view);
-        }*/
+        }
 
-        $view = $this->view(array("Message" => "Ton héros n'a pas voulu se joindre à ton équipe..."), 400);
+        $view = $this->view(array("Erreur" => "Ton héros n'a pas voulu se joindre à ton équipe..."), 400);
         return $this->handleView($view);
     }
 
@@ -93,8 +95,7 @@ class HeroController extends FOSRestController
     {
         if($id)
         {
-            $em = $this->getDoctrine()->getManager();
-            $hero = $em->getRepository("ComubuBundle:Hero")->find($id);
+            $hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->find($id);
 
             $em->remove($hero);
             $em->flush();
@@ -106,7 +107,7 @@ class HeroController extends FOSRestController
             return $this->handleView($view);
         }
         
-        $view = $this->view(array("Message" => "Ton héros ne veut pas partir de ton équipe..."), 400);
+        $view = $this->view(array("Erreur" => "Ton héros ne veut pas partir de ton équipe..."), 400);
         return $this->handleView($view);
     }
 
@@ -115,7 +116,15 @@ class HeroController extends FOSRestController
      */
     public function numberHeroes()
     {
-        $view = $this->view(array("Message" => "Ton héros ne veut pas partir de ton équipe..."), 400);
+        if($this->getUser()) {
+            if($nbHeroes = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->findByUser($this->getUser()))
+                $view = $this->view(array("numberHeroes" => count($nbHeroes)), 200);
+            else
+                $view = $this->view(array("Erreur" => "Nous n'arrivons pas à compter ton équipe..."), 400);
+        } else {
+            $view = $this->view(array("Erreur" => "Nous n'arrivons pas à compter ton équipe..."), 400);
+        }
+
         return $this->handleView($view);
     }
 }

@@ -34,7 +34,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   ],
   declarations: [ 
     AppComponent,
-    HeroComponent,
     HomeComponent,
     RegistrationComponent,
     LoginComponent,
