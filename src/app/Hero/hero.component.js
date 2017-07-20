@@ -28,7 +28,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.getHeroes = function () {
         var _this = this;
         this.heroService.getHeroes()
-            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+            .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** Submit form to add new hero **/
     HeroComponent.prototype.onSubmit = function () {
@@ -40,7 +40,7 @@ var HeroComponent = (function () {
     HeroComponent.prototype.addHero = function (name, race) {
         var _this = this;
         this.heroService.addHero(name, race)
-            .subscribe(function (hero) { return _this.getHeroes(); }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+            .subscribe(function (hero) { return _this.getHeroes(); }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {

@@ -32,7 +32,7 @@ export class HeroComponent implements OnInit  {
         this.heroService.getHeroes()
             .subscribe(
                 heroes => this.heroes = heroes,
-                error => this.errorService.newErrorMessage(error.message));
+                error => this.errorService.newErrorMessage(error));
     }
     
     /** Submit form to add new hero **/
@@ -47,7 +47,7 @@ export class HeroComponent implements OnInit  {
         this.heroService.addHero(name, race)
             .subscribe(
                 hero => this.getHeroes(),
-                error => this.errorService.newErrorMessage(error.message));
+                error => this.errorService.newErrorMessage(error));
     }
     
     /** Reset add hero forms **/

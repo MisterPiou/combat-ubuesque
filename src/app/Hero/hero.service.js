@@ -13,6 +13,7 @@ var http_1 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/catch");
 require("rxjs/add/operator/map");
+require("rxjs/add/observable/throw");
 var angular2_jwt_1 = require("angular2-jwt");
 var data_1 = require("../data");
 var HeroService = (function () {
@@ -65,12 +66,11 @@ var HeroService = (function () {
         if (error instanceof http_1.Response) {
             var body = error.json() || '';
             var err = body.error || JSON.stringify(body);
-            errMsg = error.status + " - " + (error.statusText || '') + " " + err;
+            errMsg = err.replace(/{|}|"/g, " ");
         }
         else {
             errMsg = error.message ? error.message : error.toString();
         }
-        console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
     };
     return HeroService;

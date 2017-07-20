@@ -45,7 +45,7 @@ export class LoginComponent
                     localStorage.setItem('token', response.token);
                     this.redirectAfterLog();
                 },
-                error => this.errorService.newErrorMessage(error.message));
+                error => this.errorService.newErrorMessage(error));
     }
     
     redirectAfterLog() {

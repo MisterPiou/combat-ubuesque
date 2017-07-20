@@ -40,7 +40,7 @@ var LoginComponent = (function () {
             .subscribe(function (response) {
             localStorage.setItem('token', response.token);
             _this.redirectAfterLog();
-        }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+        }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     LoginComponent.prototype.redirectAfterLog = function () {
         this.router.navigate(['home']);

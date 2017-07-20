@@ -62,7 +62,7 @@ class HeroController extends FOSRestController
 
         $name = $request->request->get('name');
         $race = $request->request->get('race');
-        if($name && $race)
+        /*if($name && $race)
         {
             $em = $this->getDoctrine()->getManager();
             $hero = new Hero();
@@ -78,15 +78,12 @@ class HeroController extends FOSRestController
             $em->persist($hero);
             $em->flush();
 
-            $serializer = $this->get('serializer');
-            $json = $serializer->serialize(
-                array("Message" => "Ton héro à bien été embauché !"), 'json'
-            );
+            $view = $this->view($heroes, 200);
+            return $this->handleView($view);
+        }*/
 
-            return new Response($json);
-        }
-
-        throw new HttpException(400);
+        $view = $this->view(array("Message" => "Ton héros n'a pas voulu se joindre à ton équipe..."), 400);
+        return $this->handleView($view);
     }
 
     /**
@@ -105,14 +102,20 @@ class HeroController extends FOSRestController
             $em = $this->getDoctrine()->getManager();
             $heroes = $em->getRepository("ComubuBundle:Hero")->findAll();
 
-            $serializer = $this->get('serializer');
-            $json = $serializer->serialize(
-                $heroes, 'json'
-            );
-
-            return new Response($json);
+            $view = $this->view($heroes, 200);
+            return $this->handleView($view);
         }
+        
+        $view = $this->view(array("Message" => "Ton héros ne veut pas partir de ton équipe..."), 400);
+        return $this->handleView($view);
+    }
 
-        throw new HttpException(400);
+    /**
+     * @Route("/numberHeroes")
+     */
+    public function numberHeroes()
+    {
+        $view = $this->view(array("Message" => "Ton héros ne veut pas partir de ton équipe..."), 400);
+        return $this->handleView($view);
     }
 }

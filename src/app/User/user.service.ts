@@ -5,6 +5,7 @@ import { Headers, RequestOptions }          from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 
 import { tokenNotExpired }  from 'angular2-jwt';
 import { AuthHttp }         from 'angular2-jwt';
@@ -64,7 +65,7 @@ export class UserService {
         if (error instanceof Response) {
           const body = error.json() || '';
           const err = body.error || JSON.stringify(body);
-          errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+          errMsg = err.replace(/{|}|"/g, " ");
         } else {
           errMsg = error.message ? error.message : error.toString();
         }

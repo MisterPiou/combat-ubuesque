@@ -20,7 +20,7 @@ var AccountComponent = (function () {
     AccountComponent.prototype.getUser = function () {
         var _this = this;
         this.userService.infosUser()
-            .subscribe(function (user) { return _this.user = user; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+            .subscribe(function (user) { return _this.user = user; }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/
     AccountComponent.prototype.ngOnInit = function () {

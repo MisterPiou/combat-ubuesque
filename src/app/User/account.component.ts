@@ -20,7 +20,7 @@ export class AccountComponent implements OnInit
         this.userService.infosUser()
             .subscribe(
                 user => this.user = user,
-                error => this.errorService.newErrorMessage(error.message));
+                error => this.errorService.newErrorMessage(error));
     }
     
     /** ng Init **/
