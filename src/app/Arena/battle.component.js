@@ -25,7 +25,7 @@ var BattleComponent = (function () {
         this.opponentLifePercentage = 100;
         /* Global */
         this.intervals = [0, 0];
-        this.stateGame = 0;
+        this.stateGame = 9; // 0:en cours - 1:victoire - 2: defaite - 9:pause
     }
     BattleComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -33,12 +33,15 @@ var BattleComponent = (function () {
             if (+params['id'] == 0) {
                 _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", 0, 0, 0, 1, 100);
                 _this.opponentLifeActual = _this.opponent.life;
-                _this.opponentAttack();
             }
         });
-        this.heroService.getHero(2).subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+        this.heroService.getHeroSelected().subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
         this.hero = new hero_1.Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
+    };
+    BattleComponent.prototype.startBattle = function () {
+        this.stateGame = 0;
+        this.opponentAttack();
     };
     /** ATTAQUE **/
     BattleComponent.prototype.onAttack = function (spell) {

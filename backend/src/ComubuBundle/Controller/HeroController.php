@@ -52,6 +52,22 @@ class HeroController extends FOSRestController
     }
 
     /**
+     * @Route("/getHeroSelected")
+     */
+    public function getHeroSelectedAction()
+    {
+        if($hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->findOneBy(array(
+            'user' => $this->getUser(),
+            'state' => Hero::STATUS_SELECTED
+        )))
+            $view = $this->view($hero, 200);
+        else
+            $view = $this->view(array("Erreur" => "Tu n'as pas de héros principal séléctionné... Rends toi au vestiaire !"), 404);
+
+        return $this->handleView($view);
+    }
+
+    /**
      * @Route("/addHero")
      */
     public function addHeroAction(Request $request)

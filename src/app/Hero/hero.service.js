@@ -35,6 +35,12 @@ var HeroService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
+    /* Recupere le heros séléctioné */
+    HeroService.prototype.getHeroSelected = function () {
+        return this.authHttp.get(this.heroesUrl + 'getHeroSelected')
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
     /* Ajoute un heros */
     HeroService.prototype.addHero = function (name, race) {
         return this.authHttp.post(this.heroesUrl + 'addHero', { name: name, race: race })

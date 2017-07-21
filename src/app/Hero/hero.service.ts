@@ -32,6 +32,13 @@ export class HeroService {
             .catch(this.handleError);
     }
     
+    /* Recupere le heros séléctioné */
+    getHeroSelected(): Observable<Hero> {
+        return this.authHttp.get(this.heroesUrl + 'getHeroSelected')
+            .map(this.extractData)
+            .catch(this.handleError);
+    }
+    
     /* Ajoute un heros */
     addHero(name: string, race: number): Observable<Hero> {
         return this.authHttp.post(this.heroesUrl + 'addHero', {name, race})

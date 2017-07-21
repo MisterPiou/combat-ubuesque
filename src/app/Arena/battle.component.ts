@@ -22,7 +22,7 @@ export class BattleComponent implements OnInit
     opponentLifePercentage = 100;
     /* Global */
     intervals = [0,0];
-    stateGame = 0;
+    stateGame = 9; // 0:en cours - 1:victoire - 2: defaite - 9:pause
     
     /** INIT **/
     constructor(
@@ -36,15 +36,19 @@ export class BattleComponent implements OnInit
             if(+params['id']==0) {
                 this.opponent = new Hero(0, 0, "Pouchink Paul", 0, 0, 0, 1, 100);
                 this.opponentLifeActual = this.opponent.life;
-                this.opponentAttack();
             }
         });
-        this.heroService.getHero(2).subscribe(
+        this.heroService.getHeroSelected().subscribe(
             hero => this.hero = hero,
             error => this.errorService.newErrorMessage(error.message)
         )
         this.hero = new Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
+    }
+    
+    startBattle() {
+        this.stateGame = 0;
+        this.opponentAttack();
     }
     
     /** ATTAQUE **/
