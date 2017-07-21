@@ -15,12 +15,14 @@ var hero_1 = require("./class/hero");
 var hero_service_1 = require("./hero.service");
 var race_1 = require("./class/race");
 var error_service_1 = require("../Global/error.service");
+var formula_service_1 = require("../Global/formula.service");
 var HeroCardComponent = (function () {
-    function HeroCardComponent(heroService, errorService, route, router) {
+    function HeroCardComponent(heroService, errorService, route, router, formula) {
         this.heroService = heroService;
         this.errorService = errorService;
         this.route = route;
         this.router = router;
+        this.formula = formula;
         this.hero = new hero_1.Hero(1, 1, "", 1, 0, 0, 1, 100);
         this.lifePercentage = 0;
         this.races = race_1.RACES;
@@ -28,8 +30,8 @@ var HeroCardComponent = (function () {
         this.isLoading = false;
     }
     HeroCardComponent.prototype.initCard = function () {
-        this.xpPercentage = (this.hero.xp / (this.hero.level * 10)) * 100;
-        this.lifePercentage = (this.hero.life / ((this.hero.level * 5) + 95)) * 100;
+        this.xpPercentage = Math.round((this.hero.xp / this.formula.calculateXpNeed(this.hero.level)) * 100);
+        this.lifePercentage = Math.round((this.hero.life / this.formula.calculateLifeMax(this.hero.level)) * 100);
     };
     /** Selectione le hero principal **/
     HeroCardComponent.prototype.mainHero = function () {
@@ -62,7 +64,8 @@ HeroCardComponent = __decorate([
     __metadata("design:paramtypes", [hero_service_1.HeroService,
         error_service_1.ErrorService,
         router_1.ActivatedRoute,
-        router_1.Router])
+        router_1.Router,
+        formula_service_1.FormulaService])
 ], HeroCardComponent);
 exports.HeroCardComponent = HeroCardComponent;
 //# sourceMappingURL=hero-card.component.js.map

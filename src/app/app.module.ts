@@ -16,6 +16,7 @@ import { AccountComponent }         from './User/account.component';
 import { HeroService }          from './Hero/hero.service';
 import { UserService }          from './User/user.service';
 import { ErrorService }         from './Global/error.service';
+import { FormulaService }       from './Global/formula.service';
 import { AuthGuard }            from './Global/auth.guard';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
@@ -48,6 +49,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
       HeroService,
       UserService,
       ErrorService,
+      FormulaService,
       AuthGuard,
   ],
   bootstrap: [ 

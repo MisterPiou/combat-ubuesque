@@ -7,7 +7,8 @@ import { Hero }         from './class/hero';
 import { HeroService }  from './hero.service';
 import { Race, RACES }  from './class/race';
 
-import {ErrorService} from '../Global/error.service';
+import {ErrorService}   from '../Global/error.service';
+import {FormulaService} from '../Global/formula.service';
 
 declare var bootbox: any;
 
@@ -29,11 +30,12 @@ export class HeroCardComponent implements OnInit  {
         private errorService: ErrorService,
         private route: ActivatedRoute,
         private router: Router,
+        private formula: FormulaService,
     ) { }
     
     initCard() {
-        this.xpPercentage = ( this.hero.xp / (this.hero.level * 10) ) * 100;
-        this.lifePercentage = ( this.hero.life / ((this.hero.level * 5)+95) ) * 100;
+        this.xpPercentage = Math.round((this.hero.xp / this.formula.calculateXpNeed(this.hero.level) ) * 100);
+        this.lifePercentage = Math.round((this.hero.life / this.formula.calculateLifeMax(this.hero.level) ) * 100);
     }
     
     /** Selectione le hero principal **/

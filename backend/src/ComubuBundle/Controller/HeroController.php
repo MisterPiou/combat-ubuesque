@@ -136,6 +136,12 @@ class HeroController extends FOSRestController
                 $hero->setState($request->request->get('state'));
             }
 
+            if($request->request->get('level'))
+                $hero->setLevel($request->request->get('level'));
+
+            if($request->request->get('xp'))
+                $hero->setXp($request->request->get('xp'));
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($hero);
             $em->flush();

@@ -14,11 +14,13 @@ var hero_1 = require("./class/hero");
 var hero_service_1 = require("./hero.service");
 var race_1 = require("./class/race");
 var error_service_1 = require("../Global/error.service");
+var formula_service_1 = require("../Global/formula.service");
 var HeroComponent = (function () {
-    function HeroComponent(heroService, errorService, router) {
+    function HeroComponent(heroService, errorService, router, formula) {
         this.heroService = heroService;
         this.errorService = errorService;
         this.router = router;
+        this.formula = formula;
         this.defaultName = "Mon Héros";
         this.isSubmitted = false;
         this.lifePercentage = 0;
@@ -52,8 +54,8 @@ var HeroComponent = (function () {
     /** When user select a hero on list **/
     HeroComponent.prototype.selectHero = function (hero) {
         this.selectedHero = hero;
-        this.xpPercentage = (hero.xp / (hero.level * 10)) * 100;
-        this.lifePercentage = (hero.life / ((hero.level * 5) + 95)) * 100;
+        this.xpPercentage = Math.round((hero.xp / this.formula.calculateXpNeed(hero.level)) * 100);
+        this.lifePercentage = Math.round((hero.life / this.formula.calculateLifeMax(hero.level)) * 100);
     };
     /** Voir le hero **/
     HeroComponent.prototype.viewHero = function () {
@@ -100,7 +102,8 @@ HeroComponent = __decorate([
     }),
     __metadata("design:paramtypes", [hero_service_1.HeroService,
         error_service_1.ErrorService,
-        router_1.Router])
+        router_1.Router,
+        formula_service_1.FormulaService])
 ], HeroComponent);
 exports.HeroComponent = HeroComponent;
 //# sourceMappingURL=hero.component.js.map

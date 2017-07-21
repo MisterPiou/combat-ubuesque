@@ -5,7 +5,8 @@ import { Hero }         from './class/hero';
 import { HeroService }   from './hero.service';
 import { Race, RACES }  from './class/race';
 
-import {ErrorService} from '../Global/error.service';
+import {ErrorService}   from '../Global/error.service';
+import {FormulaService} from '../Global/formula.service';
 
 declare var bootbox: any;
 
@@ -28,6 +29,7 @@ export class HeroComponent implements OnInit  {
         private heroService: HeroService,
         private errorService: ErrorService,
         private router: Router,
+        private formula: FormulaService,
     ) { }
     
     /** Display all heroes **/
@@ -61,8 +63,8 @@ export class HeroComponent implements OnInit  {
     /** When user select a hero on list **/
     selectHero(hero: Hero) {
         this.selectedHero = hero;
-        this.xpPercentage = ( hero.xp / (hero.level * 10) ) * 100;
-        this.lifePercentage = ( hero.life / ((hero.level * 5)+95) ) * 100;
+        this.xpPercentage = Math.round((hero.xp / this.formula.calculateXpNeed(hero.level) ) * 100);
+        this.lifePercentage = Math.round((hero.life / this.formula.calculateLifeMax(hero.level) ) * 100);
     }
     
     /** Voir le hero **/

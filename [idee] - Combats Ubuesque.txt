@@ -31,9 +31,25 @@ Les joueurs auront 3 attaques sous forme de cooldown
 Le premier a ne plus avoir de vie perd
 
 * Attaque *
-Barbares : Kikdatafasse (gros coup de pied) - Krikitu (Cri qui motive le lanceur)
-Valkyri : Charmoi (Lance un charme qui pertube l'adversaire) - 
-Voleurs : Timitidai (se fais discret au point de l'oublier) - Fourbeur (donne un petit coup dans le dos (doit être sous timitidai)
+Barbares : 
+	- Kikdatafasse (gros coup de pied) : influencer par Musculature + augmente son honnêteté
+	- Krikitu (Cri qui motive le lanceur) : influencer par Charisme + augmente sa fourberie
+Valkyri : 
+	- Charmoi (Lance un charme qui pertube l'adversaire) : Influencer par Charme
+	- Coude Glyphe (Lance une grosse giffle à l'adversaire) : Influencer par Musculature
+Voleurs : 
+	- Timitidai (se fais discret au point de l'oublier) : Influencer par Intelligence + augmente son honnêteté
+	- Fourbeur (donne un petit coup dans le dos (sous timitidai) et les cooldowns de l'adversaire à 0) : influencer par Musclulature + augmente sa fourberie
 Ensorcoleuse : 
 Aventurier :
 Ingenieur : 
+
+* Palette *
+#003250,#5893AB,#F2F2F5,#787877
+#F7F5E8,#ADD0E7,#0A5C84,#333333
+
+* Calcule *
+Xp en cas de victoire = (mon level * level adversaire) * (10 + fourberie)
+Xp en cas de défaite = (mon level * level adversaire) * (1 + honnêteté)
+Xp par level = mon level² * (100 + mon level²)
+Attaque = base * capacité

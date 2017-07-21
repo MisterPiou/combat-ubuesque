@@ -13,19 +13,30 @@ var router_1 = require("@angular/router");
 var hero_1 = require("../Hero/class/hero");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
+var formula_service_1 = require("../Global/formula.service");
+var StateGame;
+(function (StateGame) {
+    StateGame[StateGame["current"] = 0] = "current";
+    StateGame[StateGame["victory"] = 1] = "victory";
+    StateGame[StateGame["defeat"] = 2] = "defeat";
+    StateGame[StateGame["pause"] = 9] = "pause";
+})(StateGame || (StateGame = {}));
 var BattleComponent = (function () {
     /** INIT **/
-    function BattleComponent(route, heroService, errorService) {
+    function BattleComponent(route, heroService, errorService, formula) {
         this.route = route;
         this.heroService = heroService;
         this.errorService = errorService;
+        this.formula = formula;
         /* Attaque */
         this.attacksPercentages = [0, 0, 0];
         this.heroLifePercentage = 100;
         this.opponentLifePercentage = 100;
         /* Global */
         this.intervals = [0, 0];
-        this.stateGame = 9; // 0:en cours - 1:victoire - 2: defaite - 9:pause
+        this.stateGame = StateGame.pause;
+        this.message = "";
+        this.xpPercentage = 0;
     }
     BattleComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -43,16 +54,35 @@ var BattleComponent = (function () {
         this.heroLifeActual = this.hero.life;
     };
     BattleComponent.prototype.startBattle = function () {
-        this.stateGame = 0;
+        this.stateGame = StateGame.current;
         this.opponentAttack();
     };
     BattleComponent.prototype.endBattle = function () {
+        var _this = this;
+        var xpNeed = this.formula.calculateXpNeed(this.hero.level);
+        if (this.stateGame == StateGame.victory) {
+            this.hero.xp += this.formula.calculateXpVictory(this.hero.level, this.opponent.level);
+            this.message = "Victoire !";
+        }
+        if (this.stateGame == StateGame.defeat) {
+            this.hero.xp += this.formula.calculateXpDefeat(this.hero.level, this.opponent.level);
+            this.message = "Defaite...";
+        }
+        if (this.hero.xp >= xpNeed) {
+            this.message += "<br />Tu as gagné un level !";
+            this.hero.level += 1;
+            this.hero.xp = this.hero.xp - xpNeed;
+        }
+        this.xpPercentage = Math.round((this.hero.xp / xpNeed) * 100);
+        var lvl = this.hero.level;
+        var xp = this.hero.xp;
+        this.heroService.updateHero(this.hero.id, { lvl: lvl, xp: xp }).subscribe(function (hero) { return null; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /** ATTAQUE **/
     BattleComponent.prototype.onAttack = function (spell) {
-        if (this.stateGame == 0) {
+        if (this.stateGame == StateGame.current) {
             if (spell == 0 && this.attacksPercentages[spell] == 0) {
-                var power = 5 * this.hero.level;
+                var power = 55 * this.hero.level;
                 this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                 this.coolDown(spell, 2000);
             }
@@ -72,8 +102,9 @@ var BattleComponent = (function () {
         this.opponentLifeActual -= lifeLose;
         if (this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
-            this.stateGame = 1;
+            this.stateGame = StateGame.victory;
             this.clearTimer(1);
+            this.endBattle();
         }
         this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
     };
@@ -81,7 +112,8 @@ var BattleComponent = (function () {
         this.heroLifeActual -= lifeLose;
         if (this.heroLifeActual <= 0) {
             this.heroLifeActual = 0;
-            this.stateGame = 2;
+            this.stateGame = StateGame.defeat;
+            this.endBattle();
         }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life) * 100;
         this.opponentAttack();
@@ -110,7 +142,8 @@ BattleComponent = __decorate([
     }),
     __metadata("design:paramtypes", [router_1.ActivatedRoute,
         hero_service_1.HeroService,
-        error_service_1.ErrorService])
+        error_service_1.ErrorService,
+        formula_service_1.FormulaService])
 ], BattleComponent);
 exports.BattleComponent = BattleComponent;
 //# sourceMappingURL=battle.component.js.map

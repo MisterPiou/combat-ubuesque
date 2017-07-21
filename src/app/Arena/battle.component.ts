@@ -4,6 +4,14 @@ import {ActivatedRoute, Params} from '@angular/router';
 import {Hero}           from '../Hero/class/hero';
 import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}   from '../Global/error.service';
+import {FormulaService}   from '../Global/formula.service';
+
+enum StateGame {
+    current = 0,
+    victory = 1,
+    defeat = 2,
+    pause = 9
+}
 
 @Component({
   selector: 'battle',
@@ -22,13 +30,16 @@ export class BattleComponent implements OnInit
     opponentLifePercentage = 100;
     /* Global */
     intervals = [0,0];
-    stateGame = 9; // 0:en cours - 1:victoire - 2: defaite - 9:pause
+    stateGame = StateGame.pause;
+    message = "";
+    xpPercentage = 0;
     
     /** INIT **/
     constructor(
         private route: ActivatedRoute,
         private heroService: HeroService,
-        private errorService: ErrorService
+        private errorService: ErrorService,
+        private formula: FormulaService,
     ) {}
     
     ngOnInit() {
@@ -51,19 +62,42 @@ export class BattleComponent implements OnInit
     }
     
     startBattle() {
-        this.stateGame = 0;
+        this.stateGame = StateGame.current;
         this.opponentAttack();
     }
     
     endBattle() {
+        let xpNeed = this.formula.calculateXpNeed(this.hero.level);
         
+        if (this.stateGame == StateGame.victory) {
+            this.hero.xp += this.formula.calculateXpVictory(this.hero.level, this.opponent.level);
+            this.message = "Victoire !";
+        }
+        if (this.stateGame == StateGame.defeat) {
+            this.hero.xp += this.formula.calculateXpDefeat(this.hero.level, this.opponent.level);
+            this.message = "Defaite...";
+        }
+        
+        if (this.hero.xp >= xpNeed) {
+            this.message += "<br />Tu as gagné un level !";
+            this.hero.level += 1;
+            this.hero.xp = this.hero.xp - xpNeed;
+        }
+        this.xpPercentage = Math.round((this.hero.xp / xpNeed) * 100 );
+        
+        let lvl = this.hero.level;
+        let xp = this.hero.xp;
+        this.heroService.updateHero(this.hero.id, {lvl,xp}).subscribe(
+            hero => null,
+            error => this.errorService.newErrorMessage(error.message)
+        );
     }
     
     /** ATTAQUE **/
     onAttack(spell: number) {
-        if (this.stateGame == 0) {
+        if (this.stateGame == StateGame.current) {
             if(spell==0 && this.attacksPercentages[spell] == 0) {
-                let power = 5 * this.hero.level;
+                let power = 55 * this.hero.level;
                 this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                 this.coolDown(spell, 2000);
             }
@@ -84,8 +118,9 @@ export class BattleComponent implements OnInit
         this.opponentLifeActual -= lifeLose;
         if(this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
-            this.stateGame = 1;
+            this.stateGame = StateGame.victory;
             this.clearTimer(1);
+            this.endBattle();
         }
         this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life ) * 100;
     }
@@ -94,7 +129,8 @@ export class BattleComponent implements OnInit
         this.heroLifeActual -= lifeLose;
         if(this.heroLifeActual <= 0) {
             this.heroLifeActual = 0;
-            this.stateGame = 2;
+            this.stateGame = StateGame.defeat;
+            this.endBattle();
         }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life ) * 100;
         this.opponentAttack();
