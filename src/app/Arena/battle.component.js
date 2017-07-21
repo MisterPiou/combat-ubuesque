@@ -82,7 +82,7 @@ var BattleComponent = (function () {
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == StateGame.current) {
             if (spell == 0 && this.attacksPercentages[spell] == 0) {
-                var power = 55 * this.hero.level;
+                var power = 5 * this.hero.level;
                 this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                 this.coolDown(spell, 2000);
             }
@@ -113,10 +113,13 @@ var BattleComponent = (function () {
         if (this.heroLifeActual <= 0) {
             this.heroLifeActual = 0;
             this.stateGame = StateGame.defeat;
+            this.clearTimer(1);
             this.endBattle();
         }
+        else {
+            this.opponentAttack();
+        }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life) * 100;
-        this.opponentAttack();
     };
     /** TIMER **/
     BattleComponent.prototype.clearTimer = function (interval) { clearInterval(this.intervals[interval]); };

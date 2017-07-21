@@ -88,8 +88,7 @@ export class BattleComponent implements OnInit
         let lvl = this.hero.level;
         let xp = this.hero.xp;
         this.heroService.updateHero(this.hero.id, {lvl,xp}).subscribe(
-            hero => null,
-            error => this.errorService.newErrorMessage(error.message)
+            hero => null, error => this.errorService.newErrorMessage(error.message)
         );
     }
     
@@ -97,7 +96,7 @@ export class BattleComponent implements OnInit
     onAttack(spell: number) {
         if (this.stateGame == StateGame.current) {
             if(spell==0 && this.attacksPercentages[spell] == 0) {
-                let power = 55 * this.hero.level;
+                let power = 5 * this.hero.level;
                 this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                 this.coolDown(spell, 2000);
             }
@@ -130,10 +129,12 @@ export class BattleComponent implements OnInit
         if(this.heroLifeActual <= 0) {
             this.heroLifeActual = 0;
             this.stateGame = StateGame.defeat;
+            this.clearTimer(1);
             this.endBattle();
+        } else {
+            this.opponentAttack();
         }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life ) * 100;
-        this.opponentAttack();
     }
     
     
