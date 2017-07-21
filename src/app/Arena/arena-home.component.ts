@@ -11,8 +11,11 @@ export class ArenaHomeComponent
         private router: Router
     ) {}
     
-    onStartTraining(level: number) {
-        this.router.navigate(['arena/battle', 0]);
+    onTraining() {
+        this.router.navigate(['arena/training']);
     }
-        
+    
+    onVersus() {
+        this.router.navigate(['arena/versus']);
+    }   
 }

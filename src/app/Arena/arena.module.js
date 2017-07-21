@@ -9,6 +9,8 @@ var core_1 = require("@angular/core");
 var common_1 = require("@angular/common");
 var arena_component_1 = require("./arena.component");
 var arena_home_component_1 = require("./arena-home.component");
+var training_component_1 = require("./training.component");
+var versus_component_1 = require("./versus.component");
 var battle_component_1 = require("./battle.component");
 var arena_routing_module_1 = require("./arena-routing.module");
 var ArenaModule = (function () {
@@ -25,7 +27,9 @@ ArenaModule = __decorate([
         declarations: [
             arena_component_1.ArenaComponent,
             arena_home_component_1.ArenaHomeComponent,
-            battle_component_1.BattleComponent
+            battle_component_1.BattleComponent,
+            training_component_1.TrainingComponent,
+            versus_component_1.VersusComponent,
         ]
     })
 ], ArenaModule);

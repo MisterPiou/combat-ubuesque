@@ -31,8 +31,11 @@ var BattleComponent = (function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             if (+params['id'] == 0) {
-                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", 0, 0, 0, 1, 100);
+                var lvl = +params['lvl'];
+                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", 0, 0, 0, lvl, lvl * 100);
                 _this.opponentLifeActual = _this.opponent.life;
+            }
+            else {
             }
         });
         this.heroService.getHeroSelected().subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
@@ -43,11 +46,14 @@ var BattleComponent = (function () {
         this.stateGame = 0;
         this.opponentAttack();
     };
+    BattleComponent.prototype.endBattle = function () {
+    };
     /** ATTAQUE **/
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == 0) {
             if (spell == 0 && this.attacksPercentages[spell] == 0) {
-                this.opponentLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
+                var power = 5 * this.hero.level;
+                this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                 this.coolDown(spell, 2000);
             }
         }
@@ -57,7 +63,8 @@ var BattleComponent = (function () {
         this.clearTimer(1);
         var interval = Math.floor((Math.random() * 1000) + 2000 + 1);
         this.intervals[1] = window.setInterval(function () {
-            _this.heroLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
+            var power = 5 * _this.opponent.level;
+            _this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     };
     /** VIE **/

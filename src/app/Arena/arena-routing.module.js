@@ -9,6 +9,8 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var arena_component_1 = require("./arena.component");
 var arena_home_component_1 = require("./arena-home.component");
+var training_component_1 = require("./training.component");
+var versus_component_1 = require("./versus.component");
 var battle_component_1 = require("./battle.component");
 var arenaRoutes = [
     {
@@ -17,7 +19,9 @@ var arenaRoutes = [
         children: [
             { path: '', redirectTo: 'arena-door' },
             { path: 'arena-door', component: arena_home_component_1.ArenaHomeComponent },
-            { path: 'battle/:id', component: battle_component_1.BattleComponent },
+            { path: 'training', component: training_component_1.TrainingComponent },
+            { path: 'versus', component: versus_component_1.VersusComponent },
+            { path: 'battle/:id/:lvl', component: battle_component_1.BattleComponent },
         ]
     }
 ];

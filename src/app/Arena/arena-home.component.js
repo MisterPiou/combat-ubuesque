@@ -14,8 +14,11 @@ var ArenaHomeComponent = (function () {
     function ArenaHomeComponent(router) {
         this.router = router;
     }
-    ArenaHomeComponent.prototype.onStartTraining = function (level) {
-        this.router.navigate(['arena/battle', 0]);
+    ArenaHomeComponent.prototype.onTraining = function () {
+        this.router.navigate(['arena/training']);
+    };
+    ArenaHomeComponent.prototype.onVersus = function () {
+        this.router.navigate(['arena/versus']);
     };
     return ArenaHomeComponent;
 }());

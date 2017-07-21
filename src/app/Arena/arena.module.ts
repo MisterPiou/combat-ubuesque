@@ -3,6 +3,8 @@ import { CommonModule }   from '@angular/common';
 
 import { ArenaComponent }       from './arena.component';
 import { ArenaHomeComponent }   from './arena-home.component';
+import {TrainingComponent }     from './training.component';
+import {VersusComponent }       from './versus.component';
 import { BattleComponent }      from './battle.component';
 
 import { ArenaRoutingModule } from './arena-routing.module';
@@ -15,7 +17,9 @@ import { ArenaRoutingModule } from './arena-routing.module';
   declarations: [
     ArenaComponent,
     ArenaHomeComponent,
-    BattleComponent
+    BattleComponent,
+    TrainingComponent,
+    VersusComponent,
   ]
 })
 export class ArenaModule {}

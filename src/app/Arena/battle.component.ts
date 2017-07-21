@@ -34,8 +34,12 @@ export class BattleComponent implements OnInit
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
             if(+params['id']==0) {
-                this.opponent = new Hero(0, 0, "Pouchink Paul", 0, 0, 0, 1, 100);
+                let lvl = +params['lvl'];
+                this.opponent = new Hero(0, 0, "Pouchink Paul", 0, 0, 0, lvl, lvl * 100);
                 this.opponentLifeActual = this.opponent.life;
+            }
+            else {
+                
             }
         });
         this.heroService.getHeroSelected().subscribe(
@@ -51,11 +55,16 @@ export class BattleComponent implements OnInit
         this.opponentAttack();
     }
     
+    endBattle() {
+        
+    }
+    
     /** ATTAQUE **/
     onAttack(spell: number) {
         if (this.stateGame == 0) {
             if(spell==0 && this.attacksPercentages[spell] == 0) {
-                this.opponentLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
+                let power = 5 * this.hero.level;
+                this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                 this.coolDown(spell, 2000);
             }
         }
@@ -65,7 +74,8 @@ export class BattleComponent implements OnInit
         this.clearTimer(1);
         let interval = Math.floor((Math.random() * 1000) + 2000 + 1);
         this.intervals[1] = window.setInterval(() => {
-            this.heroLoseLife(Math.floor((Math.random() * 5) + 5 + 1));
+            let power = 5 * this.opponent.level;
+            this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     }
     

@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ArenaComponent }       from './arena.component';
 import { ArenaHomeComponent }   from './arena-home.component';
+import { TrainingComponent }    from './training.component';
+import { VersusComponent }    from './versus.component';
 import { BattleComponent }      from './battle.component';
 
 const arenaRoutes: Routes = [
@@ -12,7 +14,9 @@ const arenaRoutes: Routes = [
         children: [
             { path: '', redirectTo: 'arena-door' },
             { path: 'arena-door', component: ArenaHomeComponent },
-            { path: 'battle/:id', component: BattleComponent },
+            { path: 'training', component: TrainingComponent },
+            { path: 'versus', component: VersusComponent },
+            { path: 'battle/:id/:lvl', component: BattleComponent },
         ]
     }
 ];
