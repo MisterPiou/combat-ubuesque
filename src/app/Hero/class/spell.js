@@ -1,71 +1,32 @@
 "use strict";
 var Spell = (function () {
-    function Spell() {
+    function Spell(id, name, info, type, influenceBy, cooldown, effect, ratio) {
+        this.id = id;
+        this.name = name;
+        this.info = info;
+        this.type = type;
+        this.influenceBy = influenceBy;
+        this.cooldown = cooldown;
+        this.effect = effect;
+        this.ratio = ratio;
     }
     return Spell;
 }());
 exports.Spell = Spell;
-var Type;
-(function (Type) {
-    Type[Type["attack"] = 0] = "attack";
-    Type[Type["boost"] = 1] = "boost";
-    Type[Type["freeze"] = 2] = "freeze";
-    Type[Type["shield"] = 3] = "shield";
-    Type[Type["hide"] = 4] = "hide";
-})(Type || (Type = {}));
-var Influence;
-(function (Influence) {
-    Influence[Influence["none"] = 0] = "none";
-    Influence[Influence["muscle"] = 1] = "muscle";
-    Influence[Influence["appeal"] = 2] = "appeal";
-    Influence[Influence["smart"] = 3] = "smart";
-    Influence[Influence["charm"] = 4] = "charm";
-})(Influence || (Influence = {}));
-exports.SPELLS = [
-    {
-        id: 0, name: 'Frappe',
-        info: 'Une giffle des plus banales',
-        type: Type.attack, influenceBy: Influence.muscle,
-        cooldown: 10, effect: 10, ratio: 1.1
-    },
-    /* Attaque Barbare */
-    {
-        id: 10, name: 'Kikdatafasse',
-        info: 'Gros coup de pied',
-        type: Type.attack, influenceBy: Influence.muscle,
-        cooldown: 20, effect: 100, ratio: 1.1
-    },
-    {
-        id: 11, name: 'Krikitu',
-        info: 'Cri qui motive le lanceur',
-        type: Type.boost, influenceBy: Influence.appeal,
-        cooldown: 50, effect: 30, ratio: 1.1
-    },
-    /* Attaque Valkyri */
-    {
-        id: 20, name: 'Coude Glyphe',
-        info: 'Lance une grosse giffle à l\'adversaire',
-        type: Type.attack, influenceBy: Influence.muscle,
-        cooldown: 20, effect: 50, ratio: 1.1
-    },
-    {
-        id: 21, name: 'Charmoi',
-        info: 'Lance un charme qui pertube l\'adversaire',
-        type: Type.freeze, influenceBy: Influence.charm,
-        cooldown: 50, effect: 30, ratio: 1.1
-    },
-    /* Attaque Voleurs */
-    {
-        id: 30, name: 'Fourbeur',
-        info: 'Donne un petit coup dans le dos (plus efficace pendant timidité) qui pertube l\'adversaire',
-        type: Type.attack, influenceBy: Influence.muscle,
-        cooldown: 20, effect: 30, ratio: 1.1
-    },
-    {
-        id: 31, name: 'Timiditai',
-        info: 'Se fais discret au point de se faire oublier',
-        type: Type.hide, influenceBy: Influence.smart,
-        cooldown: 50, effect: 30, ratio: 1.1
-    },
-];
+var SpellType;
+(function (SpellType) {
+    SpellType[SpellType["attack"] = 0] = "attack";
+    SpellType[SpellType["boost"] = 1] = "boost";
+    SpellType[SpellType["freeze"] = 2] = "freeze";
+    SpellType[SpellType["shield"] = 3] = "shield";
+    SpellType[SpellType["hide"] = 4] = "hide";
+})(SpellType = exports.SpellType || (exports.SpellType = {}));
+var SpellInfluence;
+(function (SpellInfluence) {
+    SpellInfluence[SpellInfluence["none"] = 0] = "none";
+    SpellInfluence[SpellInfluence["muscle"] = 1] = "muscle";
+    SpellInfluence[SpellInfluence["appeal"] = 2] = "appeal";
+    SpellInfluence[SpellInfluence["smart"] = 3] = "smart";
+    SpellInfluence[SpellInfluence["charm"] = 4] = "charm";
+})(SpellInfluence = exports.SpellInfluence || (exports.SpellInfluence = {}));
 //# sourceMappingURL=spell.js.map

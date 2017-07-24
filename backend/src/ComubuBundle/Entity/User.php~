@@ -4,6 +4,7 @@ namespace ComubuBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
+use JMS\Serializer\Annotation as Serializer;
 
 use ComubuBundle\Entity\Hero;
 
@@ -12,6 +13,8 @@ use ComubuBundle\Entity\Hero;
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="ComubuBundle\Repository\UserRepository")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class User extends BaseUser
 {
@@ -21,6 +24,8 @@ class User extends BaseUser
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Serializer\Expose
      */
     protected $id;
 
@@ -35,6 +40,8 @@ class User extends BaseUser
      * @var int
      *
      * @ORM\Column(name="state", type="smallint")
+     *
+     * @Serializer\Expose
      */
     private $state;
 

@@ -20,7 +20,7 @@
                 <div class="battle_spell">
                     <div class="battle_btn_attack" (click)="onAttack(0);">
                         <div class="battle_btn_attack_timer" [ngStyle]="{'width.%': attacksPercentages[0]}">
-                             <span>Coup de tatane !</span>
+                             <span>{{ hero.race.spells[0].name }}</span>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="battle_spell">
                     <div class="battle_btn_attack" (click)="onAttack(1);">
                         <div class="battle_btn_attack_timer" [ngStyle]="{'width.%': attacksPercentages[1]}">
-                             <span>Attaque 2</span>
+                             <span>{{ hero.race.spells[1].name }}</span>
                         </div>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="battle_spell">
                     <div class="battle_btn_attack" (click)="onAttack(2);">
                         <div class="battle_btn_attack_timer" [ngStyle]="{'width.%': attacksPercentages[2]}">
-                             <span>Attaque 3</span>
+                             <span>{{ hero.race.spells[2].name }}</span>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { Race, RACES }  from './race';
+import { Race }  from './race';
 
 export class Hero {
     constructor(

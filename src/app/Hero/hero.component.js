@@ -12,20 +12,21 @@ var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var hero_1 = require("./class/hero");
 var hero_service_1 = require("./hero.service");
-var race_1 = require("./class/race");
+var race_service_1 = require("./race.service");
 var error_service_1 = require("../Global/error.service");
 var formula_service_1 = require("../Global/formula.service");
 var HeroComponent = (function () {
-    function HeroComponent(heroService, errorService, router, formula) {
+    function HeroComponent(heroService, raceService, errorService, router, formula) {
         this.heroService = heroService;
+        this.raceService = raceService;
         this.errorService = errorService;
         this.router = router;
         this.formula = formula;
         this.defaultName = "Mon Héros";
         this.isSubmitted = false;
         this.lifePercentage = 0;
-        this.model = new hero_1.Hero(1, 1, this.defaultName, race_1.RACES[1], 0, 0, 1, 100);
-        this.races = race_1.RACES;
+        this.model = new hero_1.Hero(1, 1, this.defaultName, null, 0, 0, 1, 100);
+        this.races = null;
         this.xpPercentage = 0;
         this.isLoading = false;
     }
@@ -34,6 +35,15 @@ var HeroComponent = (function () {
         var _this = this;
         this.heroService.getHeroes()
             .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error); });
+    };
+    /** Display all races **/
+    HeroComponent.prototype.getRaces = function () {
+        var _this = this;
+        this.raceService.getRaces()
+            .subscribe(function (races) {
+            _this.races = races;
+            _this.model.race = _this.races[0];
+        }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** Submit form to add new hero **/
     HeroComponent.prototype.onSubmit = function () {
@@ -49,7 +59,7 @@ var HeroComponent = (function () {
     };
     /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {
-        this.model = new hero_1.Hero(1, 1, this.defaultName, race_1.RACES[1], 0, 0, 1, 100);
+        this.model = new hero_1.Hero(1, 1, this.defaultName, null, 0, 0, 1, 100);
     };
     /** When user select a hero on list **/
     HeroComponent.prototype.selectHero = function (hero) {
@@ -91,6 +101,7 @@ var HeroComponent = (function () {
     };
     /** ng Init **/
     HeroComponent.prototype.ngOnInit = function () {
+        this.getRaces();
         this.getHeroes();
     };
     return HeroComponent;
@@ -101,6 +112,7 @@ HeroComponent = __decorate([
         templateUrl: './hero.component.html',
     }),
     __metadata("design:paramtypes", [hero_service_1.HeroService,
+        race_service_1.RaceService,
         error_service_1.ErrorService,
         router_1.Router,
         formula_service_1.FormulaService])

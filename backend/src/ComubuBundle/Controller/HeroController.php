@@ -76,11 +76,12 @@ class HeroController extends FOSRestController
         $request->request->replace($data);
 
         $name = $request->request->get('name');
-        $race = $request->request->get('race');
-        if($name && $race)
+        $raceId = $request->request->get('race');
+        if($name && $raceId)
         {
             $em = $this->getDoctrine()->getManager();
             $hero = new Hero();
+            $race = $em->getRepository("ComubuBundle:Race")->find($raceId);
 
             $hero->setName($name);
             $hero->setRace($race);

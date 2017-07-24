@@ -5,7 +5,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { Hero }         from './class/hero';
 import { HeroService }  from './hero.service';
-import { Race, RACES }  from './class/race';
+import { Race }  from './class/race';
 
 import {ErrorService}   from '../Global/error.service';
 import {FormulaService} from '../Global/formula.service';
@@ -18,9 +18,9 @@ declare var bootbox: any;
 })
 export class HeroCardComponent implements OnInit  { 
     
-    hero: Hero = new Hero(1, 1, "", RACES[0], 0, 0, 1, 100);
+    hero: Hero = new Hero(1, 1, "", null, 0, 0, 1, 100);
     lifePercentage = 0;
-    races = RACES;
+    races: Race[] = null;
     selectedHero: Hero;
     xpPercentage = 0;
     isLoading = false;

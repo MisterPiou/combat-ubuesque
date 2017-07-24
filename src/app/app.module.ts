@@ -14,6 +14,7 @@ import { LoginComponent }           from './User/login.component';
 import { AccountComponent }         from './User/account.component';
 
 import { HeroService }          from './Hero/hero.service';
+import { RaceService }          from './Hero/race.service';
 import { UserService }          from './User/user.service';
 import { ErrorService }         from './Global/error.service';
 import { FormulaService }       from './Global/formula.service';
@@ -47,6 +48,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
         deps: [ Http, RequestOptions ]
     },
       HeroService,
+      RaceService,
       UserService,
       ErrorService,
       FormulaService,

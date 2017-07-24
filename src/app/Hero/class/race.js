@@ -1,39 +1,16 @@
 "use strict";
-var spell_1 = require("./spell");
+var spell = require("./spell");
 var Race = (function () {
-    function Race() {
+    function Race(id, name, info, spells) {
+        this.id = id;
+        this.name = name;
+        this.info = info;
+        this.spells = spells;
     }
     return Race;
 }());
 exports.Race = Race;
-exports.RACES = [
-    /* SBIRE */
-    {
-        id: 0,
-        name: 'Sbire',
-        info: 'Aucune',
-        spells: [spell_1.SPELLS[0], spell_1.SPELLS[0], spell_1.SPELLS[0]]
-    },
-    /* BARBARE */
-    {
-        id: 1,
-        name: 'Barbare',
-        info: 'Les barbares Branlarien',
-        spells: [spell_1.SPELLS[0], spell_1.SPELLS[1], spell_1.SPELLS[2]]
-    },
-    /* Valkyri */
-    {
-        id: 2,
-        name: 'Valkyri',
-        info: 'Les Valkyris du Bymb Hola',
-        spells: [spell_1.SPELLS[0], spell_1.SPELLS[3], spell_1.SPELLS[4]]
-    },
-    /* Voleur */
-    {
-        id: 3,
-        name: 'Voleur',
-        info: 'Les Voleurs des Scapinery',
-        spells: [spell_1.SPELLS[0], spell_1.SPELLS[5], spell_1.SPELLS[6]]
-    }
-];
+exports.Sbire = new Race(0, 'Sbire', 'Aucune', [
+    new spell.Spell(0, 'Frappe', 'Une giffle des plus banales', spell.SpellType.attack, spell.SpellInfluence.muscle, 5, 10, 1.1)
+]);
 //# sourceMappingURL=race.js.map

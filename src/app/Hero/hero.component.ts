@@ -3,7 +3,8 @@ import { Router }               from '@angular/router';
 
 import { Hero }         from './class/hero';
 import { HeroService }   from './hero.service';
-import { Race, RACES }  from './class/race';
+import { RaceService }   from './race.service';
+import { Race }  from './class/race';
 
 import {ErrorService}   from '../Global/error.service';
 import {FormulaService} from '../Global/formula.service';
@@ -19,14 +20,15 @@ export class HeroComponent implements OnInit  {
     heroes: Hero[];
     isSubmitted = false;
     lifePercentage = 0;
-    model = new Hero(1, 1, this.defaultName, RACES[1], 0, 0, 1, 100);
-    races = RACES;
+    model = new Hero(1, 1, this.defaultName, null, 0, 0, 1, 100);
+    races: Race[] = null;
     selectedHero: Hero;
     xpPercentage = 0;
     isLoading = false;
     
     constructor(
         private heroService: HeroService,
+        private raceService: RaceService,
         private errorService: ErrorService,
         private router: Router,
         private formula: FormulaService,
@@ -37,6 +39,17 @@ export class HeroComponent implements OnInit  {
         this.heroService.getHeroes()
             .subscribe(
                 heroes => this.heroes = heroes,
+                error => this.errorService.newErrorMessage(error));
+    }
+    
+    /** Display all races **/
+    getRaces(): void {
+        this.raceService.getRaces()
+            .subscribe(
+                races => {
+                    this.races = races;
+                    this.model.race = this.races[0];
+                },
                 error => this.errorService.newErrorMessage(error));
     }
     
@@ -57,7 +70,7 @@ export class HeroComponent implements OnInit  {
     
     /** Reset add hero forms **/
     newHero() {
-        this.model = new Hero(1, 1, this.defaultName, RACES[1], 0, 0, 1, 100);
+        this.model = new Hero(1, 1, this.defaultName, null, 0, 0, 1, 100);
     }
     
     /** When user select a hero on list **/
@@ -107,6 +120,7 @@ export class HeroComponent implements OnInit  {
     
     /** ng Init **/
     ngOnInit(): void {
+        this.getRaces();
         this.getHeroes();
     }
 }

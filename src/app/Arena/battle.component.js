@@ -14,7 +14,7 @@ var hero_1 = require("../Hero/class/hero");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
 var formula_service_1 = require("../Global/formula.service");
-var race_1 = require("../Hero/class/race");
+var race = require("../Hero/class/race");
 var StateGame;
 (function (StateGame) {
     StateGame[StateGame["current"] = 0] = "current";
@@ -31,7 +31,10 @@ var BattleComponent = (function () {
         this.formula = formula;
         /* Attaque */
         this.attacksPercentages = [0, 0, 0];
+        /* Personnage */
+        this.hero = new hero_1.Hero(1, 1, "Joueur", null, 0, 0, 1, 100);
         this.heroLifePercentage = 100;
+        this.opponent = new hero_1.Hero(1, 1, "Joueur", race.Sbire, 0, 0, 1, 100);
         this.opponentLifePercentage = 100;
         /* Global */
         this.intervals = [0, 0];
@@ -44,19 +47,23 @@ var BattleComponent = (function () {
         this.route.params.subscribe(function (params) {
             if (+params['id'] == 0) {
                 var lvl = +params['lvl'];
-                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race_1.RACES[0], 0, 0, lvl, lvl * 100);
+                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 100);
                 _this.opponentLifeActual = _this.opponent.life;
             }
             else {
+                _this.heroService.getHero(+params['id']).subscribe(function (hero) {
+                    _this.opponent = hero;
+                    _this.opponentLifeActual = _this.opponent.life;
+                }, function (error) { return _this.errorService.newErrorMessage(error.message); });
             }
         });
         this.heroService.getHeroSelected().subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
-        this.hero = new hero_1.Hero(1, 1, "Joueur", race_1.RACES[0], 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     };
     BattleComponent.prototype.startBattle = function () {
         this.stateGame = StateGame.current;
-        this.opponentAttack();
+        if (this.opponent.id == 0)
+            this.opponentAttack();
     };
     BattleComponent.prototype.endBattle = function () {
         var _this = this;
@@ -82,10 +89,10 @@ var BattleComponent = (function () {
     /** ATTAQUE **/
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == StateGame.current) {
-            if (spell == 0 && this.attacksPercentages[spell] == 0) {
-                var power = 5 * this.hero.level;
+            if (this.attacksPercentages[spell] == 0) {
+                var power = this.hero.race.spells[spell].effect * this.hero.level;
                 this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
-                this.coolDown(spell, 2000);
+                this.coolDown(spell, this.hero.race.spells[spell].cooldown * 100);
             }
         }
     };

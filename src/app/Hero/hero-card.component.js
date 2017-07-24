@@ -13,7 +13,6 @@ var router_1 = require("@angular/router");
 require("rxjs/add/operator/switchMap");
 var hero_1 = require("./class/hero");
 var hero_service_1 = require("./hero.service");
-var race_1 = require("./class/race");
 var error_service_1 = require("../Global/error.service");
 var formula_service_1 = require("../Global/formula.service");
 var HeroCardComponent = (function () {
@@ -23,9 +22,9 @@ var HeroCardComponent = (function () {
         this.route = route;
         this.router = router;
         this.formula = formula;
-        this.hero = new hero_1.Hero(1, 1, "", race_1.RACES[0], 0, 0, 1, 100);
+        this.hero = new hero_1.Hero(1, 1, "", null, 0, 0, 1, 100);
         this.lifePercentage = 0;
-        this.races = race_1.RACES;
+        this.races = null;
         this.xpPercentage = 0;
         this.isLoading = false;
     }

@@ -6,7 +6,7 @@ import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}   from '../Global/error.service';
 import {FormulaService}   from '../Global/formula.service';
 
-import {RACES} from '../Hero/class/race';
+import * as race from '../Hero/class/race';
 
 enum StateGame {
     current = 0,
@@ -24,10 +24,10 @@ export class BattleComponent implements OnInit
     /* Attaque */
     attacksPercentages = [0,0,0];
     /* Personnage */
-    hero: Hero;
+    hero: Hero = new Hero(1, 1, "Joueur", null, 0, 0, 1, 100);
     heroLifeActual: number;
     heroLifePercentage = 100;
-    opponent: Hero;
+    opponent: Hero = new Hero(1, 1, "Joueur", race.Sbire, 0, 0, 1, 100);
     opponentLifeActual: number;
     opponentLifePercentage = 100;
     /* Global */
@@ -48,24 +48,30 @@ export class BattleComponent implements OnInit
         this.route.params.subscribe((params: Params) => {
             if(+params['id']==0) {
                 let lvl = +params['lvl'];
-                this.opponent = new Hero(0, 0, "Pouchink Paul", RACES[0], 0, 0, lvl, lvl * 100);
+                this.opponent = new Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 100);
                 this.opponentLifeActual = this.opponent.life;
             }
             else {
-                
+                this.heroService.getHero(+params['id']).subscribe(
+                    hero => {
+                        this.opponent = hero;
+                        this.opponentLifeActual = this.opponent.life;
+                    },
+                    error => this.errorService.newErrorMessage(error.message)
+                )
             }
         });
         this.heroService.getHeroSelected().subscribe(
             hero => this.hero = hero,
             error => this.errorService.newErrorMessage(error.message)
         )
-        this.hero = new Hero(1, 1, "Joueur", RACES[0], 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     }
     
     startBattle() {
         this.stateGame = StateGame.current;
-        this.opponentAttack();
+        if (this.opponent.id==0)
+            this.opponentAttack();
     }
     
     endBattle() {
@@ -97,10 +103,10 @@ export class BattleComponent implements OnInit
     /** ATTAQUE **/
     onAttack(spell: number) {
         if (this.stateGame == StateGame.current) {
-            if(spell==0 && this.attacksPercentages[spell] == 0) {
-                let power = 5 * this.hero.level;
+            if(this.attacksPercentages[spell] == 0) {
+                let power = this.hero.race.spells[spell].effect * this.hero.level;
                 this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
-                this.coolDown(spell, 2000);
+                this.coolDown(spell, this.hero.race.spells[spell].cooldown * 100);
             }
         }
     }

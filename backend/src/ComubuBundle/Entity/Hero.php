@@ -55,9 +55,10 @@ class Hero
     private $name;
 
     /**
-     * @var int
+     * @var Race
      *
-     * @ORM\Column(name="race", type="integer")
+     * @ORM\ManyToOne(targetEntity="Race", inversedBy="races")
+     * @ORM\JoinColumn(name="race_id", referencedColumnName="id")
      *
      * @Serializer\Expose
      */
@@ -108,30 +109,6 @@ class Hero
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set race
-     *
-     * @param integer $race
-     *
-     * @return Hero
-     */
-    public function setRace($race)
-    {
-        $this->race = $race;
-
-        return $this;
-    }
-
-    /**
-     * Get race
-     *
-     * @return int
-     */
-    public function getRace()
-    {
-        return $this->race;
     }
 
     /**
@@ -276,5 +253,35 @@ class Hero
     public function getName()
     {
         return $this->name;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+    }
+
+    /**
+     * Get race
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRace()
+    {
+        return $this->race;
+    }
+
+    /**
+     * Set race
+     *
+     * @param \ComubuBundle\Entity\Race $race
+     *
+     * @return Hero
+     */
+    public function setRace(\ComubuBundle\Entity\Race $race = null)
+    {
+        $this->race = $race;
+
+        return $this;
     }
 }

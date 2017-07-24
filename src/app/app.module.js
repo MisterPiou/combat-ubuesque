@@ -16,6 +16,7 @@ var registration_component_1 = require("./User/registration.component");
 var login_component_1 = require("./User/login.component");
 var account_component_1 = require("./User/account.component");
 var hero_service_1 = require("./Hero/hero.service");
+var race_service_1 = require("./Hero/race.service");
 var user_service_1 = require("./User/user.service");
 var error_service_1 = require("./Global/error.service");
 var formula_service_1 = require("./Global/formula.service");
@@ -54,6 +55,7 @@ AppModule = __decorate([
                 deps: [http_1.Http, http_1.RequestOptions]
             },
             hero_service_1.HeroService,
+            race_service_1.RaceService,
             user_service_1.UserService,
             error_service_1.ErrorService,
             formula_service_1.FormulaService,
