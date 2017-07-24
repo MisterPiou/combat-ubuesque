@@ -19,7 +19,7 @@ export class HeroComponent implements OnInit  {
     heroes: Hero[];
     isSubmitted = false;
     lifePercentage = 0;
-    model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+    model = new Hero(1, 1, this.defaultName, RACES[1], 0, 0, 1, 100);
     races = RACES;
     selectedHero: Hero;
     xpPercentage = 0;
@@ -42,7 +42,7 @@ export class HeroComponent implements OnInit  {
     
     /** Submit form to add new hero **/
     onSubmit() {
-        this.addHero(this.model.name, this.model.race);
+        this.addHero(this.model.name, this.model.race.id);
         this.newHero();
         $('#myModal').modal('hide');
     }
@@ -57,7 +57,7 @@ export class HeroComponent implements OnInit  {
     
     /** Reset add hero forms **/
     newHero() {
-        this.model = new Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+        this.model = new Hero(1, 1, this.defaultName, RACES[1], 0, 0, 1, 100);
     }
     
     /** When user select a hero on list **/

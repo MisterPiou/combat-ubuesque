@@ -14,6 +14,7 @@ var hero_1 = require("../Hero/class/hero");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
 var formula_service_1 = require("../Global/formula.service");
+var race_1 = require("../Hero/class/race");
 var StateGame;
 (function (StateGame) {
     StateGame[StateGame["current"] = 0] = "current";
@@ -43,14 +44,14 @@ var BattleComponent = (function () {
         this.route.params.subscribe(function (params) {
             if (+params['id'] == 0) {
                 var lvl = +params['lvl'];
-                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", 0, 0, 0, lvl, lvl * 100);
+                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race_1.RACES[0], 0, 0, lvl, lvl * 100);
                 _this.opponentLifeActual = _this.opponent.life;
             }
             else {
             }
         });
         this.heroService.getHeroSelected().subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
-        this.hero = new hero_1.Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
+        this.hero = new hero_1.Hero(1, 1, "Joueur", race_1.RACES[0], 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     };
     BattleComponent.prototype.startBattle = function () {

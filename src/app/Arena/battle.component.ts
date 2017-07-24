@@ -6,6 +6,8 @@ import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}   from '../Global/error.service';
 import {FormulaService}   from '../Global/formula.service';
 
+import {RACES} from '../Hero/class/race';
+
 enum StateGame {
     current = 0,
     victory = 1,
@@ -46,7 +48,7 @@ export class BattleComponent implements OnInit
         this.route.params.subscribe((params: Params) => {
             if(+params['id']==0) {
                 let lvl = +params['lvl'];
-                this.opponent = new Hero(0, 0, "Pouchink Paul", 0, 0, 0, lvl, lvl * 100);
+                this.opponent = new Hero(0, 0, "Pouchink Paul", RACES[0], 0, 0, lvl, lvl * 100);
                 this.opponentLifeActual = this.opponent.life;
             }
             else {
@@ -57,7 +59,7 @@ export class BattleComponent implements OnInit
             hero => this.hero = hero,
             error => this.errorService.newErrorMessage(error.message)
         )
-        this.hero = new Hero(1, 1, "Joueur", 0, 0, 0, 1, 100);
+        this.hero = new Hero(1, 1, "Joueur", RACES[0], 0, 0, 1, 100);
         this.heroLifeActual = this.hero.life;
     }
     

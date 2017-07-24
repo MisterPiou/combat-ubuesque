@@ -93,7 +93,7 @@ class HeroController extends FOSRestController
             $em->persist($hero);
             $em->flush();
 
-            $view = $this->view($heroes, 200);
+            $view = $this->view($hero, 200);
             return $this->handleView($view);
         }
 

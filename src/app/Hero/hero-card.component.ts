@@ -18,7 +18,7 @@ declare var bootbox: any;
 })
 export class HeroCardComponent implements OnInit  { 
     
-    hero: Hero = new Hero(1, 1, "", 1, 0, 0, 1, 100);
+    hero: Hero = new Hero(1, 1, "", RACES[0], 0, 0, 1, 100);
     lifePercentage = 0;
     races = RACES;
     selectedHero: Hero;

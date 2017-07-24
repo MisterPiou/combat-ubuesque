@@ -20,7 +20,7 @@
         <tbody>
             <tr *ngFor="let hero of heroes" [class.info]="hero === selectedHero" [class.success]="hero.state==3" (click)="selectHero(hero)">
                 <td>{{hero.name}}</td>
-                <td>{{races[hero.race-1].name}}</td>
+                <td>{{races[hero.race].name}}</td>
                 <td>{{hero.level}}</td>
             </tr>
         </tbody>
@@ -34,7 +34,7 @@
             <h3>
                 Fiche de <strong>{{selectedHero.name}}</strong>
             </h3>
-            <label>Race :</label> {{races[selectedHero.race-1].name}}<br/>
+            <label>Race :</label> {{races[selectedHero.race].name}}<br/>
             <div>
                 <label>Level :</label> {{selectedHero.level}}
                 <div class="progress">
@@ -99,10 +99,10 @@
                        required
                        [(ngModel)]="model.race" name="race"
                        #race="ngModel">
-                       <option *ngFor="let r of races" [value]="r.id">{{r.name}}</option>
+                       <option *ngFor="let r of races | slice:1" [ngValue]="r">{{r.name}}</option>
                 </select>
                 <p>
-                    {{ races[model.race-1].info }}
+                    {{ races[model.race.id].info }}
                 </p>
             </div>
             <button type="button" class="btn btn-default" data-dismiss="modal" (click)="newHero()">Annuler</button>

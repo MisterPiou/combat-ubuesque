@@ -24,7 +24,7 @@ var HeroComponent = (function () {
         this.defaultName = "Mon Héros";
         this.isSubmitted = false;
         this.lifePercentage = 0;
-        this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+        this.model = new hero_1.Hero(1, 1, this.defaultName, race_1.RACES[1], 0, 0, 1, 100);
         this.races = race_1.RACES;
         this.xpPercentage = 0;
         this.isLoading = false;
@@ -37,7 +37,7 @@ var HeroComponent = (function () {
     };
     /** Submit form to add new hero **/
     HeroComponent.prototype.onSubmit = function () {
-        this.addHero(this.model.name, this.model.race);
+        this.addHero(this.model.name, this.model.race.id);
         this.newHero();
         $('#myModal').modal('hide');
     };
@@ -49,7 +49,7 @@ var HeroComponent = (function () {
     };
     /** Reset add hero forms **/
     HeroComponent.prototype.newHero = function () {
-        this.model = new hero_1.Hero(1, 1, this.defaultName, 1, 0, 0, 1, 100);
+        this.model = new hero_1.Hero(1, 1, this.defaultName, race_1.RACES[1], 0, 0, 1, 100);
     };
     /** When user select a hero on list **/
     HeroComponent.prototype.selectHero = function (hero) {
