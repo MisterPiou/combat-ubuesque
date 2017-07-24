@@ -13,6 +13,7 @@ export class RegistrationComponent
 {
     userForm: FormGroup;
     response: string;
+    isLoading = false;
     etatMsgBox = 'errMsg';
     
     constructor(
@@ -40,6 +41,7 @@ export class RegistrationComponent
     /* Envoie du formualaire d'inscription */
     onSubmit() {
         const formModel = this.userForm.value;
+        this.isLoading = true;
         
         const data = {
             username: formModel.username as string,
@@ -52,13 +54,15 @@ export class RegistrationComponent
         
         this.userService.registerUser(data)
             .subscribe(
-                response => this.response = response,
+                response => {
+                    this.response = response;
+                    if (this.response) {
+                        this.resetForm();
+                        this.activeSuccesMessage();
+                    }
+                    this.isLoading = false;
+                },
                 error => this.errorService.newErrorMessage(error.message));
-                
-        if (this.response) {
-            this.resetForm();
-            this.activeSuccesMessage();
-        }
     }
     
     /* Animation message succes */

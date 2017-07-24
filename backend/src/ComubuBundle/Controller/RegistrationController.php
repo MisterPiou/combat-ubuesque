@@ -47,6 +47,7 @@ class RegistrationController extends BaseController
                           FOSUserEvents::REGISTRATION_SUCCESS, $event
                        );
 
+            $user->setEnabled(TRUE);
             $userManager->updateUser($user);
 
             $response = new Response($this->serialize('User created.'), Response::HTTP_CREATED);

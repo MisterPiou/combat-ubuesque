@@ -20,7 +20,10 @@
         <input type="password" class="form-control" formControlName="second" name="first">
     </div>
     <button type="submit"
-            [disabled]="userForm.pristine" class="btn btn-primary">Save</button> &nbsp;
+            [disabled]="userForm.pristine" class="btn btn-primary">
+        <div *ngIf="isLoading" class="loader"><div class="loader-in"></div></div>
+        S'enregistrer
+    </button> &nbsp;
     <!--button type="reset" (click)="revert()"
             [disabled]="heroForm.pristine" class="btn btn-danger">Revert</button-->
 </form>

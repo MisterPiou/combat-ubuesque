@@ -17,6 +17,7 @@ var RegistrationComponent = (function () {
         this.fb = fb;
         this.errorService = errorService;
         this.userService = userService;
+        this.isLoading = false;
         this.etatMsgBox = 'errMsg';
         this.createForm();
     }
@@ -37,6 +38,7 @@ var RegistrationComponent = (function () {
     RegistrationComponent.prototype.onSubmit = function () {
         var _this = this;
         var formModel = this.userForm.value;
+        this.isLoading = true;
         var data = {
             username: formModel.username,
             email: formModel.email,
@@ -46,11 +48,14 @@ var RegistrationComponent = (function () {
             }
         };
         this.userService.registerUser(data)
-            .subscribe(function (response) { return _this.response = response; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
-        if (this.response) {
-            this.resetForm();
-            this.activeSuccesMessage();
-        }
+            .subscribe(function (response) {
+            _this.response = response;
+            if (_this.response) {
+                _this.resetForm();
+                _this.activeSuccesMessage();
+            }
+            _this.isLoading = false;
+        }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
     /* Animation message succes */
     RegistrationComponent.prototype.activeSuccesMessage = function () {
