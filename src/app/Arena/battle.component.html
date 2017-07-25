@@ -37,7 +37,9 @@
              <div class="col-xs-4">
                 <div class="battle_spell">
                     <div class="battle_btn_attack" (click)="onAttack(2);">
-                        <div class="battle_btn_attack_timer" [ngStyle]="{'width.%': attacksPercentages[2]}">
+                        <div class="battle_btn_attack_timer" 
+                             [ngClass]="{'battle_btn_attack_timer_up': 'stateBattle!=0', 'battle_btn_attack_timer_down': 'stateBattle==0'}" 
+                             [ngStyle]="{'width.%': attacksPercentages[2]}">
                              <span>{{ hero.race.spells[2].name }}</span>
                         </div>
                     </div>

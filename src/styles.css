@@ -54,6 +54,12 @@ h1 {
     -o-transition: width .5s;
     transition: width .5s;
 }
+.battle_btn_attack_timer_down {
+    background-color: #e0e0e0;
+}
+.battle_btn_attack_timer_up {
+    background-color: #EF9A9A;
+}
 .battle_btn_attack_timer span {
     position: absolute;
     top: 22%;

@@ -24,6 +24,15 @@ var StateGame;
     StateGame[StateGame["loading"] = 8] = "loading";
     StateGame[StateGame["pause"] = 9] = "pause";
 })(StateGame || (StateGame = {}));
+var StateBattle;
+(function (StateBattle) {
+    StateBattle[StateBattle["none"] = 0] = "none";
+    StateBattle[StateBattle["boost"] = 1] = "boost";
+    StateBattle[StateBattle["freezeIn"] = 2] = "freezeIn";
+    StateBattle[StateBattle["freezeOut"] = 3] = "freezeOut";
+    StateBattle[StateBattle["shield"] = 4] = "shield";
+    StateBattle[StateBattle["hide"] = 5] = "hide";
+})(StateBattle || (StateBattle = {}));
 var BattleComponent = (function () {
     /** INIT **/
     function BattleComponent(route, heroService, errorService, formula) {
@@ -38,9 +47,11 @@ var BattleComponent = (function () {
         this.heroLifePercentage = 100;
         this.opponent = new hero_1.Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
         this.opponentLifePercentage = 100;
+        this.spellCall = null;
         /* Global */
         this.intervals = [0, 0, 0, 0];
         this.stateGame = StateGame.loading;
+        this.stateBattle = StateBattle.none;
         this.message = "";
         this.xpPercentage = 0;
     }
@@ -49,7 +60,7 @@ var BattleComponent = (function () {
         this.route.params.subscribe(function (params) {
             if (+params['id'] == 0) {
                 var lvl = +params['lvl'];
-                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 100);
+                _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 200);
                 _this.opponentLifeActual = _this.opponent.life;
                 if (_this.hero.level > 0) {
                     _this.stateGame = StateGame.pause;
@@ -104,22 +115,34 @@ var BattleComponent = (function () {
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == StateGame.current) {
             if (this.attacksPercentages[spell] == 0) {
-                var spellCall = this.hero.race.spells[spell];
+                this.spellCall = this.hero.race.spells[spell];
                 var power = this.hero.race.spells[spell].effect * this.hero.level;
-                switch (spellCall.type) {
+                var coolDown = void 0;
+                switch (this.spellCall.type) {
                     case Spell.SpellType.attack: {
+                        if (this.stateBattle == StateBattle.boost)
+                            power *= this.spellCall.ratio;
                         this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
+                        coolDown = this.spellCall.cooldown;
                     }
                     case Spell.SpellType.boost: {
+                        this.stateBattle = StateBattle.boost;
+                        coolDown = this.spellCall.effect;
                     }
                     case Spell.SpellType.freeze: {
+                        this.stateBattle = StateBattle.freezeIn;
+                        coolDown = this.spellCall.effect;
                     }
                     case Spell.SpellType.shield: {
+                        this.stateBattle = StateBattle.shield;
+                        coolDown = this.spellCall.effect;
                     }
                     case Spell.SpellType.hide: {
+                        this.stateBattle = StateBattle.hide;
+                        coolDown = this.spellCall.effect;
                     }
                 }
-                this.coolDown(spell, spellCall.cooldown * 100);
+                this.coolDown(spell, coolDown * 100);
             }
         }
     };
@@ -158,15 +181,32 @@ var BattleComponent = (function () {
     BattleComponent.prototype.coolDown = function (attack, time) {
         var _this = this;
         this.clearTimer(attack);
-        this.attacksPercentages[attack] = 100;
+        if (this.hero.race.spells[attack].type == Spell.SpellType.attack)
+            this.attacksPercentages[attack] = 100;
+        else if (this.stateBattle != StateBattle.none)
+            this.attacksPercentages[attack] = 1;
         var interval = 100 / (time / 200);
         this.intervals[attack] = window.setInterval(function () {
-            _this.attacksPercentages[attack] -= interval;
-            if (_this.attacksPercentages[attack] < 0) {
-                _this.attacksPercentages[attack] = 0;
-                _this.clearTimer(attack);
-            }
+            _this.intervalAnimation(attack, interval);
         }, 200);
+    };
+    BattleComponent.prototype.intervalAnimation = function (attack, interval) {
+        if (this.hero.race.spells[attack].type == Spell.SpellType.attack) {
+            this.attacksPercentages[attack] -= interval;
+            if (this.attacksPercentages[attack] < 0) {
+                this.attacksPercentages[attack] = 0;
+                this.clearTimer(attack);
+            }
+        }
+        else if (this.stateBattle != StateBattle.none) {
+            this.attacksPercentages[attack] += interval;
+            if (this.attacksPercentages[attack] >= 100) {
+                this.attacksPercentages[attack] = 0;
+                this.clearTimer(attack);
+                this.stateBattle = StateBattle.none;
+                this.coolDown(attack, this.hero.race.spells[attack].cooldown * 100);
+            }
+        }
     };
     return BattleComponent;
 }());
