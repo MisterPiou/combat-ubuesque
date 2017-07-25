@@ -84,7 +84,7 @@ var HeroComponent = (function () {
         });*/
         if (confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]")) {
             this.heroService.delete(this.selectedHero.id)
-                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+                .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error); });
         }
     };
     /** Selectione le hero principal **/

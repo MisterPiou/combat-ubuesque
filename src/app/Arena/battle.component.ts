@@ -2,6 +2,7 @@ import {Component, OnInit}      from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 
 import {Hero}           from '../Hero/class/hero';
+import * as Spell       from '../Hero/class/spell';
 import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}   from '../Global/error.service';
 import {FormulaService}   from '../Global/formula.service';
@@ -12,6 +13,7 @@ enum StateGame {
     current = 0,
     victory = 1,
     defeat = 2,
+    loading = 8,
     pause = 9
 }
 
@@ -24,15 +26,15 @@ export class BattleComponent implements OnInit
     /* Attaque */
     attacksPercentages = [0,0,0];
     /* Personnage */
-    hero: Hero = new Hero(1, 1, "Joueur", null, 0, 0, 1, 100);
+    hero: Hero = new Hero(0, 0, "Chargement...", null, 0, 0, 0, 0);
     heroLifeActual: number;
     heroLifePercentage = 100;
-    opponent: Hero = new Hero(1, 1, "Joueur", race.Sbire, 0, 0, 1, 100);
+    opponent: Hero = new Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
     opponentLifeActual: number;
     opponentLifePercentage = 100;
     /* Global */
-    intervals = [0,0];
-    stateGame = StateGame.pause;
+    intervals = [0,0,0,0];
+    stateGame = StateGame.loading;
     message = "";
     xpPercentage = 0;
     
@@ -50,20 +52,32 @@ export class BattleComponent implements OnInit
                 let lvl = +params['lvl'];
                 this.opponent = new Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 100);
                 this.opponentLifeActual = this.opponent.life;
+                if (this.hero.level>0) {
+                    this.stateGame = StateGame.pause;
+                }
             }
             else {
                 this.heroService.getHero(+params['id']).subscribe(
                     hero => {
                         this.opponent = hero;
                         this.opponentLifeActual = this.opponent.life;
+                        if (this.hero.level>0) {
+                            this.stateGame = StateGame.pause;
+                        }
                     },
-                    error => this.errorService.newErrorMessage(error.message)
+                    error => this.errorService.newErrorMessage(error)
                 )
             }
         });
         this.heroService.getHeroSelected().subscribe(
-            hero => this.hero = hero,
-            error => this.errorService.newErrorMessage(error.message)
+            hero => {
+                this.hero = hero;
+                this.heroLifeActual = this.hero.life;
+                if (this.hero.level>0) {
+                    this.stateGame = StateGame.pause;
+                }
+            },
+            error => this.errorService.newErrorMessage(error)
         )
         this.heroLifeActual = this.hero.life;
     }
@@ -96,7 +110,7 @@ export class BattleComponent implements OnInit
         let lvl = this.hero.level;
         let xp = this.hero.xp;
         this.heroService.updateHero(this.hero.id, {lvl,xp}).subscribe(
-            hero => null, error => this.errorService.newErrorMessage(error.message)
+            hero => null, error => this.errorService.newErrorMessage(error)
         );
     }
     
@@ -104,17 +118,34 @@ export class BattleComponent implements OnInit
     onAttack(spell: number) {
         if (this.stateGame == StateGame.current) {
             if(this.attacksPercentages[spell] == 0) {
+                let spellCall: Spell.Spell = this.hero.race.spells[spell];
                 let power = this.hero.race.spells[spell].effect * this.hero.level;
-                this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
-                this.coolDown(spell, this.hero.race.spells[spell].cooldown * 100);
+                switch (spellCall.type) {
+                    case Spell.SpellType.attack:{
+                        this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
+                    }
+                    case Spell.SpellType.boost:{
+                        
+                    }
+                    case Spell.SpellType.freeze:{
+                        
+                    }
+                    case Spell.SpellType.shield:{
+                        
+                    }
+                    case Spell.SpellType.hide:{
+                        
+                    }
+                }
+                this.coolDown(spell, spellCall.cooldown * 100);
             }
         }
     }
     
     opponentAttack() {
-        this.clearTimer(1);
+        this.clearTimer(3);
         let interval = Math.floor((Math.random() * 1000) + 2000 + 1);
-        this.intervals[1] = window.setInterval(() => {
+        this.intervals[3] = window.setInterval(() => {
             let power = 5 * this.opponent.level;
             this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
@@ -126,7 +157,7 @@ export class BattleComponent implements OnInit
         if(this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
             this.stateGame = StateGame.victory;
-            this.clearTimer(1);
+            this.clearTimer(3);
             this.endBattle();
         }
         this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life ) * 100;
@@ -139,8 +170,6 @@ export class BattleComponent implements OnInit
             this.stateGame = StateGame.defeat;
             this.clearTimer(1);
             this.endBattle();
-        } else {
-            this.opponentAttack();
         }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life ) * 100;
     }
@@ -150,14 +179,14 @@ export class BattleComponent implements OnInit
     clearTimer(interval: number) { clearInterval(this.intervals[interval]); }
     
     private coolDown(attack: number, time: number) {
-        this.clearTimer(0);
+        this.clearTimer(attack);
         this.attacksPercentages[attack] = 100;
         let interval = 100 / (time / 200);
-        this.intervals[0] = window.setInterval(() => {
+        this.intervals[attack] = window.setInterval(() => {
             this.attacksPercentages[attack] -= interval;
             if(this.attacksPercentages[attack] < 0) {
                 this.attacksPercentages[attack] = 0;
-                this.clearTimer(0);
+                this.clearTimer(attack);
             }
         }, 200);
     }

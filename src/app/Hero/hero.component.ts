@@ -100,7 +100,7 @@ export class HeroComponent implements OnInit  {
             this.heroService.delete(this.selectedHero.id)
                 .subscribe(
                     heroes => this.heroes = heroes,
-                    error => this.errorService.newErrorMessage(error.message));
+                    error => this.errorService.newErrorMessage(error));
         }
     }
     

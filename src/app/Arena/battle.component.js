@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var hero_1 = require("../Hero/class/hero");
+var Spell = require("../Hero/class/spell");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
 var formula_service_1 = require("../Global/formula.service");
@@ -20,6 +21,7 @@ var StateGame;
     StateGame[StateGame["current"] = 0] = "current";
     StateGame[StateGame["victory"] = 1] = "victory";
     StateGame[StateGame["defeat"] = 2] = "defeat";
+    StateGame[StateGame["loading"] = 8] = "loading";
     StateGame[StateGame["pause"] = 9] = "pause";
 })(StateGame || (StateGame = {}));
 var BattleComponent = (function () {
@@ -32,13 +34,13 @@ var BattleComponent = (function () {
         /* Attaque */
         this.attacksPercentages = [0, 0, 0];
         /* Personnage */
-        this.hero = new hero_1.Hero(1, 1, "Joueur", null, 0, 0, 1, 100);
+        this.hero = new hero_1.Hero(0, 0, "Chargement...", null, 0, 0, 0, 0);
         this.heroLifePercentage = 100;
-        this.opponent = new hero_1.Hero(1, 1, "Joueur", race.Sbire, 0, 0, 1, 100);
+        this.opponent = new hero_1.Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
         this.opponentLifePercentage = 100;
         /* Global */
-        this.intervals = [0, 0];
-        this.stateGame = StateGame.pause;
+        this.intervals = [0, 0, 0, 0];
+        this.stateGame = StateGame.loading;
         this.message = "";
         this.xpPercentage = 0;
     }
@@ -49,15 +51,27 @@ var BattleComponent = (function () {
                 var lvl = +params['lvl'];
                 _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 100);
                 _this.opponentLifeActual = _this.opponent.life;
+                if (_this.hero.level > 0) {
+                    _this.stateGame = StateGame.pause;
+                }
             }
             else {
                 _this.heroService.getHero(+params['id']).subscribe(function (hero) {
                     _this.opponent = hero;
                     _this.opponentLifeActual = _this.opponent.life;
-                }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+                    if (_this.hero.level > 0) {
+                        _this.stateGame = StateGame.pause;
+                    }
+                }, function (error) { return _this.errorService.newErrorMessage(error); });
             }
         });
-        this.heroService.getHeroSelected().subscribe(function (hero) { return _this.hero = hero; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+        this.heroService.getHeroSelected().subscribe(function (hero) {
+            _this.hero = hero;
+            _this.heroLifeActual = _this.hero.life;
+            if (_this.hero.level > 0) {
+                _this.stateGame = StateGame.pause;
+            }
+        }, function (error) { return _this.errorService.newErrorMessage(error); });
         this.heroLifeActual = this.hero.life;
     };
     BattleComponent.prototype.startBattle = function () {
@@ -84,23 +98,36 @@ var BattleComponent = (function () {
         this.xpPercentage = Math.round((this.hero.xp / xpNeed) * 100);
         var lvl = this.hero.level;
         var xp = this.hero.xp;
-        this.heroService.updateHero(this.hero.id, { lvl: lvl, xp: xp }).subscribe(function (hero) { return null; }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+        this.heroService.updateHero(this.hero.id, { lvl: lvl, xp: xp }).subscribe(function (hero) { return null; }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ATTAQUE **/
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == StateGame.current) {
             if (this.attacksPercentages[spell] == 0) {
+                var spellCall = this.hero.race.spells[spell];
                 var power = this.hero.race.spells[spell].effect * this.hero.level;
-                this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
-                this.coolDown(spell, this.hero.race.spells[spell].cooldown * 100);
+                switch (spellCall.type) {
+                    case Spell.SpellType.attack: {
+                        this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
+                    }
+                    case Spell.SpellType.boost: {
+                    }
+                    case Spell.SpellType.freeze: {
+                    }
+                    case Spell.SpellType.shield: {
+                    }
+                    case Spell.SpellType.hide: {
+                    }
+                }
+                this.coolDown(spell, spellCall.cooldown * 100);
             }
         }
     };
     BattleComponent.prototype.opponentAttack = function () {
         var _this = this;
-        this.clearTimer(1);
+        this.clearTimer(3);
         var interval = Math.floor((Math.random() * 1000) + 2000 + 1);
-        this.intervals[1] = window.setInterval(function () {
+        this.intervals[3] = window.setInterval(function () {
             var power = 5 * _this.opponent.level;
             _this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
@@ -111,7 +138,7 @@ var BattleComponent = (function () {
         if (this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
             this.stateGame = StateGame.victory;
-            this.clearTimer(1);
+            this.clearTimer(3);
             this.endBattle();
         }
         this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
@@ -124,23 +151,20 @@ var BattleComponent = (function () {
             this.clearTimer(1);
             this.endBattle();
         }
-        else {
-            this.opponentAttack();
-        }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life) * 100;
     };
     /** TIMER **/
     BattleComponent.prototype.clearTimer = function (interval) { clearInterval(this.intervals[interval]); };
     BattleComponent.prototype.coolDown = function (attack, time) {
         var _this = this;
-        this.clearTimer(0);
+        this.clearTimer(attack);
         this.attacksPercentages[attack] = 100;
         var interval = 100 / (time / 200);
-        this.intervals[0] = window.setInterval(function () {
+        this.intervals[attack] = window.setInterval(function () {
             _this.attacksPercentages[attack] -= interval;
             if (_this.attacksPercentages[attack] < 0) {
                 _this.attacksPercentages[attack] = 0;
-                _this.clearTimer(0);
+                _this.clearTimer(attack);
             }
         }, 200);
     };

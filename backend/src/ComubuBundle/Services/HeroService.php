@@ -21,12 +21,13 @@ class HeroService
     }
 
     public function initHeroSelectedForUser(User $user){
-        $hero = $this->em->getRepository("ComubuBundle:Hero")->findOneBy(array(
+        if($hero = $this->em->getRepository("ComubuBundle:Hero")->findOneBy(array(
             'user' => $user,
             'state' => Hero::STATUS_SELECTED
-        ));
-        $hero->setState(Hero::STATUS_OK);
-        $this->em->persist($hero);
-        $this->em->flush();
+        ))) {
+            $hero->setState(Hero::STATUS_OK);
+            $this->em->persist($hero);
+            $this->em->flush();
+        }
     }
 }
