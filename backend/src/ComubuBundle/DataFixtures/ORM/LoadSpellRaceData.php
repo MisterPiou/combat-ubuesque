@@ -43,8 +43,8 @@ class LoadSpellRaceData implements FixtureInterface
         $spell2->setInfo("Cri qui motive le lanceur");
         $spell2->setType(1);
         $spell2->setInfluenceBy(2);
-        $spell2->setCooldown(50);
-        $spell2->setEffect(30);
+        $spell2->setCooldown(30);
+        $spell2->setEffect(50);
         $spell2->setRatio(1.1);
         $manager->persist($spell2);
 

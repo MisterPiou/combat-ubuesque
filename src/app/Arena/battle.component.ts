@@ -1,4 +1,4 @@
-import {Component, OnInit}      from '@angular/core';
+import {Component, OnInit, OnDestroy}      from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 
 import {Hero}           from '../Hero/class/hero';
@@ -29,7 +29,7 @@ enum StateBattle {
   selector: 'battle',
   templateUrl: './battle.component.html',
 })
-export class BattleComponent implements OnInit
+export class BattleComponent implements OnInit, OnDestroy
 {
     /* Attaque */
     attacksPercentages = [0,0,0];
@@ -41,6 +41,8 @@ export class BattleComponent implements OnInit
     opponentLifeActual: number;
     opponentLifePercentage = 100;
     spellCall: Spell.Spell = null;
+    gainXp = 0;
+    lvlUp = false;
     /* Global */
     intervals = [0,0,0,0];
     stateGame = StateGame.loading;
@@ -102,16 +104,17 @@ export class BattleComponent implements OnInit
         let xpNeed = this.formula.calculateXpNeed(this.hero.level);
         
         if (this.stateGame == StateGame.victory) {
-            this.hero.xp += this.formula.calculateXpVictory(this.hero.level, this.opponent.level);
+            this.gainXp = this.formula.calculateXpVictory(this.hero.level, this.opponent.level);
             this.message = "Victoire !";
         }
         if (this.stateGame == StateGame.defeat) {
-            this.hero.xp += this.formula.calculateXpDefeat(this.hero.level, this.opponent.level);
+            this.gainXp = this.formula.calculateXpDefeat(this.hero.level, this.opponent.level);
             this.message = "Defaite...";
         }
+        this.hero.xp += this.gainXp;
         
         if (this.hero.xp >= xpNeed) {
-            this.message += "<br />Tu as gagné un level !";
+            this.lvlUp = true;
             this.hero.level += 1;
             this.hero.xp = this.hero.xp - xpNeed;
         }
@@ -132,27 +135,32 @@ export class BattleComponent implements OnInit
                 let power = this.hero.race.spells[spell].effect * this.hero.level;
                 let coolDown;
                 switch (this.spellCall.type) {
-                    case Spell.SpellType.attack:{
+                    case (Spell.SpellType.attack):{
                         if (this.stateBattle == StateBattle.boost)
                             power *= this.spellCall.ratio;
                         this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                         coolDown = this.spellCall.cooldown;
+                        break; 
                     }
-                    case Spell.SpellType.boost:{
+                    case (Spell.SpellType.boost):{
                         this.stateBattle = StateBattle.boost;
                         coolDown = this.spellCall.effect;
+                        break; 
                     }
-                    case Spell.SpellType.freeze:{
+                    case (Spell.SpellType.freeze):{
                         this.stateBattle = StateBattle.freezeIn;
                         coolDown = this.spellCall.effect;
+                        break; 
                     }
-                    case Spell.SpellType.shield:{
+                    case (Spell.SpellType.shield):{
                         this.stateBattle = StateBattle.shield;
                         coolDown = this.spellCall.effect;
+                        break; 
                     }
-                    case Spell.SpellType.hide:{
+                    case (Spell.SpellType.hide):{
                         this.stateBattle = StateBattle.hide;
                         coolDown = this.spellCall.effect;
+                        break; 
                     }
                 }
                 this.coolDown(spell, coolDown * 100);
@@ -197,11 +205,12 @@ export class BattleComponent implements OnInit
     clearTimer(interval: number) { clearInterval(this.intervals[interval]); }
     
     private coolDown(attack: number, time: number) {
+        console.log("Attack " + attack + " launch for " + time + "ms");
         this.clearTimer(attack);
-        if (this.hero.race.spells[attack].type == Spell.SpellType.attack) 
-            this.attacksPercentages[attack] = 100;
-        else if (this.stateBattle != StateBattle.none)
+        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) 
             this.attacksPercentages[attack] = 1;
+        else
+            this.attacksPercentages[attack] = 100;
         let interval = 100 / (time / 200);
         this.intervals[attack] = window.setInterval(() => {
             this.intervalAnimation(attack, interval);
@@ -209,13 +218,7 @@ export class BattleComponent implements OnInit
     }
     
     private intervalAnimation(attack: number, interval: number) {
-        if (this.hero.race.spells[attack].type == Spell.SpellType.attack) {
-            this.attacksPercentages[attack] -= interval;
-            if(this.attacksPercentages[attack] < 0) {
-                this.attacksPercentages[attack] = 0;
-                this.clearTimer(attack);
-            }
-        } else if (this.stateBattle != StateBattle.none) {
+        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) {
             this.attacksPercentages[attack] += interval;
             if(this.attacksPercentages[attack] >= 100) {
                 this.attacksPercentages[attack] = 0;
@@ -223,7 +226,18 @@ export class BattleComponent implements OnInit
                 this.stateBattle = StateBattle.none;
                 this.coolDown(attack, this.hero.race.spells[attack].cooldown * 100);
             }
+        } else {
+            this.attacksPercentages[attack] -= interval;
+            if(this.attacksPercentages[attack] < 0) {
+                this.attacksPercentages[attack] = 0;
+                this.clearTimer(attack);
+            }
         }
     }
     
+    ngOnDestroy() {
+        for (let i = 0; i < this.intervals.length; i++){
+            this.clearTimer(i);
+        }
+    }
 }

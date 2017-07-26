@@ -48,6 +48,8 @@ var BattleComponent = (function () {
         this.opponent = new hero_1.Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
         this.opponentLifePercentage = 100;
         this.spellCall = null;
+        this.gainXp = 0;
+        this.lvlUp = false;
         /* Global */
         this.intervals = [0, 0, 0, 0];
         this.stateGame = StateGame.loading;
@@ -94,15 +96,16 @@ var BattleComponent = (function () {
         var _this = this;
         var xpNeed = this.formula.calculateXpNeed(this.hero.level);
         if (this.stateGame == StateGame.victory) {
-            this.hero.xp += this.formula.calculateXpVictory(this.hero.level, this.opponent.level);
+            this.gainXp = this.formula.calculateXpVictory(this.hero.level, this.opponent.level);
             this.message = "Victoire !";
         }
         if (this.stateGame == StateGame.defeat) {
-            this.hero.xp += this.formula.calculateXpDefeat(this.hero.level, this.opponent.level);
+            this.gainXp = this.formula.calculateXpDefeat(this.hero.level, this.opponent.level);
             this.message = "Defaite...";
         }
+        this.hero.xp += this.gainXp;
         if (this.hero.xp >= xpNeed) {
-            this.message += "<br />Tu as gagné un level !";
+            this.lvlUp = true;
             this.hero.level += 1;
             this.hero.xp = this.hero.xp - xpNeed;
         }
@@ -119,27 +122,32 @@ var BattleComponent = (function () {
                 var power = this.hero.race.spells[spell].effect * this.hero.level;
                 var coolDown = void 0;
                 switch (this.spellCall.type) {
-                    case Spell.SpellType.attack: {
+                    case (Spell.SpellType.attack): {
                         if (this.stateBattle == StateBattle.boost)
                             power *= this.spellCall.ratio;
                         this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
                         coolDown = this.spellCall.cooldown;
+                        break;
                     }
-                    case Spell.SpellType.boost: {
+                    case (Spell.SpellType.boost): {
                         this.stateBattle = StateBattle.boost;
                         coolDown = this.spellCall.effect;
+                        break;
                     }
-                    case Spell.SpellType.freeze: {
+                    case (Spell.SpellType.freeze): {
                         this.stateBattle = StateBattle.freezeIn;
                         coolDown = this.spellCall.effect;
+                        break;
                     }
-                    case Spell.SpellType.shield: {
+                    case (Spell.SpellType.shield): {
                         this.stateBattle = StateBattle.shield;
                         coolDown = this.spellCall.effect;
+                        break;
                     }
-                    case Spell.SpellType.hide: {
+                    case (Spell.SpellType.hide): {
                         this.stateBattle = StateBattle.hide;
                         coolDown = this.spellCall.effect;
+                        break;
                     }
                 }
                 this.coolDown(spell, coolDown * 100);
@@ -180,25 +188,19 @@ var BattleComponent = (function () {
     BattleComponent.prototype.clearTimer = function (interval) { clearInterval(this.intervals[interval]); };
     BattleComponent.prototype.coolDown = function (attack, time) {
         var _this = this;
+        console.log("Attack " + attack + " launch for " + time + "ms");
         this.clearTimer(attack);
-        if (this.hero.race.spells[attack].type == Spell.SpellType.attack)
-            this.attacksPercentages[attack] = 100;
-        else if (this.stateBattle != StateBattle.none)
+        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack)
             this.attacksPercentages[attack] = 1;
+        else
+            this.attacksPercentages[attack] = 100;
         var interval = 100 / (time / 200);
         this.intervals[attack] = window.setInterval(function () {
             _this.intervalAnimation(attack, interval);
         }, 200);
     };
     BattleComponent.prototype.intervalAnimation = function (attack, interval) {
-        if (this.hero.race.spells[attack].type == Spell.SpellType.attack) {
-            this.attacksPercentages[attack] -= interval;
-            if (this.attacksPercentages[attack] < 0) {
-                this.attacksPercentages[attack] = 0;
-                this.clearTimer(attack);
-            }
-        }
-        else if (this.stateBattle != StateBattle.none) {
+        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) {
             this.attacksPercentages[attack] += interval;
             if (this.attacksPercentages[attack] >= 100) {
                 this.attacksPercentages[attack] = 0;
@@ -206,6 +208,18 @@ var BattleComponent = (function () {
                 this.stateBattle = StateBattle.none;
                 this.coolDown(attack, this.hero.race.spells[attack].cooldown * 100);
             }
+        }
+        else {
+            this.attacksPercentages[attack] -= interval;
+            if (this.attacksPercentages[attack] < 0) {
+                this.attacksPercentages[attack] = 0;
+                this.clearTimer(attack);
+            }
+        }
+    };
+    BattleComponent.prototype.ngOnDestroy = function () {
+        for (var i = 0; i < this.intervals.length; i++) {
+            this.clearTimer(i);
         }
     };
     return BattleComponent;
