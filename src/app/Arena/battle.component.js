@@ -160,7 +160,8 @@ var BattleComponent = (function () {
         var interval = Math.floor((Math.random() * 1000) + 2000 + 1);
         this.intervals[3] = window.setInterval(function () {
             var power = 5 * _this.opponent.level;
-            _this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
+            if (_this.stateBattle != StateBattle.freezeIn)
+                _this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     };
     /** VIE **/

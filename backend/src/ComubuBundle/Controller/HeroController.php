@@ -109,6 +109,7 @@ class HeroController extends FOSRestController
     {
         if($id)
         {
+            $em = $this->getDoctrine()->getManager();
             $hero = $this->getDoctrine()->getRepository("ComubuBundle:Hero")->find($id);
 
             $em->remove($hero);

@@ -173,7 +173,8 @@ export class BattleComponent implements OnInit, OnDestroy
         let interval = Math.floor((Math.random() * 1000) + 2000 + 1);
         this.intervals[3] = window.setInterval(() => {
             let power = 5 * this.opponent.level;
-            this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
+            if (this.stateBattle != StateBattle.freezeIn)
+                this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     }
     
