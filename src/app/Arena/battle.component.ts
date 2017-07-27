@@ -94,6 +94,7 @@ export class BattleComponent implements OnInit, OnDestroy
         this.heroLifeActual = this.hero.life;
     }
     
+    /** Start/End battle **/
     startBattle() {
         this.stateGame = StateGame.current;
         if (this.opponent.id==0)
@@ -129,13 +130,17 @@ export class BattleComponent implements OnInit, OnDestroy
     
     /** ATTAQUE **/
     onAttack(spell: number) {
-        if (this.stateGame == StateGame.current) {
-            if(this.attacksPercentages[spell] == 0) {
+        if (this.stateGame == StateGame.current) 
+        {
+            if(this.attacksPercentages[spell] == 0) 
+            {
                 this.spellCall = this.hero.race.spells[spell];
                 let power = this.hero.race.spells[spell].effect * this.hero.level;
                 let coolDown;
                 switch (this.spellCall.type) {
                     case (Spell.SpellType.attack):{
+                        if (this.spellCall.name=="Fourbeur" && this.stateBattle != StateBattle.hide)
+                            return;
                         if (this.stateBattle == StateBattle.boost)
                             power *= this.spellCall.ratio;
                         this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
@@ -178,8 +183,12 @@ export class BattleComponent implements OnInit, OnDestroy
         }, interval);
     }
     
-    /** VIE **/
+    /** Heroes Life **/
     private opponentLoseLife(lifeLose: number) {
+        if (this.stateBattle == StateBattle.hide && this.spellCall.name=="Fourbeur"){
+            this.opponentAttack();
+        }
+        
         this.opponentLifeActual -= lifeLose;
         if(this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
@@ -191,6 +200,9 @@ export class BattleComponent implements OnInit, OnDestroy
     }
     
     private heroLoseLife(lifeLose: number) {
+        if (this.stateBattle == StateBattle.hide && (Math.random()*100)>50)
+            return;
+        
         this.heroLifeActual -= lifeLose;
         if(this.heroLifeActual <= 0) {
             this.heroLifeActual = 0;

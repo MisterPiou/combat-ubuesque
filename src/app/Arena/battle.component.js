@@ -87,6 +87,7 @@ var BattleComponent = (function () {
         }, function (error) { return _this.errorService.newErrorMessage(error); });
         this.heroLifeActual = this.hero.life;
     };
+    /** Start/End battle **/
     BattleComponent.prototype.startBattle = function () {
         this.stateGame = StateGame.current;
         if (this.opponent.id == 0)
@@ -123,6 +124,8 @@ var BattleComponent = (function () {
                 var coolDown = void 0;
                 switch (this.spellCall.type) {
                     case (Spell.SpellType.attack): {
+                        if (this.spellCall.name == "Fourbeur" && this.stateBattle != StateBattle.hide)
+                            return;
                         if (this.stateBattle == StateBattle.boost)
                             power *= this.spellCall.ratio;
                         this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
@@ -164,8 +167,11 @@ var BattleComponent = (function () {
                 _this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     };
-    /** VIE **/
+    /** Heroes Life **/
     BattleComponent.prototype.opponentLoseLife = function (lifeLose) {
+        if (this.stateBattle == StateBattle.hide && this.spellCall.name == "Fourbeur") {
+            this.opponentAttack();
+        }
         this.opponentLifeActual -= lifeLose;
         if (this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
@@ -176,6 +182,8 @@ var BattleComponent = (function () {
         this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
     };
     BattleComponent.prototype.heroLoseLife = function (lifeLose) {
+        if (this.stateBattle == StateBattle.hide && (Math.random() * 100) > 50)
+            return;
         this.heroLifeActual -= lifeLose;
         if (this.heroLifeActual <= 0) {
             this.heroLifeActual = 0;
