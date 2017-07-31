@@ -16,6 +16,6 @@ export class ArenaHomeComponent
     }
     
     onVersus() {
-        this.router.navigate(['arena/versus']);
+        this.router.navigate(['arena/waiting-room']);
     }   
 }

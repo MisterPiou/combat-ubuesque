@@ -1,0 +1,25 @@
+<div class="container">
+
+    <div class="page-header">
+        <h1>Combat Ubuesque</h1>
+        <nav class="navbar">
+            <ul class="nav nav-pills nav-justified" *ngIf="hasAuthToken()">
+                <li [routerLinkActive]="['active']"><a routerLink="/home">Forum</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink="/arena">Arene</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink="/hero">Vestiaire</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink="/account">Compte</a></li>
+            </ul>
+            <ul class="nav nav-pills nav-justified" *ngIf="!hasAuthToken()">
+                <li [routerLinkActive]="['active']"><a routerLink="/login">S'identifier</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink="/register">Créer un compte</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div class="alert alert-danger alert-dismissible" [ngClass]="etatMsgBox" role="alert">
+        <strong>Oups!</strong> {{ errorMessage }}
+    </div>
+
+    <router-outlet></router-outlet>
+
+</div>

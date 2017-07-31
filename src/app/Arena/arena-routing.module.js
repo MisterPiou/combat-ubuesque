@@ -12,6 +12,7 @@ var arena_home_component_1 = require("./arena-home.component");
 var training_component_1 = require("./training.component");
 var versus_component_1 = require("./versus.component");
 var battle_component_1 = require("./battle.component");
+var waiting_room_component_1 = require("./waiting-room.component");
 var arenaRoutes = [
     {
         path: '',
@@ -21,6 +22,7 @@ var arenaRoutes = [
             { path: 'arena-door', component: arena_home_component_1.ArenaHomeComponent },
             { path: 'training', component: training_component_1.TrainingComponent },
             { path: 'versus', component: versus_component_1.VersusComponent },
+            { path: 'waiting-room', component: waiting_room_component_1.WaitingRoomComponent },
             { path: 'battle/:id/:lvl', component: battle_component_1.BattleComponent },
         ]
     }

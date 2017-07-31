@@ -12,6 +12,8 @@ var arena_home_component_1 = require("./arena-home.component");
 var training_component_1 = require("./training.component");
 var versus_component_1 = require("./versus.component");
 var battle_component_1 = require("./battle.component");
+var waiting_room_component_1 = require("./waiting-room.component");
+var server_service_1 = require("./server.service");
 var arena_routing_module_1 = require("./arena-routing.module");
 var ArenaModule = (function () {
     function ArenaModule() {
@@ -30,7 +32,11 @@ ArenaModule = __decorate([
             battle_component_1.BattleComponent,
             training_component_1.TrainingComponent,
             versus_component_1.VersusComponent,
-        ]
+            waiting_room_component_1.WaitingRoomComponent,
+        ],
+        providers: [
+            server_service_1.ServerService,
+        ],
     })
 ], ArenaModule);
 exports.ArenaModule = ArenaModule;

@@ -18,7 +18,7 @@ var ArenaHomeComponent = (function () {
         this.router.navigate(['arena/training']);
     };
     ArenaHomeComponent.prototype.onVersus = function () {
-        this.router.navigate(['arena/versus']);
+        this.router.navigate(['arena/waiting-room']);
     };
     return ArenaHomeComponent;
 }());
