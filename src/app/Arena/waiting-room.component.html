@@ -3,12 +3,16 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>Pseudo</th>
+            <th>Héros</th>
+            <th>Level</th>
+            <th>Race</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let user of listUserInfo">
-            <td>{{ user.username }}</td>
+        <tr *ngFor="let user of listUsers">
+            <td>{{ user.pseudo }}</td>
+            <td>{{ user.level }}</td>
+            <td>{{ user.race }}</td>
         </tr>
     </tbody>
 </table>

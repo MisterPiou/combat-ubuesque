@@ -45,7 +45,10 @@ export class HeroCardComponent implements OnInit  {
         let state = this.hero.state;
         this.heroService.updateHero(this.hero.id, {state})
             .subscribe(
-                retour => this.isLoading = false,
+                retour => {
+                    this.isLoading = false;
+                    this.heroService.heroesInfo = retour;
+                },
                 error => this.errorService.newErrorMessage(error));
     }
     

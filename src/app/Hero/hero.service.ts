@@ -14,6 +14,7 @@ import { url_base } from '../data';
 export class HeroService {
     /* Variable */
     private heroesUrl = url_base + 'hero/';    //'app/test.json';
+    public heroesInfo: Hero;
     
     /* Constructor */
     constructor(private authHttp: AuthHttp) { }

@@ -3,6 +3,7 @@ import { Router }           from '@angular/router';
 
 import {ServerService}  from './server.service';
 import {UserService}    from '../User/user.service';
+import {HeroService}    from '../Hero/hero.service';
 
 import {url_root} from '../data';
 
@@ -13,20 +14,39 @@ import {url_root} from '../data';
 export class WaitingRoomComponent implements OnInit, OnDestroy
 {
     socket = io(url_root+':4000');
-    listUserInfo: any[];
+    listUsers: any[];
     
     constructor(
         private router: Router,
         private serverService: ServerService,
-        private userService: UserService
+        private userService: UserService,
+        private heroService: HeroService,
     ) {}  
     
     ngOnInit() {
-        this.socket.emit('add user', this.userService.userInfo);
-        this.socket.on('login', function (data: any) {
-            console.log("nombre d'utilisateur:" + data.numUsers);
-            this.listUserInfo = data.listUsers;
-        }.bind(this));
+        if(this.heroService.heroesInfo) {
+            this.socket.emit('add user', {
+                id: this.heroService.heroesInfo.id,
+                pseudo: this.heroService.heroesInfo.name,
+                race: this.heroService.heroesInfo.race.name,
+                level: this.heroService.heroesInfo.level,
+            });
+            
+            this.socket.on('login', function (data: any) {
+                console.log("You're a log with " + data.numUsers + " users")
+                this.listUsers = data.listUsers;
+            }.bind(this));
+            
+            this.socket.on('user joined', function (data: any) {
+                console.log("User joined room ! You're with " + data.numUsers + " users")
+                this.listUsers = data.listUsers;
+            }.bind(this));
+            
+            this.socket.on('user left', function (data: any) {
+                console.log("A user left room ! You're with " + data.numUsers + " users")
+                this.listUsers = data.listUsers;
+            }.bind(this));
+        }
     }
     
     ngOnDestroy() {

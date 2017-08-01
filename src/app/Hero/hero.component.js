@@ -97,6 +97,7 @@ var HeroComponent = (function () {
             .subscribe(function (retour) {
             _this.isLoading = false;
             _this.getHeroes();
+            _this.heroService.heroesInfo = retour;
         }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/

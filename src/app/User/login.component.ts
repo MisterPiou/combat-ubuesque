@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import { ErrorService }     from '../Global/error.service';
 import { UserService }      from './user.service';
+import { HeroService }      from '../Hero/hero.service';
 
 @Component({
   selector: 'registration',
@@ -19,6 +20,7 @@ export class LoginComponent
         private fb: FormBuilder,
         private errorService: ErrorService,
         private userService: UserService,
+        private heroService: HeroService,
         private router: Router ) {
             this.createForm();
         }
@@ -56,6 +58,12 @@ export class LoginComponent
         this.userService.infosUser()
             .subscribe(
                 user => this.userService.userInfo = user,
+                error => this.errorService.newErrorMessage(error));
+        this.heroService.getHeroSelected()
+            .subscribe(
+                hero => {
+                    this.heroService.heroesInfo = hero;
+                },
                 error => this.errorService.newErrorMessage(error));
     }
     

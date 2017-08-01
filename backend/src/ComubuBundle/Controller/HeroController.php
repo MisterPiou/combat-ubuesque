@@ -148,7 +148,7 @@ class HeroController extends FOSRestController
             $em->persist($hero);
             $em->flush();
 
-            $view = $this->view(array("Message" => "La fiche de ton heros est à jour"), 200);
+            $view = $this->view($hero, 200);
         }else
             $view = $this->view(array("Erreur" => "La fiche de ce héros ne peut être mis à jour..."), 400);
 

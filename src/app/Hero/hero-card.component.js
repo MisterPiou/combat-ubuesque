@@ -39,7 +39,10 @@ var HeroCardComponent = (function () {
         this.hero.state = 3;
         var state = this.hero.state;
         this.heroService.updateHero(this.hero.id, { state: state })
-            .subscribe(function (retour) { return _this.isLoading = false; }, function (error) { return _this.errorService.newErrorMessage(error); });
+            .subscribe(function (retour) {
+            _this.isLoading = false;
+            _this.heroService.heroesInfo = retour;
+        }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/
     HeroCardComponent.prototype.ngOnInit = function () {

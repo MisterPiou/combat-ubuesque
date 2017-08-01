@@ -13,11 +13,13 @@ var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
 var error_service_1 = require("../Global/error.service");
 var user_service_1 = require("./user.service");
+var hero_service_1 = require("../Hero/hero.service");
 var LoginComponent = (function () {
-    function LoginComponent(fb, errorService, userService, router) {
+    function LoginComponent(fb, errorService, userService, heroService, router) {
         this.fb = fb;
         this.errorService = errorService;
         this.userService = userService;
+        this.heroService = heroService;
         this.router = router;
         this.isLoading = false;
         this.createForm();
@@ -50,6 +52,10 @@ var LoginComponent = (function () {
         var _this = this;
         this.userService.infosUser()
             .subscribe(function (user) { return _this.userService.userInfo = user; }, function (error) { return _this.errorService.newErrorMessage(error); });
+        this.heroService.getHeroSelected()
+            .subscribe(function (hero) {
+            _this.heroService.heroesInfo = hero;
+        }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     LoginComponent.prototype.redirectAfterLog = function () {
         this.router.navigate(['home']);
@@ -64,6 +70,7 @@ LoginComponent = __decorate([
     __metadata("design:paramtypes", [forms_1.FormBuilder,
         error_service_1.ErrorService,
         user_service_1.UserService,
+        hero_service_1.HeroService,
         router_1.Router])
 ], LoginComponent);
 exports.LoginComponent = LoginComponent;

@@ -33,7 +33,8 @@ io.on('connection', function (socket) {
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
           userInfo: socket.userInfo,
-          numUsers: numUsers
+          numUsers: numUsers,
+          listUsers: listUsers
         });
     });
 
@@ -41,12 +42,13 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         if (addedUser) {
           --numUsers;
-          listUsers.splice(listUsers.indexOf(userInfo),1);
+          listUsers.splice(listUsers.indexOf(socket.userInfo),1);
 
           // echo globally that this client has left
           socket.broadcast.emit('user left', {
             userInfo: socket.userInfo,
-            numUsers: numUsers
+            numUsers: numUsers,
+            listUsers: listUsers
           });
         }
     });

@@ -114,6 +114,7 @@ export class HeroComponent implements OnInit  {
                 retour => {
                     this.isLoading = false;
                     this.getHeroes();
+                    this.heroService.heroesInfo = retour;
                 },
                 error => this.errorService.newErrorMessage(error));
     }
