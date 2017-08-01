@@ -43,7 +43,13 @@ var LoginComponent = (function () {
             localStorage.setItem('token', response.token);
             _this.redirectAfterLog();
             _this.isLoading = false;
+            _this.loadUserInfo();
         }, function (error) { return _this.errorService.newErrorMessage(error); });
+    };
+    LoginComponent.prototype.loadUserInfo = function () {
+        var _this = this;
+        this.userService.infosUser()
+            .subscribe(function (user) { return _this.userService.userInfo = user; }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     LoginComponent.prototype.redirectAfterLog = function () {
         this.router.navigate(['home']);

@@ -23,6 +23,7 @@ export class UserService {
     });
     private userUrl = url_base + 'user/';    //'app/test.json';
     private options = new RequestOptions({ headers: this.headers });
+    public userInfo : any[];
     
     /* Constructeur */
     constructor(private http: Http, private authHttp: AuthHttp) { }

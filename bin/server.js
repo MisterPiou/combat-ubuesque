@@ -13,23 +13,26 @@ app.use(express.static(__dirname + '/public'));
 
 // ROOM
 var numUsers = 0;
+var listUsers = [];
 io.on('connection', function (socket) {
     var addedUser = false;
 
     // when the client emits 'add user', this listens and executes
-    socket.on('add user', function (username) {
+    socket.on('add user', function (userInfo) {
         if (addedUser) return;
 
         // we store the username in the socket session for this client
-        socket.username = username;
+        socket.userInfo = userInfo;
         ++numUsers;
         addedUser = true;
+        listUsers.push(userInfo);
         socket.emit('login', {
-          numUsers: numUsers
+          numUsers: numUsers,
+          listUsers: listUsers
         });
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
-          username: socket.username,
+          userInfo: socket.userInfo,
           numUsers: numUsers
         });
     });
@@ -38,10 +41,11 @@ io.on('connection', function (socket) {
     socket.on('disconnect', function () {
         if (addedUser) {
           --numUsers;
+          listUsers.splice(listUsers.indexOf(userInfo),1);
 
           // echo globally that this client has left
           socket.broadcast.emit('user left', {
-            username: socket.username,
+            userInfo: socket.userInfo,
             numUsers: numUsers
           });
         }

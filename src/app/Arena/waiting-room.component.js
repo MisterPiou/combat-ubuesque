@@ -11,18 +11,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require("@angular/core");
 var router_1 = require("@angular/router");
 var server_service_1 = require("./server.service");
-//import * as io from 'socket.io-client';
+var user_service_1 = require("../User/user.service");
+var data_1 = require("../data");
 var WaitingRoomComponent = (function () {
-    function WaitingRoomComponent(router, serverService) {
+    function WaitingRoomComponent(router, serverService, userService) {
         this.router = router;
         this.serverService = serverService;
-        this.socket = io('http://localhost:4000');
+        this.userService = userService;
+        this.socket = io(data_1.url_root + ':4000');
     }
     WaitingRoomComponent.prototype.ngOnInit = function () {
-        this.socket.emit('add user', "piou");
+        this.socket.emit('add user', this.userService.userInfo);
         this.socket.on('login', function (data) {
             console.log("nombre d'utilisateur:" + data.numUsers);
+            this.listUserInfo = data.listUsers;
         }.bind(this));
+    };
+    WaitingRoomComponent.prototype.ngOnDestroy = function () {
+        this.socket.emit('disconnect');
     };
     return WaitingRoomComponent;
 }());
@@ -32,7 +38,8 @@ WaitingRoomComponent = __decorate([
         templateUrl: './waiting-room.component.html',
     }),
     __metadata("design:paramtypes", [router_1.Router,
-        server_service_1.ServerService])
+        server_service_1.ServerService,
+        user_service_1.UserService])
 ], WaitingRoomComponent);
 exports.WaitingRoomComponent = WaitingRoomComponent;
 //# sourceMappingURL=waiting-room.component.js.map

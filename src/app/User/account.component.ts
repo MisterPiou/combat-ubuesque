@@ -17,9 +17,13 @@ export class AccountComponent implements OnInit
         private userService: UserService ) { }
         
     getUser(): void {
+        this.user = this.userService.userInfo;
         this.userService.infosUser()
             .subscribe(
-                user => this.user = user,
+                user => {
+                    this.user = user;
+                    this.userService.userInfo = this.user;
+                },
                 error => this.errorService.newErrorMessage(error));
     }
     

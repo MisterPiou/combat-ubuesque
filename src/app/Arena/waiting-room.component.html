@@ -1,1 +1,14 @@
+<h3>Liste des joueurs connectés</h3>
 
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Pseudo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let user of listUserInfo">
+            <td>{{ user.username }}</td>
+        </tr>
+    </tbody>
+</table>

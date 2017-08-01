@@ -47,7 +47,15 @@ export class LoginComponent
                     localStorage.setItem('token', response.token);
                     this.redirectAfterLog();
                     this.isLoading = false;
+                    this.loadUserInfo();
                 },
+                error => this.errorService.newErrorMessage(error));
+    }
+    
+    loadUserInfo() {
+        this.userService.infosUser()
+            .subscribe(
+                user => this.userService.userInfo = user,
                 error => this.errorService.newErrorMessage(error));
     }
     
