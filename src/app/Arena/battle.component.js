@@ -84,6 +84,7 @@ var BattleComponent = (function () {
             if (_this.hero.level > 0) {
                 _this.stateGame = StateGame.pause;
             }
+            _this.heroService.heroesInfo = hero;
         }, function (error) { return _this.errorService.newErrorMessage(error); });
         this.heroLifeActual = this.hero.life;
     };

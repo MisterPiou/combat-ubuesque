@@ -88,6 +88,7 @@ export class BattleComponent implements OnInit, OnDestroy
                 if (this.hero.level>0) {
                     this.stateGame = StateGame.pause;
                 }
+                this.heroService.heroesInfo = hero;
             },
             error => this.errorService.newErrorMessage(error)
         )

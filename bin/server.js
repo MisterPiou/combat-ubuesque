@@ -25,6 +25,7 @@ io.on('connection', function (socket) {
         socket.userInfo = userInfo;
         ++numUsers;
         addedUser = true;
+        userInfo["socketId"] = socket.id;
         listUsers.push(userInfo);
         socket.emit('login', {
           numUsers: numUsers,
@@ -36,6 +37,23 @@ io.on('connection', function (socket) {
           numUsers: numUsers,
           listUsers: listUsers
         });
+    });
+    
+    // when a user ask a battle
+    socket.on("application battle", function (socketIdReceiver) {
+        socket.to(socketIdReceiver).emit('battle or not', {
+            socketIdAsker: socket.id,
+        });
+    });
+    
+    // when a user confirm a battle
+    socket.on("accept battle", function (socketIdAsker) {
+        socket.to(socketIdAsker).emit('battle accepted');
+    });
+    
+    // when a user refuse a battle
+    socket.on("refuse battle", function (socketIdAsker) {
+        socket.to(socketIdAsker).emit('battle refuseded');
     });
 
     // when the user disconnects.. perform this
