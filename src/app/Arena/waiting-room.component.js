@@ -37,12 +37,7 @@ var WaitingRoomComponent = (function () {
         }
     };
     WaitingRoomComponent.prototype.initSocket = function () {
-        this.socket.emit('add user', {
-            id: this.heroService.heroesInfo.id,
-            pseudo: this.heroService.heroesInfo.name,
-            race: this.heroService.heroesInfo.race.name,
-            level: this.heroService.heroesInfo.level,
-        });
+        this.socket.emit('add user', this.infoUser());
         /** list user **/
         this.socket.on('login', function (data) {
             console.log("You're a log with " + data.numUsers + " users");
@@ -60,22 +55,34 @@ var WaitingRoomComponent = (function () {
         this.socket.on('battle or not', function (data) {
             $('#battleAskModal').modal('show');
             this.socketIdAsker = data.socketIdAsker;
+            this.infoAsker = data.infoUser;
         }.bind(this));
         this.socket.on('battle accepted', function () {
             console.log("Battle confirmed !");
+            this.router.navigate(['arena/battle/', this.idReceiver, '/0']);
         }.bind(this));
         this.socket.on('battle refused', function () {
             console.log("Battle refused...");
         }.bind(this));
     };
-    WaitingRoomComponent.prototype.applicationBattle = function (socketIdReceiver) {
-        this.socket.emit('application battle', socketIdReceiver);
+    WaitingRoomComponent.prototype.applicationBattle = function (socketIdReceiver, idReceiver) {
+        this.idReceiver = idReceiver;
+        this.socket.emit('application battle', socketIdReceiver, this.infoUser());
     };
     WaitingRoomComponent.prototype.acceptBattle = function (socketIdAsker) {
         this.socket.emit('accept battle', socketIdAsker);
+        this.router.navigate(['arena/battle/', this.infoAsker.id, '/0']);
     };
     WaitingRoomComponent.prototype.refuseBattle = function (socketIdAsker) {
         this.socket.emit('refuse battle', socketIdAsker);
+    };
+    WaitingRoomComponent.prototype.infoUser = function () {
+        return {
+            id: this.heroService.heroesInfo.id,
+            pseudo: this.heroService.heroesInfo.name,
+            race: this.heroService.heroesInfo.race.name,
+            level: this.heroService.heroesInfo.level,
+        };
     };
     WaitingRoomComponent.prototype.ngOnDestroy = function () {
         this.socket.emit('disconnect');

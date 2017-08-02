@@ -40,9 +40,10 @@ io.on('connection', function (socket) {
     });
     
     // when a user ask a battle
-    socket.on("application battle", function (socketIdReceiver) {
+    socket.on("application battle", function (socketIdReceiver, infoUser) {
         socket.to(socketIdReceiver).emit('battle or not', {
             socketIdAsker: socket.id,
+            infoUser: infoUser
         });
     });
     

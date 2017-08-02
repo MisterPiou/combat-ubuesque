@@ -15,7 +15,7 @@
             <td>{{ user.level }}</td>
             <td>{{ user.race }}</td>
             <td>
-                <button class="btn btn-success" (click)="applicationBattle(user.socketId);">Combattre</button>
+                <button class="btn btn-success" (click)="applicationBattle(user.socketId, user.id);">Combattre</button>
             </td>
         </tr>
     </tbody>
@@ -27,7 +27,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-          <p>Le joueur {{ socketIdAsker }} veut se battre !</p>
+          <p>Le joueur {{ idAsker }} veut se battre !</p>
         <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="acceptBattle(socketIdAsker);">
             C'est parti !</button>
         <button type="button" class="btn btn-default" data-dismiss="modal" (click)="refuseBattle(socketIdAsker);">

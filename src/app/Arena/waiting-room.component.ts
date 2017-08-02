@@ -16,6 +16,8 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
 {
     socket = io(url_root+':4000');
     socketIdAsker: any;
+    idReceiver: any;
+    infoAsker: {  id: 0, pseudo: "", race: null, level: 0 };
     listUsers: any[];
     
     constructor(
@@ -42,12 +44,7 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
     }
     
     initSocket() {
-        this.socket.emit('add user', {
-            id: this.heroService.heroesInfo.id,
-            pseudo: this.heroService.heroesInfo.name,
-            race: this.heroService.heroesInfo.race.name,
-            level: this.heroService.heroesInfo.level,
-        });
+        this.socket.emit('add user', this.infoUser());
 
         /** list user **/
         this.socket.on('login', function (data: any) {
@@ -67,25 +64,38 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
         this.socket.on('battle or not', function(data: any) {
             $('#battleAskModal').modal('show');
             this.socketIdAsker = data.socketIdAsker;
+            this.infoAsker = data.infoUser;
         }.bind(this));
         this.socket.on('battle accepted', function() {
             console.log("Battle confirmed !");
+            this.router.navigate(['arena/battle/', this.idReceiver,'/0']);
         }.bind(this));
         this.socket.on('battle refused', function() {
             console.log("Battle refused...");
         }.bind(this));
     }
     
-    applicationBattle(socketIdReceiver:any) {
-        this.socket.emit('application battle',socketIdReceiver);
+    applicationBattle(socketIdReceiver:any, idReceiver: any) {
+        this.idReceiver = idReceiver;
+        this.socket.emit('application battle', socketIdReceiver, this.infoUser());
     }
     
     acceptBattle(socketIdAsker:any) {
         this.socket.emit('accept battle',socketIdAsker);
+        this.router.navigate(['arena/battle/', this.infoAsker.id,'/0']);
     }
     
     refuseBattle(socketIdAsker:any) {
         this.socket.emit('refuse battle',socketIdAsker);
+    }
+    
+    infoUser() {
+        return {
+            id: this.heroService.heroesInfo.id,
+            pseudo: this.heroService.heroesInfo.name,
+            race: this.heroService.heroesInfo.race.name,
+            level: this.heroService.heroesInfo.level,
+        };
     }
     
     ngOnDestroy() {
