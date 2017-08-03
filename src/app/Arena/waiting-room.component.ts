@@ -15,10 +15,12 @@ import {url_root} from '../data';
 export class WaitingRoomComponent implements OnInit, OnDestroy
 {
     socket = io(url_root+':4000');
-    socketIdAsker: any;
-    idReceiver: any;
-    infoAsker: {  id: 0, pseudo: "", race: null, level: 0 };
+    infoAsker: {} = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+    infoReceiver: {} = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
     listUsers: any[];
+    interval = 0;
+    messageWaiting = 'secondes';
+    secondsWaiting = 11;
     
     constructor(
         private router: Router,
@@ -63,21 +65,29 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
         /** Battle application **/
         this.socket.on('battle or not', function(data: any) {
             $('#battleAskModal').modal('show');
-            this.socketIdAsker = data.socketIdAsker;
             this.infoAsker = data.infoUser;
+            this.infoAsker.socketId = data.socketIdAsker;
         }.bind(this));
         this.socket.on('battle accepted', function() {
             console.log("Battle confirmed !");
-            this.router.navigate(['arena/battle/', this.idReceiver,'/0']);
+            $('#battleWaitModal').modal('hide');
+            this.router.navigate(['arena/battle/', this.infoReceiver.id,'/0']);
         }.bind(this));
         this.socket.on('battle refused', function() {
             console.log("Battle refused...");
+            $('#battleWaitModal').modal('hide');
+        }.bind(this));
+        this.socket.on('battle canceled', function() {
+            $('#battleAskModal').modal('hide');
+            console.log("Battle canceled...");
         }.bind(this));
     }
     
-    applicationBattle(socketIdReceiver:any, idReceiver: any) {
-        this.idReceiver = idReceiver;
-        this.socket.emit('application battle', socketIdReceiver, this.infoUser());
+    applicationBattle(infoReceiver: any) {
+        this.infoReceiver = infoReceiver;
+        this.waitingTimer();
+        $('#battleWaitModal').modal('show');
+        this.socket.emit('application battle', this.infoReceiver.socketId, this.infoUser());
     }
     
     acceptBattle(socketIdAsker:any) {
@@ -89,6 +99,10 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
         this.socket.emit('refuse battle',socketIdAsker);
     }
     
+    cancelBattle(socketIdReceiver:any) {
+        this.socket.emit('cancel battle',socketIdReceiver);
+    }
+    
     infoUser() {
         return {
             id: this.heroService.heroesInfo.id,
@@ -96,6 +110,22 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
             race: this.heroService.heroesInfo.race.name,
             level: this.heroService.heroesInfo.level,
         };
+    }
+    
+    private waitingTimer() {
+        clearInterval(this.interval);
+        this.interval = window.setInterval(() => {
+            this.secondsWaiting -= 1;
+            if (this.secondsWaiting === 0) {
+                this.messageWaiting = 'Pas de reponse!';
+                $('#battleWaitModal').modal('hide');
+                this.cancelBattle(this.infoReceiver.socketId);
+                clearInterval(this.interval);
+            } else {
+                if (this.secondsWaiting < 0) {this.secondsWaiting = 10; } // reset
+                this.messageWaiting = `${this.secondsWaiting} secondes...`;
+            }
+        }, 1000);
     }
     
     ngOnDestroy() {

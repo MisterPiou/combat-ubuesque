@@ -23,6 +23,11 @@ var WaitingRoomComponent = (function () {
         this.heroService = heroService;
         this.errorService = errorService;
         this.socket = io(data_1.url_root + ':4000');
+        this.infoAsker = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+        this.infoReceiver = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+        this.interval = 0;
+        this.messageWaiting = 'secondes';
+        this.secondsWaiting = 11;
     }
     WaitingRoomComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -54,20 +59,28 @@ var WaitingRoomComponent = (function () {
         /** Battle application **/
         this.socket.on('battle or not', function (data) {
             $('#battleAskModal').modal('show');
-            this.socketIdAsker = data.socketIdAsker;
             this.infoAsker = data.infoUser;
+            this.infoAsker.socketId = data.socketIdAsker;
         }.bind(this));
         this.socket.on('battle accepted', function () {
             console.log("Battle confirmed !");
-            this.router.navigate(['arena/battle/', this.idReceiver, '/0']);
+            $('#battleWaitModal').modal('hide');
+            this.router.navigate(['arena/battle/', this.infoReceiver.id, '/0']);
         }.bind(this));
         this.socket.on('battle refused', function () {
             console.log("Battle refused...");
+            $('#battleWaitModal').modal('hide');
+        }.bind(this));
+        this.socket.on('battle canceled', function () {
+            $('#battleAskModal').modal('hide');
+            console.log("Battle canceled...");
         }.bind(this));
     };
-    WaitingRoomComponent.prototype.applicationBattle = function (socketIdReceiver, idReceiver) {
-        this.idReceiver = idReceiver;
-        this.socket.emit('application battle', socketIdReceiver, this.infoUser());
+    WaitingRoomComponent.prototype.applicationBattle = function (infoReceiver) {
+        this.infoReceiver = infoReceiver;
+        this.waitingTimer();
+        $('#battleWaitModal').modal('show');
+        this.socket.emit('application battle', this.infoReceiver.socketId, this.infoUser());
     };
     WaitingRoomComponent.prototype.acceptBattle = function (socketIdAsker) {
         this.socket.emit('accept battle', socketIdAsker);
@@ -76,6 +89,9 @@ var WaitingRoomComponent = (function () {
     WaitingRoomComponent.prototype.refuseBattle = function (socketIdAsker) {
         this.socket.emit('refuse battle', socketIdAsker);
     };
+    WaitingRoomComponent.prototype.cancelBattle = function (socketIdReceiver) {
+        this.socket.emit('cancel battle', socketIdReceiver);
+    };
     WaitingRoomComponent.prototype.infoUser = function () {
         return {
             id: this.heroService.heroesInfo.id,
@@ -83,6 +99,25 @@ var WaitingRoomComponent = (function () {
             race: this.heroService.heroesInfo.race.name,
             level: this.heroService.heroesInfo.level,
         };
+    };
+    WaitingRoomComponent.prototype.waitingTimer = function () {
+        var _this = this;
+        clearInterval(this.interval);
+        this.interval = window.setInterval(function () {
+            _this.secondsWaiting -= 1;
+            if (_this.secondsWaiting === 0) {
+                _this.messageWaiting = 'Pas de reponse!';
+                $('#battleWaitModal').modal('hide');
+                _this.cancelBattle(_this.infoReceiver.socketId);
+                clearInterval(_this.interval);
+            }
+            else {
+                if (_this.secondsWaiting < 0) {
+                    _this.secondsWaiting = 10;
+                } // reset
+                _this.messageWaiting = _this.secondsWaiting + " secondes...";
+            }
+        }, 1000);
     };
     WaitingRoomComponent.prototype.ngOnDestroy = function () {
         this.socket.emit('disconnect');

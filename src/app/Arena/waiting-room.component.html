@@ -15,7 +15,7 @@
             <td>{{ user.level }}</td>
             <td>{{ user.race }}</td>
             <td>
-                <button class="btn btn-success" (click)="applicationBattle(user.socketId, user.id);">Combattre</button>
+                <button class="btn btn-success" (click)="applicationBattle(user);">Combattre {{ user.socketId }}</button>
             </td>
         </tr>
     </tbody>
@@ -27,11 +27,29 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-body">
-          <p>Le joueur {{ idAsker }} veut se battre !</p>
-        <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="acceptBattle(socketIdAsker);">
-            C'est parti !</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal" (click)="refuseBattle(socketIdAsker);">
-            Non merci...</button>
+            <p>
+                <strong>{{ infoAsker.pseudo }}</strong>(Un(e) {{ infoAsker.race }} de level {{ infoAsker.level }}) veut se battre !
+            </p>
+            <p>Veut tu lui apprendres les bonnes manières ? ({{ infoAsker.socketId }})</p>
+            <button type="submit" class="btn btn-primary" data-dismiss="modal" (click)="acceptBattle(infoAsker.socketId);">
+                C'est parti !</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="refuseBattle(infoAsker.socketId);">
+                Non merci...</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="battleWaitModal" tabindex="-1" role="dialog" aria-labelledby="battleWaitModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+            <p>
+                Votre demande à <strong>{{ infoReceiver.pseudo }}</strong>(Un(e) {{ infoReceiver.race }} de level {{ infoReceiver.level }}) de combat est envoyée !
+            </p>
+            <p>Il n'y a plus qu'a attendre sa reponse... {{ messageWaiting }}</p>
+            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="cancelBattle(infoReceiver.socketId);">
+                Laisser tomber...</button>
       </div>
     </div>
   </div>

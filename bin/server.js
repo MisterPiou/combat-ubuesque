@@ -54,7 +54,12 @@ io.on('connection', function (socket) {
     
     // when a user refuse a battle
     socket.on("refuse battle", function (socketIdAsker) {
-        socket.to(socketIdAsker).emit('battle refuseded');
+        socket.to(socketIdAsker).emit('battle refused');
+    });
+    
+    // when a user cancel application
+    socket.on("cancel battle", function (socketIdReceiver) {
+        socket.to(socketIdReceiver).emit('battle canceled');
     });
 
     // when the user disconnects.. perform this
