@@ -14,7 +14,17 @@ var server_service_1 = require("./server.service");
 var user_service_1 = require("../User/user.service");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
-var data_1 = require("../data");
+var InfoUser = (function () {
+    function InfoUser(id, pseudo, race, level, socketId) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.race = race;
+        this.level = level;
+        this.socketId = socketId;
+    }
+    return InfoUser;
+}());
+exports.InfoUser = InfoUser;
 var WaitingRoomComponent = (function () {
     function WaitingRoomComponent(router, serverService, userService, heroService, errorService) {
         this.router = router;
@@ -22,9 +32,8 @@ var WaitingRoomComponent = (function () {
         this.userService = userService;
         this.heroService = heroService;
         this.errorService = errorService;
-        this.socket = io(data_1.url_root + ':4000');
-        this.infoAsker = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
-        this.infoReceiver = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+        this.infoAsker = new InfoUser(0, "", null, 0, "");
+        this.infoReceiver = new InfoUser(0, "", null, 0, "");
         this.interval = 0;
         this.messageWaiting = 'secondes';
         this.secondsWaiting = 11;
@@ -42,36 +51,37 @@ var WaitingRoomComponent = (function () {
         }
     };
     WaitingRoomComponent.prototype.initSocket = function () {
-        this.socket.emit('add user', this.infoUser());
+        this.serverService.getSocket().emit('add user', this.infoUser());
         /** list user **/
-        this.socket.on('login', function (data) {
+        this.serverService.getSocket().on('login', function (data) {
             console.log("You're a log with " + data.numUsers + " users");
             this.listUsers = data.listUsers;
         }.bind(this));
-        this.socket.on('user joined', function (data) {
+        this.serverService.getSocket().on('user joined', function (data) {
             console.log("User joined room ! You're with " + data.numUsers + " users");
             this.listUsers = data.listUsers;
         }.bind(this));
-        this.socket.on('user left', function (data) {
+        this.serverService.getSocket().on('user left', function (data) {
             console.log("A user left room ! You're with " + data.numUsers + " users");
             this.listUsers = data.listUsers;
         }.bind(this));
         /** Battle application **/
-        this.socket.on('battle or not', function (data) {
+        this.serverService.getSocket().on('battle or not', function (data) {
             $('#battleAskModal').modal('show');
             this.infoAsker = data.infoUser;
             this.infoAsker.socketId = data.socketIdAsker;
         }.bind(this));
-        this.socket.on('battle accepted', function () {
+        this.serverService.getSocket().on('battle accepted', function () {
             console.log("Battle confirmed !");
             $('#battleWaitModal').modal('hide');
+            this.serverService.setInfos(this.infoAsker, this.infoReceiver);
             this.router.navigate(['arena/battle/', this.infoReceiver.id, '/0']);
         }.bind(this));
-        this.socket.on('battle refused', function () {
+        this.serverService.getSocket().on('battle refused', function () {
             console.log("Battle refused...");
             $('#battleWaitModal').modal('hide');
         }.bind(this));
-        this.socket.on('battle canceled', function () {
+        this.serverService.getSocket().on('battle canceled', function () {
             $('#battleAskModal').modal('hide');
             console.log("Battle canceled...");
         }.bind(this));
@@ -80,17 +90,18 @@ var WaitingRoomComponent = (function () {
         this.infoReceiver = infoReceiver;
         this.waitingTimer();
         $('#battleWaitModal').modal('show');
-        this.socket.emit('application battle', this.infoReceiver.socketId, this.infoUser());
+        this.serverService.getSocket().emit('application battle', this.infoReceiver.socketId, this.infoUser());
     };
     WaitingRoomComponent.prototype.acceptBattle = function (socketIdAsker) {
-        this.socket.emit('accept battle', socketIdAsker);
+        this.serverService.getSocket().emit('accept battle', socketIdAsker);
+        this.serverService.setInfos(this.infoAsker, this.infoReceiver);
         this.router.navigate(['arena/battle/', this.infoAsker.id, '/0']);
     };
     WaitingRoomComponent.prototype.refuseBattle = function (socketIdAsker) {
-        this.socket.emit('refuse battle', socketIdAsker);
+        this.serverService.getSocket().emit('refuse battle', socketIdAsker);
     };
     WaitingRoomComponent.prototype.cancelBattle = function (socketIdReceiver) {
-        this.socket.emit('cancel battle', socketIdReceiver);
+        this.serverService.getSocket().emit('cancel battle', socketIdReceiver);
     };
     WaitingRoomComponent.prototype.infoUser = function () {
         return {
@@ -120,7 +131,7 @@ var WaitingRoomComponent = (function () {
         }, 1000);
     };
     WaitingRoomComponent.prototype.ngOnDestroy = function () {
-        this.socket.emit('disconnect');
+        this.serverService.getSocket().emit('disconnect');
     };
     return WaitingRoomComponent;
 }());

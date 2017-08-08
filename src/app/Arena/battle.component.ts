@@ -5,7 +5,8 @@ import {Hero}           from '../Hero/class/hero';
 import * as Spell       from '../Hero/class/spell';
 import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}   from '../Global/error.service';
-import {FormulaService}   from '../Global/formula.service';
+import {FormulaService} from '../Global/formula.service';
+import {ServerService}  from './server.service';
 
 import * as race from '../Hero/class/race';
 
@@ -55,6 +56,7 @@ export class BattleComponent implements OnInit, OnDestroy
         private route: ActivatedRoute,
         private heroService: HeroService,
         private errorService: ErrorService,
+        private serverService: ServerService,
         private formula: FormulaService,
     ) {}
     
@@ -97,9 +99,16 @@ export class BattleComponent implements OnInit, OnDestroy
     
     /** Start/End battle **/
     startBattle() {
-        this.stateGame = StateGame.current;
-        if (this.opponent.id==0)
+        if (this.opponent.id==0) {
             this.opponentAttack();
+            this.stateGame = StateGame.current;
+        }
+        else {
+            this.serverService.getSocket().emit('start battle');
+            this.serverService.getSocket().on('ready fight', function () {
+                this.stateGame = StateGame.current;
+            }.bind(this));
+        }
     }
     
     endBattle() {

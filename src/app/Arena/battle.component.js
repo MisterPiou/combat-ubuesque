@@ -15,6 +15,7 @@ var Spell = require("../Hero/class/spell");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
 var formula_service_1 = require("../Global/formula.service");
+var server_service_1 = require("./server.service");
 var race = require("../Hero/class/race");
 var StateGame;
 (function (StateGame) {
@@ -35,10 +36,11 @@ var StateBattle;
 })(StateBattle || (StateBattle = {}));
 var BattleComponent = (function () {
     /** INIT **/
-    function BattleComponent(route, heroService, errorService, formula) {
+    function BattleComponent(route, heroService, errorService, serverService, formula) {
         this.route = route;
         this.heroService = heroService;
         this.errorService = errorService;
+        this.serverService = serverService;
         this.formula = formula;
         /* Attaque */
         this.attacksPercentages = [0, 0, 0];
@@ -90,9 +92,16 @@ var BattleComponent = (function () {
     };
     /** Start/End battle **/
     BattleComponent.prototype.startBattle = function () {
-        this.stateGame = StateGame.current;
-        if (this.opponent.id == 0)
+        if (this.opponent.id == 0) {
             this.opponentAttack();
+            this.stateGame = StateGame.current;
+        }
+        else {
+            this.serverService.getSocket().emit('start battle');
+            this.serverService.getSocket().on('ready fight', function () {
+                this.stateGame = StateGame.current;
+            }.bind(this));
+        }
     };
     BattleComponent.prototype.endBattle = function () {
         var _this = this;
@@ -242,6 +251,7 @@ BattleComponent = __decorate([
     __metadata("design:paramtypes", [router_1.ActivatedRoute,
         hero_service_1.HeroService,
         error_service_1.ErrorService,
+        server_service_1.ServerService,
         formula_service_1.FormulaService])
 ], BattleComponent);
 exports.BattleComponent = BattleComponent;

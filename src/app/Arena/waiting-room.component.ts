@@ -7,6 +7,17 @@ import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}    from '../Global/error.service';
 
 import {url_root} from '../data';
+import {Race} from '../Hero/class/race';
+
+export class InfoUser {
+    constructor(
+        public id: number,
+        public pseudo: string,
+        public race: Race,
+        public level: number,
+        public socketId: string,
+    ){}
+}
 
 @Component({
   selector: 'waiting-room',
@@ -14,9 +25,8 @@ import {url_root} from '../data';
 })
 export class WaitingRoomComponent implements OnInit, OnDestroy
 {
-    socket = io(url_root+':4000');
-    infoAsker: {} = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
-    infoReceiver: {} = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+    infoAsker = new InfoUser(0,"",null,0,"");
+    infoReceiver = new InfoUser(0,"",null,0,"");
     listUsers: any[];
     interval = 0;
     messageWaiting = 'secondes';
@@ -46,38 +56,39 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
     }
     
     initSocket() {
-        this.socket.emit('add user', this.infoUser());
+        this.serverService.getSocket().emit('add user', this.infoUser());
 
         /** list user **/
-        this.socket.on('login', function (data: any) {
+        this.serverService.getSocket().on('login', function (data: any) {
             console.log("You're a log with " + data.numUsers + " users")
             this.listUsers = data.listUsers;
         }.bind(this));
-        this.socket.on('user joined', function (data: any) {
+        this.serverService.getSocket().on('user joined', function (data: any) {
             console.log("User joined room ! You're with " + data.numUsers + " users")
             this.listUsers = data.listUsers;
         }.bind(this));
-        this.socket.on('user left', function (data: any) {
+        this.serverService.getSocket().on('user left', function (data: any) {
             console.log("A user left room ! You're with " + data.numUsers + " users")
             this.listUsers = data.listUsers;
         }.bind(this));
 
         /** Battle application **/
-        this.socket.on('battle or not', function(data: any) {
+        this.serverService.getSocket().on('battle or not', function(data: any) {
             $('#battleAskModal').modal('show');
             this.infoAsker = data.infoUser;
             this.infoAsker.socketId = data.socketIdAsker;
         }.bind(this));
-        this.socket.on('battle accepted', function() {
+        this.serverService.getSocket().on('battle accepted', function() {
             console.log("Battle confirmed !");
             $('#battleWaitModal').modal('hide');
+            this.serverService.setInfos(this.infoAsker, this.infoReceiver);
             this.router.navigate(['arena/battle/', this.infoReceiver.id,'/0']);
         }.bind(this));
-        this.socket.on('battle refused', function() {
+        this.serverService.getSocket().on('battle refused', function() {
             console.log("Battle refused...");
             $('#battleWaitModal').modal('hide');
         }.bind(this));
-        this.socket.on('battle canceled', function() {
+        this.serverService.getSocket().on('battle canceled', function() {
             $('#battleAskModal').modal('hide');
             console.log("Battle canceled...");
         }.bind(this));
@@ -87,20 +98,21 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
         this.infoReceiver = infoReceiver;
         this.waitingTimer();
         $('#battleWaitModal').modal('show');
-        this.socket.emit('application battle', this.infoReceiver.socketId, this.infoUser());
+        this.serverService.getSocket().emit('application battle', this.infoReceiver.socketId, this.infoUser());
     }
     
     acceptBattle(socketIdAsker:any) {
-        this.socket.emit('accept battle',socketIdAsker);
+        this.serverService.getSocket().emit('accept battle',socketIdAsker);
+        this.serverService.setInfos(this.infoAsker, this.infoReceiver);
         this.router.navigate(['arena/battle/', this.infoAsker.id,'/0']);
     }
     
     refuseBattle(socketIdAsker:any) {
-        this.socket.emit('refuse battle',socketIdAsker);
+        this.serverService.getSocket().emit('refuse battle',socketIdAsker);
     }
     
     cancelBattle(socketIdReceiver:any) {
-        this.socket.emit('cancel battle',socketIdReceiver);
+        this.serverService.getSocket().emit('cancel battle',socketIdReceiver);
     }
     
     infoUser() {
@@ -129,6 +141,6 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
     }
     
     ngOnDestroy() {
-        this.socket.emit('disconnect');
+        this.serverService.getSocket().emit('disconnect');
     }
 }

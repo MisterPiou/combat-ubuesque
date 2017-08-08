@@ -39,6 +39,9 @@ io.on('connection', function (socket) {
         });
     });
     
+    /**
+     * Waiting-room
+     */
     // when a user ask a battle
     socket.on("application battle", function (socketIdReceiver, infoUser) {
         socket.to(socketIdReceiver).emit('battle or not', {
@@ -62,6 +65,14 @@ io.on('connection', function (socket) {
         socket.to(socketIdReceiver).emit('battle canceled');
     });
 
+    /**
+     * Battle
+     */
+    // when a user ask a battle
+    socket.on("start battle", function (socketIdOpponent, infoUser) {
+        socket.to(socketIdOpponent).emit('ready fight');
+    });
+    
     // when the user disconnects.. perform this
     socket.on('disconnect', function () {
         if (addedUser) {

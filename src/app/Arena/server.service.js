@@ -6,9 +6,32 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 var core_1 = require("@angular/core");
+var data_1 = require("../data");
 var ServerService = (function () {
     function ServerService() {
+        this.socket = io(data_1.url_root + ':4000');
+        this.infoAsker = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+        this.infoReceiver = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
     }
+    ServerService.prototype.getSocket = function () {
+        return this.socket;
+    };
+    ServerService.prototype.setInfoAsker = function (info) {
+        this.infoAsker = info;
+    };
+    ServerService.prototype.getInfoAsker = function () {
+        return this.infoAsker;
+    };
+    ServerService.prototype.setInfoReceiver = function (info) {
+        this.infoReceiver = info;
+    };
+    ServerService.prototype.getInfoReceiver = function () {
+        return this.infoReceiver;
+    };
+    ServerService.prototype.setInfos = function (infoAsker, infoReceiver) {
+        this.infoAsker = infoAsker;
+        this.infoReceiver = infoReceiver;
+    };
     return ServerService;
 }());
 ServerService = __decorate([
