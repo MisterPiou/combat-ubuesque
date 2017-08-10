@@ -24,6 +24,7 @@
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/doctrine-cache-bundle": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^1.0",
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/orm": "^2.5",
         "friendsofsymfony/rest-bundle": "^2.2",
         "friendsofsymfony/user-bundle": "~2.0",
