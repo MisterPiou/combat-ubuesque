@@ -6,18 +6,8 @@ import {UserService}    from '../User/user.service';
 import {HeroService}    from '../Hero/hero.service';
 import {ErrorService}    from '../Global/error.service';
 
-import {url_root} from '../data';
-import {Race} from '../Hero/class/race';
-
-export class InfoUser {
-    constructor(
-        public id: number,
-        public pseudo: string,
-        public race: Race,
-        public level: number,
-        public socketId: string,
-    ){}
-}
+import {url_root}       from '../data';
+import {InfoServUser}   from './server.service';
 
 @Component({
   selector: 'waiting-room',
@@ -25,8 +15,8 @@ export class InfoUser {
 })
 export class WaitingRoomComponent implements OnInit, OnDestroy
 {
-    infoAsker = new InfoUser(0,"",null,0,"");
-    infoReceiver = new InfoUser(0,"",null,0,"");
+    infoAsker = new InfoServUser(0,"",null,0,"");
+    infoReceiver = new InfoServUser(0,"",null,0,"");
     listUsers: any[];
     interval = 0;
     messageWaiting = 'secondes';
@@ -41,13 +31,13 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
     ) {}  
     
     ngOnInit() {
-        if(this.heroService.heroesInfo) {
+        if (this.heroService.getHeroInfo()) {
             this.initSocket();
         }
         else {
             this.heroService.getHeroSelected().subscribe(
                 hero => {
-                    this.heroService.heroesInfo = hero;
+                    this.heroService.setHeroInfo(hero);
                     this.initSocket();
                 },
                 error => this.errorService.newErrorMessage(error)
@@ -117,10 +107,10 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
     
     infoUser() {
         return {
-            id: this.heroService.heroesInfo.id,
-            pseudo: this.heroService.heroesInfo.name,
-            race: this.heroService.heroesInfo.race.name,
-            level: this.heroService.heroesInfo.level,
+            id: this.heroService.getHeroInfo().id,
+            pseudo: this.heroService.getHeroInfo().name,
+            race: this.heroService.getHeroInfo().race.name,
+            level: this.heroService.getHeroInfo().level,
         };
     }
     

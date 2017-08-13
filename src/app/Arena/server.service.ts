@@ -1,13 +1,24 @@
 import { Injectable }   from '@angular/core';
 
-import {url_root} from '../data';
+import {url_root}   from '../data';
+import {Race}       from '../Hero/class/race';
+
+export class InfoServUser {
+    constructor(
+        public id: number,
+        public pseudo: string,
+        public race: Race,
+        public level: number,
+        public socketId: string,
+    ){}
+}
 
 @Injectable()
 export class ServerService {
     
     socket = io(url_root+':4000');
-    infoAsker: {} = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
-    infoReceiver: {} = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+    infoAsker = new InfoServUser(0,"",null,0,"");
+    infoReceiver = new InfoServUser(0,"",null,0,"");
     
     getSocket() {
         return this.socket;

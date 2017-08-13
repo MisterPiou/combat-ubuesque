@@ -57,12 +57,12 @@ export class LoginComponent
     loadUserInfo() {
         this.userService.infosUser()
             .subscribe(
-                user => this.userService.userInfo = user,
+                user => this.userService.setUser(user),
                 error => this.errorService.newErrorMessage(error));
         this.heroService.getHeroSelected()
             .subscribe(
                 hero => {
-                    this.heroService.heroesInfo = hero;
+                    this.heroService.setHeroInfo(hero);
                 },
                 error => this.errorService.newErrorMessage(error));
     }

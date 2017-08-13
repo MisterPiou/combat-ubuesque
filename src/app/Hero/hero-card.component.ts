@@ -47,7 +47,7 @@ export class HeroCardComponent implements OnInit  {
             .subscribe(
                 retour => {
                     this.isLoading = false;
-                    this.heroService.heroesInfo = retour;
+                    this.heroService.setHeroInfo(retour);
                 },
                 error => this.errorService.newErrorMessage(error));
     }

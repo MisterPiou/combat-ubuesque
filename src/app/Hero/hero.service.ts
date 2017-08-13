@@ -13,8 +13,8 @@ import { url_base } from '../data';
 @Injectable()
 export class HeroService {
     /* Variable */
-    private heroesUrl = url_base + 'hero/';    //'app/test.json';
-    public heroesInfo: Hero;
+    heroesUrl = url_base + 'hero/';    //'app/test.json';
+    heroInfo: Hero;
     
     /* Constructor */
     constructor(private authHttp: AuthHttp) { }
@@ -77,5 +77,13 @@ export class HeroService {
           errMsg = error.message ? error.message : error.toString();
         }
         return Observable.throw(errMsg);
+    }
+    
+    /* Accesseur Hero */
+    public getHeroInfo() {
+        return this.heroInfo;
+    }
+    public setHeroInfo(heroInfo: Hero) {
+        this.heroInfo = heroInfo;
     }
 }

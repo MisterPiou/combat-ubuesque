@@ -1,7 +1,7 @@
 import {Component,OnInit} from '@angular/core';
 
 import { ErrorService }     from '../Global/error.service';
-import { UserService }      from './user.service';
+import { UserService, User }      from './user.service';
 
 @Component({
   selector: 'account',
@@ -10,19 +10,19 @@ import { UserService }      from './user.service';
 
 export class AccountComponent implements OnInit
 {
-    user : string[] = [];
+    user = new User(0,"",0,new Date());
     
     constructor(
         private errorService: ErrorService,
         private userService: UserService ) { }
         
     getUser(): void {
-        this.user = this.userService.userInfo;
+        this.user = this.userService.getUser();
         this.userService.infosUser()
             .subscribe(
                 user => {
                     this.user = user;
-                    this.userService.userInfo = this.user;
+                    this.userService.setUser(this.user);
                 },
                 error => this.errorService.newErrorMessage(error));
     }

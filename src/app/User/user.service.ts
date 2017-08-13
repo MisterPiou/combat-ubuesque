@@ -12,18 +12,27 @@ import { AuthHttp }         from 'angular2-jwt';
 
 import { url_base } from '../data';
 
+export class User {
+    constructor(
+        public id: number,
+        public username: string,
+        public state: number,
+        public last_login: Date
+    ){}
+}
+
 @Injectable()
 export class UserService {
     /* Variables */
-    private headers = new Headers({
+    headers = new Headers({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization, Content-Length, X-Requested-With'
     });
-    private userUrl = url_base + 'user/';    //'app/test.json';
-    private options = new RequestOptions({ headers: this.headers });
-    public userInfo : any[];
+    userUrl = url_base + 'user/';    //'app/test.json';
+    options = new RequestOptions({ headers: this.headers });
+    user = new User(0,"",0, new Date());
     
     /* Constructeur */
     constructor(private http: Http, private authHttp: AuthHttp) { }
@@ -72,6 +81,14 @@ export class UserService {
         }
         console.error(errMsg);
         return Observable.throw(errMsg);
+    }
+    
+    /* Acceseur User */
+    public getUser() {
+        return this.user;
+    }
+    public setUser(user: User) {
+        this.user = user;
     }
     
     /* deconnecte l'utilisateur */
