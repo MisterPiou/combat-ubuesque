@@ -1,7 +1,7 @@
 import { Component }    from '@angular/core';
 import { Router }       from '@angular/router';
 
-import {UserService} from './User/user.service';
+import {UserService, User} from './User/user.service';
 
 import { ErrorService }     from './Global/error.service';
 import { Subscription }     from 'rxjs/Subscription';

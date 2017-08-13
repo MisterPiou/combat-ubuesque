@@ -15,15 +15,15 @@ var AccountComponent = (function () {
     function AccountComponent(errorService, userService) {
         this.errorService = errorService;
         this.userService = userService;
-        this.user = [];
+        this.user = new user_service_1.User(0, "", 0, new Date());
     }
     AccountComponent.prototype.getUser = function () {
         var _this = this;
-        this.user = this.userService.userInfo;
+        this.user = this.userService.getUser();
         this.userService.infosUser()
             .subscribe(function (user) {
             _this.user = user;
-            _this.userService.userInfo = _this.user;
+            _this.userService.setUser(_this.user);
         }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/

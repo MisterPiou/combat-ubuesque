@@ -7,11 +7,22 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require("@angular/core");
 var data_1 = require("../data");
+var InfoServUser = (function () {
+    function InfoServUser(id, pseudo, race, level, socketId) {
+        this.id = id;
+        this.pseudo = pseudo;
+        this.race = race;
+        this.level = level;
+        this.socketId = socketId;
+    }
+    return InfoServUser;
+}());
+exports.InfoServUser = InfoServUser;
 var ServerService = (function () {
     function ServerService() {
         this.socket = io(data_1.url_root + ':4000');
-        this.infoAsker = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
-        this.infoReceiver = { id: 0, pseudo: "", race: null, level: 0, socketId: "" };
+        this.infoAsker = new InfoServUser(0, "", null, 0, "");
+        this.infoReceiver = new InfoServUser(0, "", null, 0, "");
     }
     ServerService.prototype.getSocket = function () {
         return this.socket;

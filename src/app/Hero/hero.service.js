@@ -76,6 +76,13 @@ var HeroService = (function () {
         }
         return Observable_1.Observable.throw(errMsg);
     };
+    /* Accesseur Hero */
+    HeroService.prototype.getHeroInfo = function () {
+        return this.heroInfo;
+    };
+    HeroService.prototype.setHeroInfo = function (heroInfo) {
+        this.heroInfo = heroInfo;
+    };
     return HeroService;
 }());
 HeroService = __decorate([

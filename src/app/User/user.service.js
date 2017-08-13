@@ -18,6 +18,16 @@ require("rxjs/add/observable/throw");
 var angular2_jwt_1 = require("angular2-jwt");
 var angular2_jwt_2 = require("angular2-jwt");
 var data_1 = require("../data");
+var User = (function () {
+    function User(id, username, state, last_login) {
+        this.id = id;
+        this.username = username;
+        this.state = state;
+        this.last_login = last_login;
+    }
+    return User;
+}());
+exports.User = User;
 var UserService = (function () {
     /* Constructeur */
     function UserService(http, authHttp) {
@@ -32,6 +42,7 @@ var UserService = (function () {
         });
         this.userUrl = data_1.url_base + 'user/'; //'app/test.json';
         this.options = new http_2.RequestOptions({ headers: this.headers });
+        this.user = null;
     }
     /* Enregistre un nouvelle utilisateur */
     UserService.prototype.registerUser = function (data) {
@@ -74,6 +85,13 @@ var UserService = (function () {
         }
         console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
+    };
+    /* Acceseur User */
+    UserService.prototype.getUser = function () {
+        return this.user;
+    };
+    UserService.prototype.setUser = function (user) {
+        this.user = user;
     };
     /* deconnecte l'utilisateur */
     UserService.prototype.logout = function () {

@@ -32,7 +32,7 @@ export class UserService {
     });
     userUrl = url_base + 'user/';    //'app/test.json';
     options = new RequestOptions({ headers: this.headers });
-    user = new User(0,"",0, new Date());
+    user: User = null;
     
     /* Constructeur */
     constructor(private http: Http, private authHttp: AuthHttp) { }

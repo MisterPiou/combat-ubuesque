@@ -14,17 +14,7 @@ var server_service_1 = require("./server.service");
 var user_service_1 = require("../User/user.service");
 var hero_service_1 = require("../Hero/hero.service");
 var error_service_1 = require("../Global/error.service");
-var InfoUser = (function () {
-    function InfoUser(id, pseudo, race, level, socketId) {
-        this.id = id;
-        this.pseudo = pseudo;
-        this.race = race;
-        this.level = level;
-        this.socketId = socketId;
-    }
-    return InfoUser;
-}());
-exports.InfoUser = InfoUser;
+var server_service_2 = require("./server.service");
 var WaitingRoomComponent = (function () {
     function WaitingRoomComponent(router, serverService, userService, heroService, errorService) {
         this.router = router;
@@ -32,20 +22,20 @@ var WaitingRoomComponent = (function () {
         this.userService = userService;
         this.heroService = heroService;
         this.errorService = errorService;
-        this.infoAsker = new InfoUser(0, "", null, 0, "");
-        this.infoReceiver = new InfoUser(0, "", null, 0, "");
+        this.infoAsker = new server_service_2.InfoServUser(0, "", null, 0, "");
+        this.infoReceiver = new server_service_2.InfoServUser(0, "", null, 0, "");
         this.interval = 0;
         this.messageWaiting = 'secondes';
         this.secondsWaiting = 11;
     }
     WaitingRoomComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (this.heroService.heroesInfo) {
+        if (this.heroService.getHeroInfo()) {
             this.initSocket();
         }
         else {
             this.heroService.getHeroSelected().subscribe(function (hero) {
-                _this.heroService.heroesInfo = hero;
+                _this.heroService.setHeroInfo(hero);
                 _this.initSocket();
             }, function (error) { return _this.errorService.newErrorMessage(error); });
         }
@@ -105,10 +95,10 @@ var WaitingRoomComponent = (function () {
     };
     WaitingRoomComponent.prototype.infoUser = function () {
         return {
-            id: this.heroService.heroesInfo.id,
-            pseudo: this.heroService.heroesInfo.name,
-            race: this.heroService.heroesInfo.race.name,
-            level: this.heroService.heroesInfo.level,
+            id: this.heroService.getHeroInfo().id,
+            pseudo: this.heroService.getHeroInfo().name,
+            race: this.heroService.getHeroInfo().race.name,
+            level: this.heroService.getHeroInfo().level,
         };
     };
     WaitingRoomComponent.prototype.waitingTimer = function () {

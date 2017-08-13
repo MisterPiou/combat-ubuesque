@@ -51,10 +51,10 @@ var LoginComponent = (function () {
     LoginComponent.prototype.loadUserInfo = function () {
         var _this = this;
         this.userService.infosUser()
-            .subscribe(function (user) { return _this.userService.userInfo = user; }, function (error) { return _this.errorService.newErrorMessage(error); });
+            .subscribe(function (user) { return _this.userService.setUser(user); }, function (error) { return _this.errorService.newErrorMessage(error); });
         this.heroService.getHeroSelected()
             .subscribe(function (hero) {
-            _this.heroService.heroesInfo = hero;
+            _this.heroService.setHeroInfo(hero);
         }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     LoginComponent.prototype.redirectAfterLog = function () {

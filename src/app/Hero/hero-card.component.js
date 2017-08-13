@@ -41,7 +41,7 @@ var HeroCardComponent = (function () {
         this.heroService.updateHero(this.hero.id, { state: state })
             .subscribe(function (retour) {
             _this.isLoading = false;
-            _this.heroService.heroesInfo = retour;
+            _this.heroService.setHeroInfo(retour);
         }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
     /** ng Init **/
