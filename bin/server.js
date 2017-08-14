@@ -76,6 +76,10 @@ io.on('connection', function (socket) {
     socket.on("attack to", function (socketIdOpponent, attack) {
         socket.to(socketIdOpponent).emit('attack from', attack);
     });
+    // when a user give your state
+    socket.on("new state", function (socketIdOpponent, newState) {
+        socket.to(socketIdOpponent).emit('state opponent', newState);
+    });
     
     // when the user disconnects.. perform this
     socket.on('disconnect', function () {

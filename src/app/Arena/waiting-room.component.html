@@ -15,7 +15,8 @@
             <td>{{ user.level }}</td>
             <td>{{ user.race }}</td>
             <td>
-                <button class="btn btn-success" (click)="applicationBattle(user);">Combattre {{ user.socketId }}</button>
+                <button class="btn btn-success" (click)="applicationBattle(user);" *ngIf="user.id!=infoUser().id">
+                    Combattre</button>
             </td>
         </tr>
     </tbody>

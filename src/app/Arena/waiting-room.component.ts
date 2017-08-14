@@ -50,15 +50,12 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
 
         /** list user **/
         this.serverService.getSocket().on('login', function (data: any) {
-            console.log("You're a log with " + data.numUsers + " users")
             this.listUsers = data.listUsers;
         }.bind(this));
         this.serverService.getSocket().on('user joined', function (data: any) {
-            console.log("User joined room ! You're with " + data.numUsers + " users")
             this.listUsers = data.listUsers;
         }.bind(this));
         this.serverService.getSocket().on('user left', function (data: any) {
-            console.log("A user left room ! You're with " + data.numUsers + " users")
             this.listUsers = data.listUsers;
         }.bind(this));
 
@@ -70,19 +67,16 @@ export class WaitingRoomComponent implements OnInit, OnDestroy
         }.bind(this));
         this.serverService.getSocket().on('battle accepted', function() {
             clearInterval(this.interval);
-            console.log("Battle confirmed !");
             $('#battleWaitModal').modal('hide');
             this.serverService.setInfos(this.infoAsker, this.infoReceiver);
             this.router.navigate(['arena/battle/', this.infoReceiver.id,'/0']);
         }.bind(this));
         this.serverService.getSocket().on('battle refused', function() {
             clearInterval(this.interval);
-            console.log("Battle refused...");
             $('#battleWaitModal').modal('hide');
         }.bind(this));
         this.serverService.getSocket().on('battle canceled', function() {
             $('#battleAskModal').modal('hide');
-            console.log("Battle canceled...");
         }.bind(this));
     }
     

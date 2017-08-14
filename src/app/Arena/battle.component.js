@@ -42,9 +42,9 @@ var BattleComponent = (function () {
         this.errorService = errorService;
         this.serverService = serverService;
         this.formula = formula;
-        /* Attaque */
+        /* Attack */
         this.attacksPercentages = [0, 0, 0];
-        /* Personnage */
+        /* Character */
         this.hero = new hero_1.Hero(0, 0, "Chargement...", null, 0, 0, 0, 0);
         this.heroLifePercentage = 100;
         this.opponent = new hero_1.Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
@@ -55,7 +55,9 @@ var BattleComponent = (function () {
         /* Global */
         this.intervals = [0, 0, 0, 0];
         this.stateGame = StateGame.loading;
-        this.stateBattle = StateBattle.none;
+        this.stateMine = StateBattle.none;
+        this.stateOpponent = StateBattle.none;
+        this.isVersus = false;
         this.message = "";
         this.xpPercentage = 0;
     }
@@ -63,6 +65,7 @@ var BattleComponent = (function () {
         var _this = this;
         this.route.params.subscribe(function (params) {
             if (+params['id'] == 0) {
+                _this.isVersus = false;
                 var lvl = +params['lvl'];
                 _this.opponent = new hero_1.Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 200);
                 _this.opponentLifeActual = _this.opponent.life;
@@ -71,6 +74,7 @@ var BattleComponent = (function () {
                 }
             }
             else {
+                _this.isVersus = true;
                 _this.heroService.getHero(+params['id']).subscribe(function (hero) {
                     _this.opponent = hero;
                     _this.opponentLifeActual = _this.opponent.life;
@@ -92,7 +96,7 @@ var BattleComponent = (function () {
     };
     /** Start/End battle **/
     BattleComponent.prototype.startBattle = function () {
-        if (this.opponent.id == 0) {
+        if (!this.isVersus) {
             this.opponentAttack();
             this.stateGame = StateGame.current;
         }
@@ -103,6 +107,12 @@ var BattleComponent = (function () {
             //}.bind(this));
             this.serverService.getSocket().on("attack from", function (attack) {
                 this.heroLoseLife(attack.lifeLose);
+            }.bind(this));
+            this.serverService.getSocket().on("state opponent", function (newState) {
+                this.stateOpponent = newState.state;
+                this.opponentLifeActual = newState.life;
+                this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
+                this.opponentIsAlive();
             }.bind(this));
         }
     };
@@ -128,81 +138,91 @@ var BattleComponent = (function () {
         var xp = this.hero.xp;
         this.heroService.updateHero(this.hero.id, { lvl: lvl, xp: xp }).subscribe(function (hero) { return null; }, function (error) { return _this.errorService.newErrorMessage(error); });
     };
-    /** ATTAQUE **/
+    /** ATTACK **/
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == StateGame.current) {
             if (this.attacksPercentages[spell] == 0) {
-                this.spellCall = this.hero.race.spells[spell];
-                var power = this.hero.race.spells[spell].effect * this.hero.level;
-                var coolDown = void 0;
-                switch (this.spellCall.type) {
-                    case (Spell.SpellType.attack): {
-                        if (this.spellCall.name == "Fourbeur" && this.stateBattle != StateBattle.hide)
-                            return;
-                        if (this.stateBattle == StateBattle.boost)
-                            power *= this.spellCall.ratio;
-                        this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
-                        coolDown = this.spellCall.cooldown;
-                        break;
-                    }
-                    case (Spell.SpellType.boost): {
-                        this.stateBattle = StateBattle.boost;
-                        coolDown = this.spellCall.effect;
-                        break;
-                    }
-                    case (Spell.SpellType.freeze): {
-                        this.stateBattle = StateBattle.freezeIn;
-                        coolDown = this.spellCall.effect;
-                        break;
-                    }
-                    case (Spell.SpellType.shield): {
-                        this.stateBattle = StateBattle.shield;
-                        coolDown = this.spellCall.effect;
-                        break;
-                    }
-                    case (Spell.SpellType.hide): {
-                        this.stateBattle = StateBattle.hide;
-                        coolDown = this.spellCall.effect;
-                        break;
-                    }
-                }
+                var coolDown = this.attackAccordingToType(spell);
                 this.coolDown(spell, coolDown * 100);
             }
         }
     };
+    // only for training
     BattleComponent.prototype.opponentAttack = function () {
         var _this = this;
         this.clearTimer(3);
         var interval = Math.floor((Math.random() * 1000) + 2000 + 1);
         this.intervals[3] = window.setInterval(function () {
             var power = 5 * _this.opponent.level;
-            if (_this.stateBattle != StateBattle.freezeIn)
+            if (_this.stateMine != StateBattle.freezeIn)
                 _this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     };
-    /** Heroes Life **/
-    BattleComponent.prototype.opponentLoseLife = function (lifeLose) {
-        if (this.stateBattle == StateBattle.hide && this.spellCall.name == "Fourbeur") {
-            this.opponentAttack();
+    BattleComponent.prototype.attackAccordingToType = function (spell) {
+        this.spellCall = this.hero.race.spells[spell];
+        var power = this.hero.race.spells[spell].effect * this.hero.level;
+        var coolDown;
+        switch (this.spellCall.type) {
+            case (Spell.SpellType.attack): {
+                if (this.spellCall.name == "Fourbeur" && this.stateMine != StateBattle.hide)
+                    return;
+                if (this.stateMine == StateBattle.boost)
+                    power *= this.spellCall.ratio;
+                this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
+                coolDown = this.spellCall.cooldown;
+                break;
+            }
+            case (Spell.SpellType.boost): {
+                this.stateMine = StateBattle.boost;
+                coolDown = this.spellCall.effect;
+                break;
+            }
+            case (Spell.SpellType.freeze): {
+                this.stateMine = StateBattle.freezeIn;
+                coolDown = this.spellCall.effect;
+                break;
+            }
+            case (Spell.SpellType.shield): {
+                this.stateMine = StateBattle.shield;
+                coolDown = this.spellCall.effect;
+                break;
+            }
+            case (Spell.SpellType.hide): {
+                this.stateMine = StateBattle.hide;
+                coolDown = this.spellCall.effect;
+                break;
+            }
         }
-        if (this.opponent.id != 0) {
+        return coolDown;
+    };
+    /** Life **/
+    BattleComponent.prototype.opponentLoseLife = function (lifeLose) {
+        if (this.isVersus) {
             this.serverService.getSocket().emit("attack to", this.serverService.getOpponentId(), {
                 lifeLose: lifeLose,
                 type: this.spellCall.type,
                 name: this.spellCall.name
             });
         }
-        this.opponentLifeActual -= lifeLose;
+        else {
+            if (this.stateMine == StateBattle.hide && this.spellCall.name == "Fourbeur") {
+                this.opponentAttack();
+            }
+            this.opponentLifeActual -= lifeLose;
+            this.opponentIsAlive();
+            this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
+        }
+    };
+    BattleComponent.prototype.opponentIsAlive = function () {
         if (this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
             this.stateGame = StateGame.victory;
             this.clearTimer(3);
             this.endBattle();
         }
-        this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life) * 100;
     };
     BattleComponent.prototype.heroLoseLife = function (lifeLose) {
-        if (this.stateBattle == StateBattle.hide && (Math.random() * 100) > 50)
+        if (this.stateMine == StateBattle.hide && (Math.random() * 100) > 50)
             return;
         this.heroLifeActual -= lifeLose;
         if (this.heroLifeActual <= 0) {
@@ -212,13 +232,19 @@ var BattleComponent = (function () {
             this.endBattle();
         }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life) * 100;
+        if (this.isVersus) {
+            this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), {
+                life: this.heroLifeActual,
+                state: this.stateMine
+            });
+        }
     };
     /** TIMER **/
     BattleComponent.prototype.clearTimer = function (interval) { clearInterval(this.intervals[interval]); };
     BattleComponent.prototype.coolDown = function (attack, time) {
         var _this = this;
         this.clearTimer(attack);
-        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack)
+        if (this.stateMine != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack)
             this.attacksPercentages[attack] = 1;
         else
             this.attacksPercentages[attack] = 100;
@@ -228,13 +254,19 @@ var BattleComponent = (function () {
         }, 200);
     };
     BattleComponent.prototype.intervalAnimation = function (attack, interval) {
-        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) {
+        if (this.stateMine != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) {
             this.attacksPercentages[attack] += interval;
             if (this.attacksPercentages[attack] >= 100) {
                 this.attacksPercentages[attack] = 0;
                 this.clearTimer(attack);
-                this.stateBattle = StateBattle.none;
+                this.stateMine = StateBattle.none;
                 this.coolDown(attack, this.hero.race.spells[attack].cooldown * 100);
+                if (this.isVersus) {
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), {
+                        life: this.heroLifeActual,
+                        state: this.stateMine
+                    });
+                }
             }
         }
         else {

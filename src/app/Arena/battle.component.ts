@@ -32,9 +32,9 @@ enum StateBattle {
 })
 export class BattleComponent implements OnInit, OnDestroy
 {
-    /* Attaque */
+    /* Attack */
     attacksPercentages = [0,0,0];
-    /* Personnage */
+    /* Character */
     hero: Hero = new Hero(0, 0, "Chargement...", null, 0, 0, 0, 0);
     heroLifeActual: number;
     heroLifePercentage = 100;
@@ -47,7 +47,9 @@ export class BattleComponent implements OnInit, OnDestroy
     /* Global */
     intervals = [0,0,0,0];
     stateGame = StateGame.loading;
-    stateBattle = StateBattle.none;
+    stateMine = StateBattle.none;
+    stateOpponent = StateBattle.none;
+    isVersus = false;
     message = "";
     xpPercentage = 0;
     
@@ -63,6 +65,7 @@ export class BattleComponent implements OnInit, OnDestroy
     ngOnInit() {
         this.route.params.subscribe((params: Params) => {
             if(+params['id']==0) {
+                this.isVersus = false;
                 let lvl = +params['lvl'];
                 this.opponent = new Hero(0, 0, "Pouchink Paul", race.Sbire, 0, 0, lvl, lvl * 200);
                 this.opponentLifeActual = this.opponent.life;
@@ -71,6 +74,7 @@ export class BattleComponent implements OnInit, OnDestroy
                 }
             }
             else {
+                this.isVersus = true;
                 this.heroService.getHero(+params['id']).subscribe(
                     hero => {
                         this.opponent = hero;
@@ -99,7 +103,7 @@ export class BattleComponent implements OnInit, OnDestroy
     
     /** Start/End battle **/
     startBattle() {
-        if (this.opponent.id==0) {
+        if (!this.isVersus) {
             this.opponentAttack();
             this.stateGame = StateGame.current;
         }
@@ -110,6 +114,12 @@ export class BattleComponent implements OnInit, OnDestroy
             //}.bind(this));
             this.serverService.getSocket().on("attack from", function(attack: any) {
                 this.heroLoseLife(attack.lifeLose);
+            }.bind(this));
+            this.serverService.getSocket().on("state opponent", function(newState: any) {
+                this.stateOpponent = newState.state;
+                this.opponentLifeActual = newState.life;
+                this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life ) * 100;
+                this.opponentIsAlive();
             }.bind(this));
         }
     }
@@ -141,68 +151,72 @@ export class BattleComponent implements OnInit, OnDestroy
         );
     }
     
-    /** ATTAQUE **/
+    /** ATTACK **/
     onAttack(spell: number) {
         if (this.stateGame == StateGame.current) 
         {
             if(this.attacksPercentages[spell] == 0) 
             {
-                this.spellCall = this.hero.race.spells[spell];
-                let power = this.hero.race.spells[spell].effect * this.hero.level;
-                let coolDown;
-                switch (this.spellCall.type) {
-                    case (Spell.SpellType.attack):{
-                        if (this.spellCall.name=="Fourbeur" && this.stateBattle != StateBattle.hide)
-                            return;
-                        if (this.stateBattle == StateBattle.boost)
-                            power *= this.spellCall.ratio;
-                        this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
-                        coolDown = this.spellCall.cooldown;
-                        break; 
-                    }
-                    case (Spell.SpellType.boost):{
-                        this.stateBattle = StateBattle.boost;
-                        coolDown = this.spellCall.effect;
-                        break; 
-                    }
-                    case (Spell.SpellType.freeze):{
-                        this.stateBattle = StateBattle.freezeIn;
-                        coolDown = this.spellCall.effect;
-                        break; 
-                    }
-                    case (Spell.SpellType.shield):{
-                        this.stateBattle = StateBattle.shield;
-                        coolDown = this.spellCall.effect;
-                        break; 
-                    }
-                    case (Spell.SpellType.hide):{
-                        this.stateBattle = StateBattle.hide;
-                        coolDown = this.spellCall.effect;
-                        break; 
-                    }
-                }
+                let coolDown = this.attackAccordingToType(spell);
+                
                 this.coolDown(spell, coolDown * 100);
             }
         }
     }
     
+    // only for training
     opponentAttack() {
         this.clearTimer(3);
         let interval = Math.floor((Math.random() * 1000) + 2000 + 1);
         this.intervals[3] = window.setInterval(() => {
             let power = 5 * this.opponent.level;
-            if (this.stateBattle != StateBattle.freezeIn)
+            if (this.stateMine != StateBattle.freezeIn)
                 this.heroLoseLife(Math.floor((Math.random() * power) + power + 1));
         }, interval);
     }
     
-    /** Heroes Life **/
-    private opponentLoseLife(lifeLose: number) {
-        if (this.stateBattle == StateBattle.hide && this.spellCall.name=="Fourbeur"){
-            this.opponentAttack();
+    attackAccordingToType(spell: number) {
+        this.spellCall = this.hero.race.spells[spell];
+        let power = this.hero.race.spells[spell].effect * this.hero.level;
+        let coolDown;
+        switch (this.spellCall.type) {
+            case (Spell.SpellType.attack):{
+                if (this.spellCall.name=="Fourbeur" && this.stateMine != StateBattle.hide)
+                    return;
+                if (this.stateMine == StateBattle.boost)
+                    power *= this.spellCall.ratio;
+                this.opponentLoseLife(Math.floor((Math.random() * power) + power + 1));
+                coolDown = this.spellCall.cooldown;
+                break; 
+            }
+            case (Spell.SpellType.boost):{
+                this.stateMine = StateBattle.boost;
+                coolDown = this.spellCall.effect;
+                break; 
+            }
+            case (Spell.SpellType.freeze):{
+                this.stateMine = StateBattle.freezeIn;
+                coolDown = this.spellCall.effect;
+                break; 
+            }
+            case (Spell.SpellType.shield):{
+                this.stateMine = StateBattle.shield;
+                coolDown = this.spellCall.effect;
+                break; 
+            }
+            case (Spell.SpellType.hide):{
+                this.stateMine = StateBattle.hide;
+                coolDown = this.spellCall.effect;
+                break; 
+            }
         }
+        return coolDown;
+    }
+    
+    /** Life **/
+    private opponentLoseLife(lifeLose: number) {
         
-        if (this.opponent.id!=0) {
+        if (this.isVersus) {
             this.serverService.getSocket().emit("attack to", this.serverService.getOpponentId(), 
               {
                lifeLose: lifeLose,
@@ -210,19 +224,28 @@ export class BattleComponent implements OnInit, OnDestroy
                name: this.spellCall.name
             });
         }
-        
-        this.opponentLifeActual -= lifeLose;
+        else {
+            if (this.stateMine == StateBattle.hide && this.spellCall.name=="Fourbeur"){
+                this.opponentAttack();
+            }
+
+            this.opponentLifeActual -= lifeLose;
+            this.opponentIsAlive();
+            this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life ) * 100;
+        }
+    }
+    
+    private opponentIsAlive() {
         if(this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
             this.stateGame = StateGame.victory;
             this.clearTimer(3);
             this.endBattle();
         }
-        this.opponentLifePercentage = (this.opponentLifeActual / this.opponent.life ) * 100;
     }
     
     private heroLoseLife(lifeLose: number) {
-        if (this.stateBattle == StateBattle.hide && (Math.random()*100)>50)
+        if (this.stateMine == StateBattle.hide && (Math.random()*100)>50)
             return;
         
         this.heroLifeActual -= lifeLose;
@@ -233,6 +256,14 @@ export class BattleComponent implements OnInit, OnDestroy
             this.endBattle();
         }
         this.heroLifePercentage = (this.heroLifeActual / this.hero.life ) * 100;
+        
+        if (this.isVersus) {
+            this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), 
+              {
+               life: this.heroLifeActual,
+               state: this.stateMine
+            });
+        }
     }
     
     
@@ -241,7 +272,7 @@ export class BattleComponent implements OnInit, OnDestroy
     
     private coolDown(attack: number, time: number) {
         this.clearTimer(attack);
-        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) 
+        if (this.stateMine != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) 
             this.attacksPercentages[attack] = 1;
         else
             this.attacksPercentages[attack] = 100;
@@ -252,13 +283,20 @@ export class BattleComponent implements OnInit, OnDestroy
     }
     
     private intervalAnimation(attack: number, interval: number) {
-        if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) {
+        if (this.stateMine != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) {
             this.attacksPercentages[attack] += interval;
             if(this.attacksPercentages[attack] >= 100) {
                 this.attacksPercentages[attack] = 0;
                 this.clearTimer(attack);
-                this.stateBattle = StateBattle.none;
+                this.stateMine = StateBattle.none;
                 this.coolDown(attack, this.hero.race.spells[attack].cooldown * 100);
+                if (this.isVersus) {
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), 
+                      {
+                       life: this.heroLifeActual,
+                       state: this.stateMine
+                    });
+                }
             }
         } else {
             this.attacksPercentages[attack] -= interval;
