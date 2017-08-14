@@ -23,7 +23,6 @@ export class User {
 
 @Injectable()
 export class UserService {
-    /* Variables */
     headers = new Headers({
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
@@ -34,17 +33,14 @@ export class UserService {
     options = new RequestOptions({ headers: this.headers });
     user: User = null;
     
-    /* Constructeur */
     constructor(private http: Http, private authHttp: AuthHttp) { }
     
-    /* Enregistre un nouvelle utilisateur */
     registerUser(data: any): Observable<string> {
         return this.http.post(this.userUrl + 'register', data, {headers: this.headers})
           .map(this.extractData)
           .catch(this.handleError);
     }
     
-    /* Enregistre un nouvelle utilisateur */
     loginUser(data: any) {
         let body     = new URLSearchParams();
         body.append('username', data.username);
@@ -56,20 +52,17 @@ export class UserService {
           .catch(this.handleError);
     }
     
-    /* Recupere les donnees de l'utilisateur */
     infosUser() {
         return this.authHttp.get(this.userUrl + 'infosUser')
             .map(this.extractData)
             .catch(this.handleError);
     }
     
-    /* Extracte les donnees json */
     private extractData(res: Response) {
         let body = res.json();
         return body || { };
       }
     
-    /* Gere les erreurs de reponse */
     private handleError(error: any): Observable<any> {
         let errMsg: string;
         if (error instanceof Response) {
@@ -83,7 +76,7 @@ export class UserService {
         return Observable.throw(errMsg);
     }
     
-    /* Acceseur User */
+    /* Acceso User */
     public getUser() {
         return this.user;
     }
@@ -91,12 +84,10 @@ export class UserService {
         this.user = user;
     }
     
-    /* deconnecte l'utilisateur */
     logout() {
       localStorage.removeItem('token');
     }
 
-    /* regarde si l'utilisateur est connecte */
     loggedIn() {
       return tokenNotExpired();
     }

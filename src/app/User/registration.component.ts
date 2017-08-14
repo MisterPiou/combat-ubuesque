@@ -23,7 +23,6 @@ export class RegistrationComponent
             this.createForm();
         }
     
-    /* Cree le formualaire */
     createForm() {
         this.userForm = this.fb.group({
             username: ['', Validators.required],
@@ -33,12 +32,10 @@ export class RegistrationComponent
         })
     }
     
-    /* Efface le formaulaire */
     resetForm() {
         this.userForm.reset();
     }
     
-    /* Envoie du formualaire d'inscription */
     onSubmit() {
         const formModel = this.userForm.value;
         this.isLoading = true;
@@ -65,7 +62,7 @@ export class RegistrationComponent
                 error => this.errorService.newErrorMessage(error.message));
     }
     
-    /* Animation message succes */
+    /* Animation message success */
     activeSuccesMessage() {
         this.etatMsgBox = 'errMsgActive';
     }

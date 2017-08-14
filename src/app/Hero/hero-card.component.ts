@@ -38,7 +38,7 @@ export class HeroCardComponent implements OnInit  {
         this.lifePercentage = Math.round((this.hero.life / this.formula.calculateLifeMax(this.hero.level) ) * 100);
     }
     
-    /** Selectione le hero principal **/
+    /** Select the main hero **/
     mainHero() {
         this.isLoading = true;
         this.hero.state = 3;

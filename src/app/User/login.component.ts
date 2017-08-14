@@ -25,7 +25,6 @@ export class LoginComponent
             this.createForm();
         }
     
-    /* Cree le formualaire */
     createForm() {
         this.logForm = this.fb.group({
             username: ['', Validators.required],
@@ -33,7 +32,6 @@ export class LoginComponent
         })
     }
     
-    /* Envoie du formualaire d'inscription */
     onSubmit() {
         this.isLoading = true;
         const formModel = this.logForm.value;

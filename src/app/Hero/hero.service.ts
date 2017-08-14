@@ -12,42 +12,35 @@ import { url_base } from '../data';
 
 @Injectable()
 export class HeroService {
-    /* Variable */
     heroesUrl = url_base + 'hero/';    //'app/test.json';
     heroInfo: Hero;
     
-    /* Constructor */
     constructor(private authHttp: AuthHttp) { }
     
-    /* Recupere les heros */
     getHeroes(): Observable<Hero[]> {
         return this.authHttp.get(this.heroesUrl + 'getHeroes')
             .map(this.extractData)
             .catch(this.handleError);
     }
     
-    /* Recupere un heros */
     getHero(id: number): Observable<Hero> {
         return this.authHttp.get(this.heroesUrl + 'getHero/' + id)
             .map(this.extractData)
             .catch(this.handleError);
     }
     
-    /* Recupere le heros séléctioné */
     getHeroSelected(): Observable<Hero> {
         return this.authHttp.get(this.heroesUrl + 'getHeroSelected')
             .map(this.extractData)
             .catch(this.handleError);
     }
     
-    /* Ajoute un heros */
     addHero(name: string, race: number): Observable<Hero> {
         return this.authHttp.post(this.heroesUrl + 'addHero', {name, race})
           .map(this.extractData)
           .catch(this.handleError);
     }
     
-    /* Supprime un heros */
     delete(id: number): Observable<Hero[]> {
         return this.authHttp.get(this.heroesUrl + 'deleteHero/' + id)
           .map(this.extractData)
@@ -60,13 +53,13 @@ export class HeroService {
           .catch(this.handleError);
      }
      
-    /* Extracte les donnees json */
+    /* Extract data json */
     private extractData(res: Response) {
         let body = res.json();
         return body || { };
       }
     
-    /* Gere les erreurs de reponse */
+    /* Manage errores response */
     private handleError(error: any): Observable<any> {
         let errMsg: string;
         if (error instanceof Response) {
@@ -79,7 +72,7 @@ export class HeroService {
         return Observable.throw(errMsg);
     }
     
-    /* Accesseur Hero */
+    /* Accessor Hero */
     public getHeroInfo() {
         return this.heroInfo;
     }

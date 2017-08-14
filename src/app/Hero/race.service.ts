@@ -12,26 +12,21 @@ import { url_base } from '../data';
 
 @Injectable()
 export class RaceService {
-    /* Variable */
     private heroesUrl = url_base + 'race/';    //'app/test.json';
     
-    /* Constructor */
     constructor(private authHttp: AuthHttp) { }
     
-    /* Recupere les heros */
     getRaces(): Observable<Race[]> {
         return this.authHttp.get(this.heroesUrl + 'getRaces')
             .map(this.extractData)
             .catch(this.handleError);
     }
      
-    /* Extracte les donnees json */
     private extractData(res: Response) {
         let body = res.json();
         return body || { };
-      }
+    }
     
-    /* Gere les erreurs de reponse */
     private handleError(error: any): Observable<any> {
         let errMsg: string;
         if (error instanceof Response) {

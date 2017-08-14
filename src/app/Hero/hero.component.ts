@@ -80,12 +80,12 @@ export class HeroComponent implements OnInit  {
         this.lifePercentage = Math.round((hero.life / this.formula.calculateLifeMax(hero.level) ) * 100);
     }
     
-    /** Voir le hero **/
+    /** Display hero **/
     viewHero() {
         this.router.navigate(['/hero/card', this.selectedHero.id])
     }
     
-    /** Supprime le hero **/
+    /** Remove hero **/
     deleteHero() {
         /*bootbox.confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]", function(result) {
             if(result) {
@@ -104,7 +104,7 @@ export class HeroComponent implements OnInit  {
         }
     }
     
-    /** Selectione le hero principal **/
+    /** Select main hero **/
     mainHero() {
         this.isLoading = true;
         this.selectedHero.state = 3;

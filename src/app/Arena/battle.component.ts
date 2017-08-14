@@ -192,6 +192,12 @@ export class BattleComponent implements OnInit, OnDestroy
             case (Spell.SpellType.boost):{
                 this.stateMine = StateBattle.boost;
                 coolDown = this.spellCall.effect;
+                if (this.isVersus) {
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), 
+                    {
+                        life: this.heroLifeActual, state: this.stateMine
+                    });
+                }
                 break; 
             }
             case (Spell.SpellType.freeze):{
@@ -202,11 +208,23 @@ export class BattleComponent implements OnInit, OnDestroy
             case (Spell.SpellType.shield):{
                 this.stateMine = StateBattle.shield;
                 coolDown = this.spellCall.effect;
+                if (this.isVersus) {
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), 
+                    {
+                        life: this.heroLifeActual, state: this.stateMine
+                    });
+                }
                 break; 
             }
             case (Spell.SpellType.hide):{
                 this.stateMine = StateBattle.hide;
                 coolDown = this.spellCall.effect;
+                if (this.isVersus) {
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), 
+                    {
+                        life: this.heroLifeActual, state: this.stateMine
+                    });
+                }
                 break; 
             }
         }
