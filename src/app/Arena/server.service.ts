@@ -16,9 +16,9 @@ export class InfoServUser {
 @Injectable()
 export class ServerService {
     
-    socket = io(url_root+':4000');
-    infoAsker = new InfoServUser(0,"",null,0,"");
-    infoReceiver = new InfoServUser(0,"",null,0,"");
+    private socket = io(url_root+':4000');
+    private infoAsker = new InfoServUser(0,"",null,0,"");
+    private infoReceiver = new InfoServUser(0,"",null,0,"");
     
     getSocket() {
         return this.socket;
@@ -43,5 +43,12 @@ export class ServerService {
     setInfos(infoAsker: any, infoReceiver: any) {
         this.infoAsker = infoAsker;
         this.infoReceiver = infoReceiver;
+    }
+    
+    getOpponentId() {
+        if (this.infoAsker.id==0) 
+            return this.infoReceiver.socketId;
+        else
+            return this.infoAsker.socketId;
     }
 }

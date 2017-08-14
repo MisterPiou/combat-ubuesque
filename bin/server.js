@@ -69,8 +69,12 @@ io.on('connection', function (socket) {
      * Battle
      */
     // when a user ask a battle
-    socket.on("start battle", function (socketIdOpponent, infoUser) {
+    socket.on("start battle", function (socketIdOpponent) {
         socket.to(socketIdOpponent).emit('ready fight');
+    });
+    // when a user attack
+    socket.on("attack to", function (socketIdOpponent, attack) {
+        socket.to(socketIdOpponent).emit('attack from', attack);
     });
     
     // when the user disconnects.. perform this

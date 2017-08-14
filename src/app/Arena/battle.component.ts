@@ -104,9 +104,12 @@ export class BattleComponent implements OnInit, OnDestroy
             this.stateGame = StateGame.current;
         }
         else {
-            this.serverService.getSocket().emit('start battle');
-            this.serverService.getSocket().on('ready fight', function () {
+            /*this.serverService.getSocket().emit('start battle');
+            this.serverService.getSocket().on('ready fight', function () {*/
                 this.stateGame = StateGame.current;
+            //}.bind(this));
+            this.serverService.getSocket().on("attack from", function(attack: any) {
+                this.heroLoseLife(attack.lifeLose);
             }.bind(this));
         }
     }
@@ -199,6 +202,15 @@ export class BattleComponent implements OnInit, OnDestroy
             this.opponentAttack();
         }
         
+        if (this.opponent.id!=0) {
+            this.serverService.getSocket().emit("attack to", this.serverService.getOpponentId(), 
+              {
+               lifeLose: lifeLose,
+               type: this.spellCall.type,
+               name: this.spellCall.name
+            });
+        }
+        
         this.opponentLifeActual -= lifeLose;
         if(this.opponentLifeActual <= 0) {
             this.opponentLifeActual = 0;
@@ -228,7 +240,6 @@ export class BattleComponent implements OnInit, OnDestroy
     clearTimer(interval: number) { clearInterval(this.intervals[interval]); }
     
     private coolDown(attack: number, time: number) {
-        console.log("Attack " + attack + " launch for " + time + "ms");
         this.clearTimer(attack);
         if (this.stateBattle != StateBattle.none && this.hero.race.spells[attack].type != Spell.SpellType.attack) 
             this.attacksPercentages[attack] = 1;

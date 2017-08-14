@@ -43,6 +43,12 @@ var ServerService = (function () {
         this.infoAsker = infoAsker;
         this.infoReceiver = infoReceiver;
     };
+    ServerService.prototype.getOpponentId = function () {
+        if (this.infoAsker.id == 0)
+            return this.infoReceiver.socketId;
+        else
+            return this.infoAsker.socketId;
+    };
     return ServerService;
 }());
 ServerService = __decorate([
