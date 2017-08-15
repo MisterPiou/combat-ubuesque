@@ -67,11 +67,11 @@ var HeroComponent = (function () {
         this.xpPercentage = Math.round((hero.xp / this.formula.calculateXpNeed(hero.level)) * 100);
         this.lifePercentage = Math.round((hero.life / this.formula.calculateLifeMax(hero.level)) * 100);
     };
-    /** Voir le hero **/
+    /** Display hero **/
     HeroComponent.prototype.viewHero = function () {
         this.router.navigate(['/hero/card', this.selectedHero.id]);
     };
-    /** Supprime le hero **/
+    /** Remove hero **/
     HeroComponent.prototype.deleteHero = function () {
         var _this = this;
         /*bootbox.confirm("Voulez-vous vraiment mettre ce héros à la porte?\n[Note: Vous risquez un discour houleux avec le SynHerGy (SYNdicat des HERos GYmnaste)]", function(result) {
@@ -87,7 +87,7 @@ var HeroComponent = (function () {
                 .subscribe(function (heroes) { return _this.heroes = heroes; }, function (error) { return _this.errorService.newErrorMessage(error); });
         }
     };
-    /** Selectione le hero principal **/
+    /** Select main hero **/
     HeroComponent.prototype.mainHero = function () {
         var _this = this;
         this.isLoading = true;

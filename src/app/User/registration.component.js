@@ -21,7 +21,6 @@ var RegistrationComponent = (function () {
         this.etatMsgBox = 'errMsg';
         this.createForm();
     }
-    /* Cree le formualaire */
     RegistrationComponent.prototype.createForm = function () {
         this.userForm = this.fb.group({
             username: ['', forms_1.Validators.required],
@@ -30,11 +29,9 @@ var RegistrationComponent = (function () {
             second: ['', forms_1.Validators.required],
         });
     };
-    /* Efface le formaulaire */
     RegistrationComponent.prototype.resetForm = function () {
         this.userForm.reset();
     };
-    /* Envoie du formualaire d'inscription */
     RegistrationComponent.prototype.onSubmit = function () {
         var _this = this;
         var formModel = this.userForm.value;
@@ -57,7 +54,7 @@ var RegistrationComponent = (function () {
             _this.isLoading = false;
         }, function (error) { return _this.errorService.newErrorMessage(error.message); });
     };
-    /* Animation message succes */
+    /* Animation message success */
     RegistrationComponent.prototype.activeSuccesMessage = function () {
         this.etatMsgBox = 'errMsgActive';
     };

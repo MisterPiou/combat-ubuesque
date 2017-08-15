@@ -17,24 +17,19 @@ require("rxjs/add/observable/throw");
 var angular2_jwt_1 = require("angular2-jwt");
 var data_1 = require("../data");
 var RaceService = (function () {
-    /* Constructor */
     function RaceService(authHttp) {
         this.authHttp = authHttp;
-        /* Variable */
         this.heroesUrl = data_1.url_base + 'race/'; //'app/test.json';
     }
-    /* Recupere les heros */
     RaceService.prototype.getRaces = function () {
         return this.authHttp.get(this.heroesUrl + 'getRaces')
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Extracte les donnees json */
     RaceService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
-    /* Gere les erreurs de reponse */
     RaceService.prototype.handleError = function (error) {
         var errMsg;
         if (error instanceof http_1.Response) {

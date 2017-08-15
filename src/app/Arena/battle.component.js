@@ -49,14 +49,16 @@ var BattleComponent = (function () {
         this.heroLifePercentage = 100;
         this.opponent = new hero_1.Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
         this.opponentLifePercentage = 100;
+        this.stateMine = StateBattle.none;
+        this.stateOpponent = StateBattle.none;
+        this.mineIsReady = false;
+        this.opponentIsReady = false;
         this.spellCall = null;
         this.gainXp = 0;
         this.lvlUp = false;
         /* Global */
-        this.intervals = [0, 0, 0, 0];
+        this.intervals = [0, 0, 0, 0]; // 4th interval for opponent training
         this.stateGame = StateGame.loading;
-        this.stateMine = StateBattle.none;
-        this.stateOpponent = StateBattle.none;
         this.isVersus = false;
         this.message = "";
         this.xpPercentage = 0;
@@ -93,6 +95,11 @@ var BattleComponent = (function () {
             _this.heroService.setHeroInfo(hero);
         }, function (error) { return _this.errorService.newErrorMessage(error); });
         this.heroLifeActual = this.hero.life;
+        this.serverService.getSocket().on('ready fight', function () {
+            if (this.mineIsReady)
+                this.stateGame = StateGame.current;
+            this.opponentIsReady = true;
+        }.bind(this));
     };
     /** Start/End battle **/
     BattleComponent.prototype.startBattle = function () {
@@ -101,12 +108,23 @@ var BattleComponent = (function () {
             this.stateGame = StateGame.current;
         }
         else {
-            /*this.serverService.getSocket().emit('start battle');
-            this.serverService.getSocket().on('ready fight', function () {*/
-            this.stateGame = StateGame.current;
-            //}.bind(this));
+            this.serverService.getSocket().emit('start battle', this.serverService.getOpponentId());
+            if (this.opponentIsReady)
+                this.stateGame = StateGame.current;
+            this.mineIsReady = true;
             this.serverService.getSocket().on("attack from", function (attack) {
-                this.heroLoseLife(attack.lifeLose);
+                if (attack.type == Spell.SpellType.attack) {
+                    this.heroLoseLife(attack.lifeLose);
+                }
+                else if (attack.type == Spell.SpellType.freeze) {
+                    this.stateMine = StateBattle.freezeOut;
+                    this.coolDown(0, attack.lifeLose * 100);
+                    this.coolDown(1, attack.lifeLose * 100);
+                    this.coolDown(2, attack.lifeLose * 100);
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), {
+                        life: this.heroLifeActual, state: this.stateMine
+                    });
+                }
             }.bind(this));
             this.serverService.getSocket().on("state opponent", function (newState) {
                 this.stateOpponent = newState.state;
@@ -141,7 +159,7 @@ var BattleComponent = (function () {
     /** ATTACK **/
     BattleComponent.prototype.onAttack = function (spell) {
         if (this.stateGame == StateGame.current) {
-            if (this.attacksPercentages[spell] == 0) {
+            if (this.attacksPercentages[spell] == 0 && this.stateMine != StateBattle.freezeOut) {
                 var coolDown = this.attackAccordingToType(spell);
                 this.coolDown(spell, coolDown * 100);
             }
@@ -185,6 +203,11 @@ var BattleComponent = (function () {
             case (Spell.SpellType.freeze): {
                 this.stateMine = StateBattle.freezeIn;
                 coolDown = this.spellCall.effect;
+                this.serverService.getSocket().emit("attack to", this.serverService.getOpponentId(), {
+                    lifeLose: coolDown,
+                    type: this.spellCall.type,
+                    name: this.spellCall.name
+                });
                 break;
             }
             case (Spell.SpellType.shield): {

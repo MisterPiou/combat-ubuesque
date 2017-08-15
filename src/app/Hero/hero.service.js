@@ -17,37 +17,30 @@ require("rxjs/add/observable/throw");
 var angular2_jwt_1 = require("angular2-jwt");
 var data_1 = require("../data");
 var HeroService = (function () {
-    /* Constructor */
     function HeroService(authHttp) {
         this.authHttp = authHttp;
-        /* Variable */
         this.heroesUrl = data_1.url_base + 'hero/'; //'app/test.json';
     }
-    /* Recupere les heros */
     HeroService.prototype.getHeroes = function () {
         return this.authHttp.get(this.heroesUrl + 'getHeroes')
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Recupere un heros */
     HeroService.prototype.getHero = function (id) {
         return this.authHttp.get(this.heroesUrl + 'getHero/' + id)
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Recupere le heros séléctioné */
     HeroService.prototype.getHeroSelected = function () {
         return this.authHttp.get(this.heroesUrl + 'getHeroSelected')
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Ajoute un heros */
     HeroService.prototype.addHero = function (name, race) {
         return this.authHttp.post(this.heroesUrl + 'addHero', { name: name, race: race })
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Supprime un heros */
     HeroService.prototype.delete = function (id) {
         return this.authHttp.get(this.heroesUrl + 'deleteHero/' + id)
             .map(this.extractData)
@@ -58,12 +51,12 @@ var HeroService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Extracte les donnees json */
+    /* Extract data json */
     HeroService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
-    /* Gere les erreurs de reponse */
+    /* Manage errores response */
     HeroService.prototype.handleError = function (error) {
         var errMsg;
         if (error instanceof http_1.Response) {
@@ -76,7 +69,7 @@ var HeroService = (function () {
         }
         return Observable_1.Observable.throw(errMsg);
     };
-    /* Accesseur Hero */
+    /* Accessor Hero */
     HeroService.prototype.getHeroInfo = function () {
         return this.heroInfo;
     };

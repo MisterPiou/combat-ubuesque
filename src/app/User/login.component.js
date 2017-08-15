@@ -24,14 +24,12 @@ var LoginComponent = (function () {
         this.isLoading = false;
         this.createForm();
     }
-    /* Cree le formualaire */
     LoginComponent.prototype.createForm = function () {
         this.logForm = this.fb.group({
             username: ['', forms_1.Validators.required],
             password: ['', forms_1.Validators.required],
         });
     };
-    /* Envoie du formualaire d'inscription */
     LoginComponent.prototype.onSubmit = function () {
         var _this = this;
         this.isLoading = true;

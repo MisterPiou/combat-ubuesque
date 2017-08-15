@@ -32,7 +32,7 @@ var HeroCardComponent = (function () {
         this.xpPercentage = Math.round((this.hero.xp / this.formula.calculateXpNeed(this.hero.level)) * 100);
         this.lifePercentage = Math.round((this.hero.life / this.formula.calculateLifeMax(this.hero.level)) * 100);
     };
-    /** Selectione le hero principal **/
+    /** Select the main hero **/
     HeroCardComponent.prototype.mainHero = function () {
         var _this = this;
         this.isLoading = true;

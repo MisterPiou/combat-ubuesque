@@ -1,126 +1,168 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  color: #f2f2f5;
+  background-color: #003250;
+}
 h1 {
   color: #369;
   font-family: Arial, Helvetica, sans-serif;
 }
-
+.main {
+  margin-top: 10px;
+  padding: 10px;
+}
 .loader {
-    float: left;
-    border-top: 5px solid #111;
-    border-right: 5px solid rgba(0,0,0,0);
-    border-bottom: 5px solid #111; 
-    border-left: 5px solid rgba(0,0,0,0); 
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin .7s linear infinite;
-    -webkit-animation: spin .7s linear infinite;
+  float: left;
+  border-top: 5px solid #111;
+  border-right: 5px solid rgba(0, 0, 0, 0);
+  border-bottom: 5px solid #111;
+  border-left: 5px solid rgba(0, 0, 0, 0);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin .7s linear infinite;
+  -webkit-animation: spin .7s linear infinite;
 }
 .loader-in {
-    border-top: 5px solid rgba(0,0,0,0);
-    border-right: 5px solid #aaa;
-    border-bottom: 5px solid rgba(0,0,0,0); 
-    border-left: 5px solid #aaa; 
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    animation: spin 1.9s linear infinite;
-    -webkit-animation: spin 1.9s linear infinite;
+  border-top: 5px solid rgba(0, 0, 0, 0);
+  border-right: 5px solid #aaa;
+  border-bottom: 5px solid rgba(0, 0, 0, 0);
+  border-left: 5px solid #aaa;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  animation: spin 1.9s linear infinite;
+  -webkit-animation: spin 1.9s linear infinite;
 }
-
+.img-header {
+  width: 100%;
+}
+.img-menu {
+  width: 64px;
+}
+.nav-perso li {
+  text-align: center;
+}
 /**
  * Battle Component
  **/
 .block_battle {
-    text-align: center;
-}
-.block_battle_opponent {
+  text-align: center;
 }
 .battle_btn_attack {
-    color: #333;
-    background-color: #fff;
-    border: 2px solid #ccc;
-    cursor: pointer;
-    font-size: 18px;
-    height: 105px;
+  color: #333;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  font-size: 18px;
+  height: 105px;
 }
 .battle_btn_attack:hover {
-    border: 2px solid #8c8c8c;
+  border: 2px solid #8c8c8c;
 }
 .battle_btn_attack_timer {
-    background-color: #e0e0e0;
-    height: 100%;
-    text-align: center;
-    webkit-transition: width .5s;
-    -o-transition: width .5s;
-    transition: width .5s;
+  background-color: #e0e0e0;
+  height: 100%;
+  text-align: center;
+  webkit-transition: width .5s;
+  -o-transition: width .5s;
+  transition: width .5s;
 }
 .battle_btn_attack_timer_down {
-    background-color: #e0e0e0;
+  background-color: #e0e0e0;
 }
 .battle_btn_attack_timer_up {
-    background-color: #EF9A9A;
+  background-color: #EF9A9A;
 }
 .battle_btn_attack_timer span {
-    position: absolute;
-    top: 22%;
-    left: 14%;
-    width: 71%;
-    height: 100%;
+  position: absolute;
+  top: 22%;
+  left: 14%;
+  width: 71%;
+  height: 100%;
 }
 .avatar-effect {
-    border: 1px solid #EF9A9A;
+  border: 1px solid #EF9A9A;
 }
 .avatar-no-effect {
-    border: none;
+  border: none;
 }
-
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+.spell-thumb {
+  width: 32px;
+}
 /**
  * App Component
  **/
 .errMsg {
-    display: none;
+  display: none;
 }
-
 .errMsgActive {
-    display: block;
-    -webkit-animation-name: apparition_box; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
-    animation-name: apparition_box;
-    animation-duration: 0.5s;
+  display: block;
+  -webkit-animation-name: apparition_box;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 0.5s;
+  /* Safari 4.0 - 8.0 */
+  animation-name: apparition_box;
+  animation-duration: 0.5s;
 }
-
 .errMsgInactive {
-    -webkit-animation-name: apparition_box; /* Safari 4.0 - 8.0 */
-    -webkit-animation-duration: 0.5s; /* Safari 4.0 - 8.0 */
-    -webkit-animation-direction: reverse;
-    -webkit-animation-iteration-count: infinite;
-    animation-name: apparition_box;
-    animation-duration: 0.5s;
-    animation-direction: reverse;
-    animation-iteration-count: infinite;
+  -webkit-animation-name: apparition_box;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-duration: 0.5s;
+  /* Safari 4.0 - 8.0 */
+  -webkit-animation-direction: reverse;
+  -webkit-animation-iteration-count: infinite;
+  animation-name: apparition_box;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+  animation-iteration-count: infinite;
 }
-
 /**
  *  ANIMATIONS
  **/
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes apparition_box {
-    0%   {transform: scale(0)}
-    93%  {transform: scale(1.03)}
-    100% {transform: scale(1)}
+  0% {
+    transform: scale(0);
+  }
+  93% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 @-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
 }
-
 /* Standard syntax */
 @keyframes apparition_box {
-    0%   {transform: scale(0)}
-    93%  {transform: scale(1.03)}
-    100% {transform: scale(1)}
+  0% {
+    transform: scale(0);
+  }
+  93% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

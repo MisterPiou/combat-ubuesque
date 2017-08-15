@@ -41,14 +41,16 @@ export class BattleComponent implements OnInit, OnDestroy
     opponent: Hero = new Hero(0, 0, "Chargement...", race.Sbire, 0, 0, 0, 0);
     opponentLifeActual: number;
     opponentLifePercentage = 100;
+    stateMine = StateBattle.none;
+    stateOpponent = StateBattle.none;
+    mineIsReady = false;
+    opponentIsReady = false;
     spellCall: Spell.Spell = null;
     gainXp = 0;
     lvlUp = false;
     /* Global */
-    intervals = [0,0,0,0];
+    intervals = [0,0,0,0]; // 4th interval for opponent training
     stateGame = StateGame.loading;
-    stateMine = StateBattle.none;
-    stateOpponent = StateBattle.none;
     isVersus = false;
     message = "";
     xpPercentage = 0;
@@ -99,6 +101,11 @@ export class BattleComponent implements OnInit, OnDestroy
             error => this.errorService.newErrorMessage(error)
         )
         this.heroLifeActual = this.hero.life;
+        this.serverService.getSocket().on('ready fight', function () {
+            if(this.mineIsReady)
+                this.stateGame = StateGame.current;
+            this.opponentIsReady = true;
+        }.bind(this));
     }
     
     /** Start/End battle **/
@@ -108,12 +115,24 @@ export class BattleComponent implements OnInit, OnDestroy
             this.stateGame = StateGame.current;
         }
         else {
-            /*this.serverService.getSocket().emit('start battle');
-            this.serverService.getSocket().on('ready fight', function () {*/
+            this.serverService.getSocket().emit('start battle', this.serverService.getOpponentId());
+            if(this.opponentIsReady)
                 this.stateGame = StateGame.current;
-            //}.bind(this));
+            this.mineIsReady = true;
             this.serverService.getSocket().on("attack from", function(attack: any) {
-                this.heroLoseLife(attack.lifeLose);
+                if(attack.type==Spell.SpellType.attack){
+                    this.heroLoseLife(attack.lifeLose);
+                }
+                else if (attack.type == Spell.SpellType.freeze){
+                    this.stateMine = StateBattle.freezeOut;
+                    this.coolDown(0, attack.lifeLose * 100);
+                    this.coolDown(1, attack.lifeLose * 100);
+                    this.coolDown(2, attack.lifeLose * 100);
+                    this.serverService.getSocket().emit("new state", this.serverService.getOpponentId(), 
+                    {
+                        life: this.heroLifeActual, state: this.stateMine
+                    });
+                }
             }.bind(this));
             this.serverService.getSocket().on("state opponent", function(newState: any) {
                 this.stateOpponent = newState.state;
@@ -155,7 +174,7 @@ export class BattleComponent implements OnInit, OnDestroy
     onAttack(spell: number) {
         if (this.stateGame == StateGame.current) 
         {
-            if(this.attacksPercentages[spell] == 0) 
+            if (this.attacksPercentages[spell] == 0 && this.stateMine != StateBattle.freezeOut) 
             {
                 let coolDown = this.attackAccordingToType(spell);
                 
@@ -203,6 +222,12 @@ export class BattleComponent implements OnInit, OnDestroy
             case (Spell.SpellType.freeze):{
                 this.stateMine = StateBattle.freezeIn;
                 coolDown = this.spellCall.effect;
+                this.serverService.getSocket().emit("attack to", this.serverService.getOpponentId(), 
+                {
+                    lifeLose: coolDown,
+                    type: this.spellCall.type,
+                    name: this.spellCall.name
+                });
                 break; 
             }
             case (Spell.SpellType.shield):{

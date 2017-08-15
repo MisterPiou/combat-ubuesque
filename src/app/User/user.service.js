@@ -29,11 +29,9 @@ var User = (function () {
 }());
 exports.User = User;
 var UserService = (function () {
-    /* Constructeur */
     function UserService(http, authHttp) {
         this.http = http;
         this.authHttp = authHttp;
-        /* Variables */
         this.headers = new http_2.Headers({
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
@@ -44,13 +42,11 @@ var UserService = (function () {
         this.options = new http_2.RequestOptions({ headers: this.headers });
         this.user = null;
     }
-    /* Enregistre un nouvelle utilisateur */
     UserService.prototype.registerUser = function (data) {
         return this.http.post(this.userUrl + 'register', data, { headers: this.headers })
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Enregistre un nouvelle utilisateur */
     UserService.prototype.loginUser = function (data) {
         var body = new http_1.URLSearchParams();
         body.append('username', data.username);
@@ -61,18 +57,15 @@ var UserService = (function () {
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Recupere les donnees de l'utilisateur */
     UserService.prototype.infosUser = function () {
         return this.authHttp.get(this.userUrl + 'infosUser')
             .map(this.extractData)
             .catch(this.handleError);
     };
-    /* Extracte les donnees json */
     UserService.prototype.extractData = function (res) {
         var body = res.json();
         return body || {};
     };
-    /* Gere les erreurs de reponse */
     UserService.prototype.handleError = function (error) {
         var errMsg;
         if (error instanceof http_1.Response) {
@@ -86,18 +79,16 @@ var UserService = (function () {
         console.error(errMsg);
         return Observable_1.Observable.throw(errMsg);
     };
-    /* Acceseur User */
+    /* Acceso User */
     UserService.prototype.getUser = function () {
         return this.user;
     };
     UserService.prototype.setUser = function (user) {
         this.user = user;
     };
-    /* deconnecte l'utilisateur */
     UserService.prototype.logout = function () {
         localStorage.removeItem('token');
     };
-    /* regarde si l'utilisateur est connecte */
     UserService.prototype.loggedIn = function () {
         return angular2_jwt_1.tokenNotExpired();
     };
