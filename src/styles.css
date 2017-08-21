@@ -1,7 +1,16 @@
 body {
   font-family: 'Montserrat', sans-serif;
-  color: #f2f2f5;
-  background-color: #003250;
+  color: #EFEAC5;
+  background: #1B8798;
+  background-repeat: no-repeat;
+  background: -webkit-linear-gradient(90deg, #13616d, #23adc3);
+  /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(90deg, #13616d, #23adc3);
+  /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(90deg, #13616d, #23adc3);
+  /* For Firefox 3.6 to 15 */
+  background: linear-gradient(90deg, #13616d, #23adc3);
+  /* Standard syntax */
 }
 h1 {
   color: #369;
@@ -36,12 +45,19 @@ h1 {
 }
 .img-header {
   width: 100%;
+  max-width: 380px;
 }
 .img-menu {
   width: 64px;
 }
 .nav-perso li {
   text-align: center;
+}
+.nav-perso li a {
+  color: #EFEAC5;
+}
+.nav-perso li a:hover {
+  background-color: #360745;
 }
 /**
  * Battle Component

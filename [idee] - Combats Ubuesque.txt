@@ -46,7 +46,7 @@ Ingenieur :
 
 * Palette *
 #003250,#5893AB,#F2F2F5,#787877
-#F7F5E8,#ADD0E7,#0A5C84,#333333
+#360745,#D61C59,#E7D84B,#EFEAC5,#1B8798
 
 * Calcule *
 Xp en cas de victoire = (mon level * level adversaire) * (10 + fourberie)

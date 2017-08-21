@@ -19,9 +19,14 @@ var AppComponent = (function () {
         this.userService = userService;
         this.router = router;
         this.etatMsgBox = 'errMsg';
+        this.isArena = false;
         this.subscription = errorService.errorMessage$.subscribe(function (errorMessage) {
             _this.errorMessage = errorMessage;
             _this.activeErrorMessage();
+        });
+        this.router.events.subscribe(function (url) {
+            if (url.url)
+                _this.isArena = url.url.includes("/arena");
         });
     }
     AppComponent.prototype.activeErrorMessage = function () {

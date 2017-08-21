@@ -2,17 +2,7 @@
 
 <h3>Ici, tu pourras t'entrainer ou te battre contre d'autres héros</h3>
 
-<div class="col-sm-9">
+<div class="arena-content">
     <router-outlet></router-outlet>
-</div>
-<div class="col-sm-3">
-    <div class="sidebar-module">
-        <h4>Bagarre ?!</h4>
-        <div class="list-group">
-            <a routerLink="./arena-door" class="list-group-item" [routerLinkActive]="['active']">Porte de l'arène</a>
-            <a routerLink="./training" class="list-group-item" [routerLinkActive]="['active']">Entrainement</a>
-            <a routerLink="./waiting-room" class="list-group-item" [routerLinkActive]="['active']">1 contre 1</a>
-        </div>
-    </div>
 </div>
 

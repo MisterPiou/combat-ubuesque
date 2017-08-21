@@ -16,6 +16,7 @@ export class AppComponent
     subscription: Subscription;
     etatMsgBox = 'errMsg';
     interval: any;
+    isArena = false;
     
     constructor(
         private errorService: ErrorService, 
@@ -27,6 +28,11 @@ export class AppComponent
                 this.errorMessage = errorMessage;
                 this.activeErrorMessage();
             });
+            
+        this.router.events.subscribe((url:any) => {
+            if(url.url)
+                this.isArena = url.url.includes("/arena");
+        });
     }
     
     activeErrorMessage() {

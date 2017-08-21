@@ -14,21 +14,43 @@
             <img class="img-header" src="images/logo.png" />
             <ul class="nav nav-stacked nav-perso" *ngIf="hasAuthToken()">
                 <li [routerLinkActive]="['active']"><a routerLink="/home">
-                    <img class="img-menu" src="images/Ui/home.png" />
-                    <br/>Forum</a></li>
-                <li [routerLinkActive]="['active']"><a routerLink="/arena">
-                    <img class="img-menu" src="images/Ui/arena.png" />
-                    <br/>Arene</a></li>
+                    <img class="img-menu" src="images/Ui/home.png" alt="home" />
+                    <label>Forum</label></a></li>
+                <li class="sidebar"><a routerLink="/arena">
+                    <img class="img-menu" src="images/Ui/arena.png" alt="arena" />
+                    <label>Arene</label></a>
+                    <ul class="nav nav-stacked nav-perso" *ngIf="isArena">
+                        <li>
+                            <a routerLink="./arena/arena-door" [routerLinkActive]="['active']">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Porte de l'arène
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="./arena/training" [routerLinkActive]="['active']">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Entrainement
+                            </a>
+                        </li>
+                        <li>
+                            <a routerLink="./arena/waiting-room" [routerLinkActive]="['active']">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 1 contre 1
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li [routerLinkActive]="['active']"><a routerLink="/hero">
-                    <img class="img-menu" src="images/Ui/heroes.png" />
-                    <br/>Vestiaire</a></li>
+                    <img class="img-menu" src="images/Ui/heroes.png" alt="heroes" />
+                    <label>Vestiaire</label></a></li>
                 <li [routerLinkActive]="['active']"><a routerLink="/account">
-                    <img class="img-menu" src="images/Ui/account.png" />
-                    <br/>Compte</a></li>
+                    <img class="img-menu" src="images/Ui/account.png" alt="account" />
+                    <label>Compte</label></a></li>
             </ul>
             <ul class="nav nav-sidebar nav-stacked nav-perso" *ngIf="!hasAuthToken()">
-                <li [routerLinkActive]="['active']"><a routerLink="/login">S'identifier</a></li>
-                <li [routerLinkActive]="['active']"><a routerLink="/register">Créer un compte</a></li>
+                <li [routerLinkActive]="['active']"><a routerLink="/login">
+                    <img class="img-menu"  src="images/Ui/login.png" alt="login" />
+                    <span>S'identifier</span></a></li>
+                <li [routerLinkActive]="['active']"><a routerLink="/register">
+                    <img class="img-menu" src="images/Ui/register.png" alt="register" />
+                    <span>Créer un compte</span></a></li>
             </ul>
         </div>
         <div class="col-sm-10 main">
