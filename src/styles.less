@@ -8,11 +8,6 @@ body {
     font-family: 'Montserrat', sans-serif;
     color: @brushed-platinum;
     background: @magic-times;
-    background-repeat: no-repeat;
-    background: -webkit-linear-gradient(90deg, darken(@magic-times, 10%), lighten(@magic-times, 10%)); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(90deg, darken(@magic-times, 10%), lighten(@magic-times, 10%)); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(90deg, darken(@magic-times, 10%), lighten(@magic-times, 10%)); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(90deg, darken(@magic-times, 10%), lighten(@magic-times, 10%)); /* Standard syntax */
 }
 
 h1 {
@@ -21,8 +16,9 @@ h1 {
 }
 
 .main {
-    margin-top: 10px;
-    padding: 10px;
+    padding: 25px;
+	border-color: @gold-magic;
+    border-style: solid none none none;
 }
 
 .loader {
@@ -50,12 +46,23 @@ h1 {
 }
 
 .img-header {
-    width: 100%;
-    max-width: 380px;
+    height: 50px;
+	margin-left: -15px;
 }
 
 .img-menu {
     width: 64px;
+}
+
+.container-grid {
+	display: grid;
+	grid-template-columns: 100px 1fr;
+	margin-top: 50px;
+}
+
+.sticky-menu {
+	border-color: @gold-magic;
+    border-style: solid solid none none;
 }
 
 .nav-perso {
