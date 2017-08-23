@@ -1,13 +1,25 @@
-@magic-times: #1B8798;
+@magic-times: #777;
 @smile: #360745;
 @magic-dragon: #D61C59;
 @gold-magic: #E7D84B;
 @brushed-platinum: #EFEAC5;
 
+html {
+	height: 100%;
+}
+
 body {
     font-family: 'Montserrat', sans-serif;
     color: @brushed-platinum;
-    background: @magic-times;
+    background: darken(@magic-times, 10);
+	min-height: 100%;
+}
+
+.container-grid {
+	display: grid;
+	grid-template-columns: 100px 1fr;
+    padding-top: 50px;
+    min-height: 100vh;
 }
 
 h1 {
@@ -19,30 +31,7 @@ h1 {
     padding: 25px;
 	border-color: @gold-magic;
     border-style: solid none none none;
-}
-
-.loader {
-    float: left;
-    border-top: 5px solid #111;
-    border-right: 5px solid rgba(0,0,0,0);
-    border-bottom: 5px solid #111; 
-    border-left: 5px solid rgba(0,0,0,0); 
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    animation: spin .7s linear infinite;
-    -webkit-animation: spin .7s linear infinite;
-}
-.loader-in {
-    border-top: 5px solid rgba(0,0,0,0);
-    border-right: 5px solid #aaa;
-    border-bottom: 5px solid rgba(0,0,0,0); 
-    border-left: 5px solid #aaa; 
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    animation: spin 1.9s linear infinite;
-    -webkit-animation: spin 1.9s linear infinite;
+    background: lighten(@magic-times, 10);
 }
 
 .img-header {
@@ -52,12 +41,6 @@ h1 {
 
 .img-menu {
     width: 64px;
-}
-
-.container-grid {
-	display: grid;
-	grid-template-columns: 100px 1fr;
-	margin-top: 50px;
 }
 
 .sticky-menu {
@@ -114,19 +97,19 @@ h1 {
     webkit-transition: width .5s;
     -o-transition: width .5s;
     transition: width .5s;
+	span {
+		position: absolute;
+		top: 22%;
+		left: 14%;
+		width: 71%;
+		height: 100%;
+	}
 }
 .battle_btn_attack_timer_down {
     background-color: #e0e0e0;
 }
 .battle_btn_attack_timer_up {
     background-color: #EF9A9A;
-}
-.battle_btn_attack_timer span {
-    position: absolute;
-    top: 22%;
-    left: 14%;
-    width: 71%;
-    height: 100%;
 }
 .avatar-effect {
     border: 1px solid #EF9A9A;
@@ -173,6 +156,29 @@ h1 {
 /**
  *  ANIMATIONS
  **/
+.loader {
+    float: left;
+    border-top: 5px solid #111;
+    border-right: 5px solid rgba(0,0,0,0);
+    border-bottom: 5px solid #111; 
+    border-left: 5px solid rgba(0,0,0,0); 
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin .7s linear infinite;
+    -webkit-animation: spin .7s linear infinite;
+}
+.loader-in {
+    border-top: 5px solid rgba(0,0,0,0);
+    border-right: 5px solid #aaa;
+    border-bottom: 5px solid rgba(0,0,0,0); 
+    border-left: 5px solid #aaa; 
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    animation: spin 1.9s linear infinite;
+    -webkit-animation: spin 1.9s linear infinite;
+}
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes apparition_box {
     0%   {transform: scale(0)}
