@@ -1,8 +1,10 @@
-@magic-times: #777;
-@smile: #360745;
-@magic-dragon: #D61C59;
-@gold-magic: #E7D84B;
-@brushed-platinum: #EFEAC5;
+@blue-99: #133436;
+@blue-75: #20585c;
+@blue-50: #2c7d83;
+@blue-25: #38a3aa;
+@blue-10: #4fbfc7;
+
+@white: #f0f9fa;
 
 html {
 	height: 100%;
@@ -10,14 +12,14 @@ html {
 
 body {
     font-family: 'Montserrat', sans-serif;
-    color: @brushed-platinum;
-    background: darken(@magic-times, 10);
-	min-height: 100%;
+    color: @white;
+    background: @blue-99;
+    min-height: 100%;
 }
 
 .container-grid {
-	display: grid;
-	grid-template-columns: 100px 1fr;
+    display: grid;
+    grid-template-columns: 100px 1fr;
     padding-top: 50px;
     min-height: 100vh;
 }
@@ -29,14 +31,13 @@ h1 {
 
 .main {
     padding: 25px;
-	border-color: @gold-magic;
-    border-style: solid none none none;
-    background: lighten(@magic-times, 10);
+    background-color: @blue-50;
+    border-top: @blue-10 solid 1px;
 }
 
 .img-header {
     height: 50px;
-	margin-left: -15px;
+    margin-left: -15px;
 }
 
 .img-menu {
@@ -44,21 +45,23 @@ h1 {
 }
 
 .sticky-menu {
-	border-color: @gold-magic;
-    border-style: solid solid none none;
+    background-color: @blue-75;
+    border-right: @blue-10 solid 1px;
+    border-top: @blue-10 solid 1px;
 }
 
 .nav-perso {
     li {
         text-align: center;
+        margin-top: 0;
         a {
-            color: @brushed-platinum;
+            color: @white;
             label {
                 display: block;
             }
         }
         a:hover {
-            background-color: @smile;
+            background-color: @blue-99;
         }
         a:focus {
             background-color: initial;
@@ -66,7 +69,7 @@ h1 {
     }
     li.active {
         a {
-            background-color: @smile;
+            background-color: @blue-99;
         }
     }
 }
@@ -97,13 +100,13 @@ h1 {
     webkit-transition: width .5s;
     -o-transition: width .5s;
     transition: width .5s;
-	span {
-		position: absolute;
-		top: 22%;
-		left: 14%;
-		width: 71%;
-		height: 100%;
-	}
+    span {
+        position: absolute;
+        top: 22%;
+        left: 14%;
+        width: 71%;
+        height: 100%;
+    }
 }
 .battle_btn_attack_timer_down {
     background-color: #e0e0e0;
