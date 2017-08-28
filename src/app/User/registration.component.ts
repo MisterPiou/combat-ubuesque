@@ -25,11 +25,11 @@ export class RegistrationComponent
     
     createForm() {
         this.userForm = this.fb.group({
-            username: ['', Validators.required],
-            email: ['', Validators.email],
-            first: ['', Validators.required],
-            second: ['', Validators.required],
-        })
+            username: ['', [Validators.required, Validators.minLength(4)]],
+            email: ['', [Validators.email, Validators.required]],
+            first: ['', [Validators.required, Validators.minLength(6)]],
+            second: ['', [Validators.required, Validators.minLength(6)]],
+        });
     }
     
     resetForm() {

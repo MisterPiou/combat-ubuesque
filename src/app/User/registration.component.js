@@ -23,10 +23,10 @@ var RegistrationComponent = (function () {
     }
     RegistrationComponent.prototype.createForm = function () {
         this.userForm = this.fb.group({
-            username: ['', forms_1.Validators.required],
-            email: ['', forms_1.Validators.email],
-            first: ['', forms_1.Validators.required],
-            second: ['', forms_1.Validators.required],
+            username: ['', [forms_1.Validators.required, forms_1.Validators.minLength(4)]],
+            email: ['', [forms_1.Validators.email, forms_1.Validators.required]],
+            first: ['', [forms_1.Validators.required, forms_1.Validators.minLength(6)]],
+            second: ['', [forms_1.Validators.required, forms_1.Validators.minLength(6)]],
         });
     };
     RegistrationComponent.prototype.resetForm = function () {
