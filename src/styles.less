@@ -38,9 +38,17 @@ h1 {
     border-top: @blue-10 solid 1px;
 }
 
+/**
+ * Menu
+ */
 .img-header {
     height: 50px;
     margin-left: -15px;
+}
+
+.navbar-info-user {
+    text-align: right;
+    margin-top: 7px;
 }
 
 .sticky-menu {
@@ -78,6 +86,39 @@ h1 {
         font-size: 12px;
     }
 }
+
+.under-nav-perso {
+    font-size: 12px;
+    a {
+        padding: 10px 5px !important;
+    }
+    a:hover {
+        background-color: @blue-50 !important;
+    }
+    a:focus {
+        background-color: initial;
+    }
+    li.active {
+        a {
+            background-color: @blue-50 !important;
+        }
+    }
+}
+
+/**
+ * Override bootstrap 
+ */
+.success, tbody tr:hover {
+    color: @blue-99;
+}
+
+.modal-content {
+    background-color: @blue-50;
+}
+.modal-header {
+    border-bottom: 1px solid @blue-10;
+}
+
 
 /**
  * Login/Register 

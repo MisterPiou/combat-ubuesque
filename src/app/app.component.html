@@ -1,8 +1,8 @@
 <nav class="navbar navbar-fixed-top">
     <div class="container-fluid">
-		<img class="img-header" src="images/logo.png" />
-        <div class="col-sm-3 navbar-right" *ngIf="userService.getUser()">
-            Tu es <strong>{{ userService.getUser().username }}</strong>
+	<img class="img-header" src="images/logo.png" />
+        <div class="col-sm-3 navbar-right navbar-info-user" *ngIf="userService.getUser()">
+            Tu es <strong>{{ userService.getUser().username }}</strong> 
             <button class="btn btn-success" (click)="logout()">Se deconnecter</button>
         </div>
     </div>
@@ -15,23 +15,23 @@
             <li [routerLinkActive]="['active']"><a routerLink="/home">
                 <img class="img-menu" src="images/Ui/home.png" alt="home" />
                 <label>Forum</label></a></li>
-            <li class="sidebar"><a routerLink="/arena">
+            <li [routerLinkActive]="['active']" class="sidebar"><a routerLink="/arena">
                 <img class="img-menu" src="images/Ui/arena.png" alt="arena" />
                 <label>Arene</label></a>
-                <ul class="nav nav-stacked nav-perso" *ngIf="isArena">
-                    <li>
-                        <a routerLink="./arena/arena-door" [routerLinkActive]="['active']">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Porte de l'arène
+                <ul class="nav nav-stacked under-nav-perso" *ngIf="isArena">
+                    <li [routerLinkActive]="['active']">
+                        <a routerLink="/arena/arena-door">
+                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span><br/>Porte de l'arène
                         </a>
                     </li>
-                    <li>
-                        <a routerLink="./arena/training" [routerLinkActive]="['active']">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> Entrainement
+                    <li [routerLinkActive]="['active']">
+                        <a routerLink="/arena/training">
+                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span><br/>Entrainement
                         </a>
                     </li>
-                    <li>
-                        <a routerLink="./arena/waiting-room" [routerLinkActive]="['active']">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> 1 contre 1
+                    <li [routerLinkActive]="['active']">
+                        <a routerLink="/arena/waiting-room">
+                            <span class="glyphicon glyphicon-star" aria-hidden="true"></span><br/>1 contre 1
                         </a>
                     </li>
                 </ul>
