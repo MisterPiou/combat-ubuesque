@@ -47,8 +47,10 @@ class RegistrationController extends BaseController
                           FOSUserEvents::REGISTRATION_SUCCESS, $event
                        );
 
-            $user->setEnabled(TRUE);
+            $user->setConfirmationToken(sha1(uniqid()));
             $userManager->updateUser($user);
+
+            $this->get('comubu.mail.service')->validationMail($user);
 
             $response = new Response($this->serialize('User created.'), Response::HTTP_CREATED);
         }
@@ -99,5 +101,26 @@ class RegistrationController extends BaseController
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         return $response;
+    }
+
+    /**
+     * @Route("/user/validation/{token}", name="user_validation")
+     */
+    private function validationAction(Request $request, $token)
+    {
+        if(empty($token)) {
+            return new Response($this->serialize('No token'), Response::HTTP_BAD_REQUEST);
+        }
+
+        $user = $this->getDoctrine()->getRepository("ComubuuBundle:User")->findByConfirmationToken($token);
+
+        if(empty($user)) {
+            return new Response($this->serialize('Token no exist'), Response::HTTP_BAD_REQUEST);
+        }
+
+        $user->setConfirmationToken(null);
+        $user->setEnabled(TRUE);
+
+        return new Response($this->serialize('User validated'), Response::HTTP_CREATED);
     }
 }
