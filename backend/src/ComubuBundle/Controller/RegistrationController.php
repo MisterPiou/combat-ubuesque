@@ -112,7 +112,7 @@ class RegistrationController extends BaseController
             return new Response($this->serialize('No token'), Response::HTTP_BAD_REQUEST);
         }
 
-        $user = $this->getDoctrine()->getRepository("ComubuuBundle:User")->findByConfirmationToken($token);
+        $user = $this->getDoctrine()->getRepository("ComubuBundle:User")->findByConfirmationToken($token);
 
         if(empty($user)) {
             return new Response($this->serialize('Token no exist'), Response::HTTP_BAD_REQUEST);

@@ -1,0 +1,15 @@
+<h2>Validation de ton adresse email</h2>
+<br />
+<p>
+    Salut <strong>{{ user.username }}</strong> ! 
+</p>
+<p>
+    Tu viens de procéder à un changement d'adresse email et pour valider ceci il te reste une étape.
+</p>
+<p>
+    Clique sur ce <a href="{{ url('user_validation', {'token': user.confirmationToken, 'email': mail }) }}">lien</a> pour en finir avec tout ca !
+</p>
+<br />
+<p>
+    Allez, à bientot dans l'arène l'ami !
+</p>{# empty Twig template #}

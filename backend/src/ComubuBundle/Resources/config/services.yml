@@ -2,3 +2,7 @@ services:
     comubu.hero.service:
         class: ComubuBundle\Services\HeroService
         arguments: ["@doctrine.orm.entity_manager"]
+
+    comubu.mail.service:
+        class: ComubuBundle\Services\MailService
+        arguments: ["@mailer","@templating"]
