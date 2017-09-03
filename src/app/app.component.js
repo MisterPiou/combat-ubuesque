@@ -20,7 +20,7 @@ var AppComponent = (function () {
         this.router = router;
         this.etatMsgBox = 'errMsg';
         this.isArena = false;
-        this.subscription = errorService.errorMessage$.subscribe(function (errorMessage) {
+        this.subscription = errorService.errorMessage.subscribe(function (errorMessage) {
             _this.errorMessage = errorMessage;
             _this.activeErrorMessage();
         });

@@ -44,7 +44,10 @@ var LoginComponent = (function () {
             _this.redirectAfterLog();
             _this.isLoading = false;
             _this.loadUserInfo();
-        }, function (error) { return _this.errorService.newErrorMessage(error); });
+        }, function (error) {
+            _this.errorService.newErrorMessage(error);
+            _this.isLoading = false;
+        });
     };
     LoginComponent.prototype.loadUserInfo = function () {
         var _this = this;

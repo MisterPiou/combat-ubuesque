@@ -49,7 +49,10 @@ export class LoginComponent
                     this.isLoading = false;
                     this.loadUserInfo();
                 },
-                error => this.errorService.newErrorMessage(error));
+                error => {
+                    this.errorService.newErrorMessage(error);
+                    this.isLoading = false;
+                });
     }
     
     loadUserInfo() {

@@ -23,7 +23,7 @@ export class AppComponent
         private userService: UserService,
         private router: Router
     ) {
-        this.subscription = errorService.errorMessage$.subscribe(
+        this.subscription = errorService.errorMessage.subscribe(
             errorMessage => {
                 this.errorMessage = errorMessage;
                 this.activeErrorMessage();

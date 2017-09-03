@@ -10,7 +10,7 @@ var Subject_1 = require("rxjs/Subject");
 var ErrorService = (function () {
     function ErrorService() {
         this.erreurMessage = new Subject_1.Subject();
-        this.errorMessage$ = this.erreurMessage.asObservable();
+        this.errorMessage = this.erreurMessage.asObservable();
     }
     ErrorService.prototype.newErrorMessage = function (message) {
         this.erreurMessage.next(message);

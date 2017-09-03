@@ -33,6 +33,8 @@ class RegistrationController extends BaseController
         $event = new GetResponseUserEvent($user, $request);
         $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
 
+        $response = new Response("{\"erreur\": \"lors de l'inscription (le mail ou le pseudo sont surement déja existant)\"}", Response::HTTP_BAD_REQUEST);
+
         if (null !== $event->getResponse()) {
             return $event->getResponse();
         }

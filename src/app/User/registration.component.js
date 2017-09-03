@@ -52,7 +52,10 @@ var RegistrationComponent = (function () {
                 _this.activeSuccesMessage();
             }
             _this.isLoading = false;
-        }, function (error) { return _this.errorService.newErrorMessage(error.message); });
+        }, function (error) {
+            _this.errorService.newErrorMessage(error);
+            _this.isLoading = false;
+        });
     };
     /* Animation message success */
     RegistrationComponent.prototype.activeSuccesMessage = function () {

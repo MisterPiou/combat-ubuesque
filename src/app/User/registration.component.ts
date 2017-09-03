@@ -59,7 +59,10 @@ export class RegistrationComponent
                     }
                     this.isLoading = false;
                 },
-                error => this.errorService.newErrorMessage(error.message));
+                error => {
+                    this.errorService.newErrorMessage(error);
+                    this.isLoading = false;
+                });
     }
     
     /* Animation message success */
