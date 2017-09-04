@@ -1,6 +1,9 @@
 import {Component} from '@angular/core';
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, ValidatorFn } from '@angular/forms';
+
+import {matchPasswordValidator} from '../Global/match-password.directive'
 
 import { ErrorService }     from '../Global/error.service';
 import { UserService }      from './user.service';
@@ -27,9 +30,9 @@ export class RegistrationComponent
         this.userForm = this.fb.group({
             username: ['', [Validators.required, Validators.minLength(4)]],
             email: ['', [Validators.email, Validators.required]],
-            first: ['', [Validators.required, Validators.minLength(6)]],
+            first: ['', [Validators.required, Validators.minLength(6), Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$")]],
             second: ['', [Validators.required, Validators.minLength(6)]],
-        });
+        }, matchPasswordValidator);
     }
     
     resetForm() {

@@ -47,13 +47,19 @@
                 <div *ngIf="userForm.controls.first.errors.required">
                     Il faut un mot de passe pour s'inscrire.
                 </div>
+                <div *ngIf="userForm.controls.first.errors.pattern">
+                    Le mot de passe doit contenir au moins une lettre capital et un chiffre.
+                </div>
             </div>
         </div>
         <label for="password" class="col-sm-4 control-label">Retaper mot de passe</label>
         <div class="col-sm-8">
-            <input type="password" class="form-control" formControlName="second" name="first">
+            <input type="password" class="form-control" formControlName="second" name="second">
             
             <div *ngIf="userForm.controls.second.invalid && (userForm.controls.second.dirty || userForm.controls.second.touched)" class="alert alert-danger">
+                <div *ngIf="userForm.matchPassword">
+                    Les deux mots de passe sont différents.
+                </div>
                 <div *ngIf="userForm.controls.second.errors.minlength">
                     Ton mot de passe est trop court (6 caractères minimum).
                 </div>
@@ -67,7 +73,7 @@
         <div class="col-sm-offset-4 col-sm-8">
             <button type="submit"
                     [disabled]="userForm.invalid" class="btn btn-primary">
-                <div *ngIf="isLoading" class="loader"><div class="loader-in"></div></div>
+                <div *ngIf="isLoading" class="loader"></div>
                 S'enregistrer
             </button> &nbsp;
             <!--button type="reset" (click)="revert()"

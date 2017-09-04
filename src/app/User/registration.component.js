@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
+var match_password_directive_1 = require("../Global/match-password.directive");
 var error_service_1 = require("../Global/error.service");
 var user_service_1 = require("./user.service");
 var RegistrationComponent = (function () {
@@ -25,9 +26,9 @@ var RegistrationComponent = (function () {
         this.userForm = this.fb.group({
             username: ['', [forms_1.Validators.required, forms_1.Validators.minLength(4)]],
             email: ['', [forms_1.Validators.email, forms_1.Validators.required]],
-            first: ['', [forms_1.Validators.required, forms_1.Validators.minLength(6)]],
+            first: ['', [forms_1.Validators.required, forms_1.Validators.minLength(6), forms_1.Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$")]],
             second: ['', [forms_1.Validators.required, forms_1.Validators.minLength(6)]],
-        });
+        }, match_password_directive_1.matchPasswordValidator);
     };
     RegistrationComponent.prototype.resetForm = function () {
         this.userForm.reset();

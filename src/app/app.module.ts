@@ -13,6 +13,8 @@ import { RegistrationComponent }    from './User/registration.component';
 import { LoginComponent }           from './User/login.component';
 import { AccountComponent }         from './User/account.component';
 
+import {MatchPasswordValidatorDirective} from './Global/match-password.directive';
+
 import { HeroService }          from './Hero/hero.service';
 import { RaceService }          from './Hero/race.service';
 import { UserService }          from './User/user.service';
@@ -40,6 +42,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RegistrationComponent,
     LoginComponent,
     AccountComponent,
+    MatchPasswordValidatorDirective
   ],
   providers: [
     {

@@ -15,6 +15,7 @@ var home_component_1 = require("./Global/home.component");
 var registration_component_1 = require("./User/registration.component");
 var login_component_1 = require("./User/login.component");
 var account_component_1 = require("./User/account.component");
+var match_password_directive_1 = require("./Global/match-password.directive");
 var hero_service_1 = require("./Hero/hero.service");
 var race_service_1 = require("./Hero/race.service");
 var user_service_1 = require("./User/user.service");
@@ -47,6 +48,7 @@ AppModule = __decorate([
             registration_component_1.RegistrationComponent,
             login_component_1.LoginComponent,
             account_component_1.AccountComponent,
+            match_password_directive_1.MatchPasswordValidatorDirective
         ],
         providers: [
             {
