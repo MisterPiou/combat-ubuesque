@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AbstractControl, ValidatorFn } from '@angular/forms';
 
-import {matchPasswordValidator} from '../Global/match-password.directive'
+import {matchPasswordValidator} from '../Global/match-password.directive';
 
 import { ErrorService }     from '../Global/error.service';
 import { UserService }      from './user.service';

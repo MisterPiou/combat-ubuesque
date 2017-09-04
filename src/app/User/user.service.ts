@@ -16,6 +16,7 @@ export class User {
     constructor(
         public id: number,
         public username: string,
+        public email: string,
         public state: number,
         public last_login: Date
     ){}
@@ -56,6 +57,18 @@ export class UserService {
         return this.authHttp.get(this.userUrl + 'infosUser')
             .map(this.extractData)
             .catch(this.handleError);
+    }
+    
+    changeMail(newMail: string) {
+        return this.authHttp.post(this.userUrl + 'changeMail', {'newMail': newMail}, {headers: this.headers})
+          .map(this.extractData)
+          .catch(this.handleError);
+    }
+    
+    changePassword(newPassword: string) {
+        return this.authHttp.post(this.userUrl + 'changePassword', {'newPassword': newPassword}, {headers: this.headers})
+          .map(this.extractData)
+          .catch(this.handleError);
     }
     
     private extractData(res: Response) {

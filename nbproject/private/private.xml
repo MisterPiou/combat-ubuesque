@@ -3,8 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/app/User/account.component.ts</file>
             <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/app/User/registration.component.html</file>
-            <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/styles.less</file>
+            <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/app/Arena/battle.component.html</file>
+            <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/app/User/account.component.html</file>
+            <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/app/User/user.service.ts</file>
             <file>file:/E:/Programmes/wamp64/www/combat-ubuesque/src/app/User/registration.component.ts</file>
         </group>
     </open-files>

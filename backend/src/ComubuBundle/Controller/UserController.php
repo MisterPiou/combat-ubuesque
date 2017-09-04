@@ -37,9 +37,10 @@ class UserController extends FOSRestController
     {
         if($request->isMethod('POST') && $this->getUser()) {
             $userManager = $this->get('fos_user.user_manager');
+            $user = $this->getUser();
 
             $mail = $request->request->get('newMail');
-            $user->setToken(sha1(uniqid()));
+            $user->setConfirmationToken(sha1(uniqid()));
 
             $userManager->updateUser($user);
             $statusCode = 200;
@@ -93,9 +94,10 @@ class UserController extends FOSRestController
     {
         if($request->isMethod('POST') && $this->getUser()) {
             $userManager = $this->get('fos_user.user_manager');
+            $user = $this->getUser();
 
             $password = $request->request->get('newPassword');
-            $user->setEmail($password);
+            $user->setPlainPassword($password);
 
             $userManager->updateUser($user);
             $statusCode = 200;

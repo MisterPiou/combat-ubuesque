@@ -3,11 +3,83 @@
 <h3>Ici, tu pourras gérer ton compte</h3>
 
 <div class="row">
-    <div class="col-sm-6 col-xs-12">
-        <label>Pseudo: </label><span>{{ user.username }}</span>
+    <div class="col-sm-6 col-xs-12" *ngIf="user">
+        <div class="row">
+            <label class="col-sm-4">Pseudo: </label><span class="col-sm-8">{{ user.username }}</span>
+        </div>
+        <hr>
+        <div *ngIf="isChangeMail==false" class="row">
+            <label class="col-sm-4">Email: </label>
+            <span class="col-sm-8">
+                {{ user.email }}
+                <button (click)="changeMail();" class="btn btn-primary">Modifier</button>
+            </span>
+        </div>
+        <div *ngIf="isChangeMail" class="row">
+            <h4>Changement d'adresse email</h4>
+            <form class="form-horizontal" [formGroup]="changeMailForm" (ngSubmit)="saveNewMail()" novalidate>
+                <label class="col-sm-4">Email: </label>
+                <input class="col-sm-8 change-form" type="email" value="{{ user.email }}" formControlName="email" name="email"><br/>
+                <div *ngIf="changeMailForm.controls.email.invalid && (changeMailForm.controls.email.dirty || changeMailForm.controls.email.touched)" class="alert alert-danger col-sm-12">
+                    <div *ngIf="changeMailForm.controls.email.errors.email">
+                        Le format de l'email n'est pas correct (exemple: mail@mail.fr).
+                    </div>
+                    <div *ngIf="changeMailForm.controls.email.errors.required">
+                        Il faut une adresse mail pour seffectuer le changement.
+                    </div>
+                </div><br/>
+                <button [disabled]="changeMailForm.invalid" type="submit" class="btn btn-primary col-sm-offset-4 col-sm-8">Sauvegarder</button>
+            </form>
+        </div>
+        <hr>
+        <div *ngIf="isChangePwd==false" class="row">
+            <label class="col-sm-4">Mot de passe </label>
+            <span class="col-sm-8">
+                ******
+                <button (click)="changePassword();" class="btn btn-primary">Modifier</button>
+            </span>
+        </div>
+        <div *ngIf="isChangePwd" class="row">
+            <h4>Changement de mot de passe</h4>
+            <form class="form-horizontal" [formGroup]="changePwdForm" (ngSubmit)="saveNewPassword()" novalidate>
+                <label class="col-sm-4">Ancien mot de passe: </label>
+                <input class="col-sm-8 change-form" type="password" name="oldPwd" formControlName="oldPwd">
+                <div *ngIf="changePwdForm.controls.oldPwd.invalid && (changePwdForm.controls.oldPwd.dirty || changePwdForm.controls.oldPwd.touched)" class="alert alert-danger col-sm-12">
+                    <div *ngIf="changePwdForm.controls.oldPwd.errors.minlength">
+                        Ton mot de passe est trop court (6 caractères minimum).
+                    </div>
+                    <div *ngIf="changePwdForm.controls.oldPwd.errors.required">
+                        Il faut renseigner ce champ pour changer le mot de passe.
+                    </div>
+                </div>
+                <label class="col-sm-4">nouveau mot de passe: </label>
+                <input class="col-sm-8 change-form" type="password" name="newPwd" formControlName="newPwd">
+                <div *ngIf="changePwdForm.controls.newPwd.invalid && (changePwdForm.controls.newPwd.dirty || changePwdForm.controls.newPwd.touched)" class="alert alert-danger col-sm-12">
+                    <div *ngIf="changePwdForm.controls.newPwd.errors.minlength">
+                        Ton mot de passe est trop court (6 caractères minimum).
+                    </div>
+                    <div *ngIf="changePwdForm.controls.newPwd.errors.required">
+                        Il faut renseigner ce champ pour changer le mot de passe.
+                    </div>
+                    <div *ngIf="changePwdForm.controls.newPwd.errors.pattern">
+                        Le mot de passe doit contenir au moins une lettre capital et un chiffre.
+                    </div>
+                </div>
+                <label class="col-sm-4">retaper mot de passe: </label>
+                <input class="col-sm-8 change-form" type="password" name="confirmPwd" formControlName="confirmPwd">
+                <div *ngIf="changePwdForm.controls.confirmPwd.invalid && (changePwdForm.controls.confirmPwd.dirty || changePwdForm.controls.confirmPwd.touched)" class="alert alert-danger col-sm-12">
+                    <div *ngIf="changePwdForm.controls.confirmPwd.errors.minlength">
+                        Ton mot de passe est trop court (6 caractères minimum).
+                    </div>
+                    <div *ngIf="changePwdForm.controls.confirmPwd.errors.required">
+                        Il faut renseigner ce champ pour changer le mot de passe.
+                    </div>
+                </div><br/>
+                <button [disabled]="changePwdForm.invalid" type="submit" class="btn btn-primary col-sm-offset-4 col-sm-8">Sauvegarder</button>
+            </form>
+        </div>
     </div>
     <div class="col-sm-6 col-xs-12">
-        <label>Email: </label><span>{{ user.email }}</span>
     </div>
 </div>
 

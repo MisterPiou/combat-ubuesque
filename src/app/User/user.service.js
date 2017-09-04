@@ -19,9 +19,10 @@ var angular2_jwt_1 = require("angular2-jwt");
 var angular2_jwt_2 = require("angular2-jwt");
 var data_1 = require("../data");
 var User = (function () {
-    function User(id, username, state, last_login) {
+    function User(id, username, email, state, last_login) {
         this.id = id;
         this.username = username;
+        this.email = email;
         this.state = state;
         this.last_login = last_login;
     }
@@ -59,6 +60,16 @@ var UserService = (function () {
     };
     UserService.prototype.infosUser = function () {
         return this.authHttp.get(this.userUrl + 'infosUser')
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
+    UserService.prototype.changeMail = function (newMail) {
+        return this.authHttp.post(this.userUrl + 'changeMail', { 'newMail': newMail }, { headers: this.headers })
+            .map(this.extractData)
+            .catch(this.handleError);
+    };
+    UserService.prototype.changePassword = function (newPassword) {
+        return this.authHttp.post(this.userUrl + 'changePassword', { 'newPassword': newPassword }, { headers: this.headers })
             .map(this.extractData)
             .catch(this.handleError);
     };
